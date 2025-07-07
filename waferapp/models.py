@@ -7,6 +7,10 @@ class ModeloCNN(models.Model):
     accuracy = models.CharField(max_length=10)
     descripcion = models.TextField()
 
-def __str__(self):
-    return str(self.nombre)
+    def __str__(self):
+        return str(self.nombre)
+    
+    class Meta:
+        verbose_name = "Modelo CNN"
+        verbose_name_plural = "Modelos CNN"
 

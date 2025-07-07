@@ -54,14 +54,35 @@ class HomeView(TemplateView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Como no tienes modelos reales, agrega datos de prueba
+        
+        # Datos de modelos predefinidos con información más completa
         context['modelos'] = [
             {
-                'nombre': 'Modelo CNN de Prueba',
-                'descripcion': 'Este es un modelo de ejemplo para probar el diseño',
-                'accuracy': '95%'
+                'nombre': 'InceptionV3',
+                'descripcion': 'Modelo Inception V3 optimizado para detectar defectos en obleas de silicio utilizando módulos de inicio que aplican filtros de diferentes tamaños para capturar características a múltiples escalas.',
+                'accuracy': '96.4%'
+            },
+            {
+                'nombre': 'ResNet50',
+                'descripcion': 'Modelo ResNet entrenado para detectar defectos en obleas de silicio con alta precisión, utilizando conexiones residuales para un aprendizaje más profundo.',
+                'accuracy': '98.7%'
+            },
+            {
+                'nombre': 'VGG16',
+                'descripcion': 'Modelo VGG entrenado para inspección visual de defectos, basado en convoluciones profundas y simples con excelente capacidad de generalización.',
+                'accuracy': '95.2%'
+            },
+            {
+                'nombre': 'MobileNet',
+                'descripcion': 'Modelo ligero MobileNet optimizado para procesamiento rápido de imágenes de obleas, ideal para aplicaciones en tiempo real.',
+                'accuracy': '94.1%'
             }
         ]
+        
+        # Información adicional del contexto
+        context['total_modelos'] = len(context['modelos'])
+        context['modelo_destacado'] = max(context['modelos'], key=lambda x: float(x['accuracy'].rstrip('%')))
+        
         return context
 
 class SignUpView(FormView):

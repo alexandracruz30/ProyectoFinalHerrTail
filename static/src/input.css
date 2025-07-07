@@ -1,9 +1,35 @@
 /* ==============================================
-   IMPROVED RESPONSIVE STYLES FOR CNN MODEL EXPLORER
+   INPUT.CSS - ESTILOS PERSONALIZADOS PARA CNN MODEL EXPLORER
+   Archivo principal de entrada para todos los estilos personalizados
    ============================================== */
 
 /* ==============================================
-   RESET AND BASE STYLES
+   TABLA DE CONTENIDOS
+   ============================================== 
+   1. RESET Y ESTILOS BASE
+   2. SISTEMA DE CONTENEDORES
+   3. MEJORAS DE HEADER
+   4. NAVEGACIÓN
+   5. NAVEGACIÓN MÓVIL
+   6. CONTENIDO PRINCIPAL
+   7. TARJETAS DE MODELO
+   8. MEJORAS DE BOTONES
+   9. SECCIÓN DE INFORMACIÓN
+   10. SECCIÓN DE AUTENTICACIÓN
+   11. MEJORAS DE PÁGINA DE INICIO
+   12. UTILIDADES RESPONSIVAS
+   13. ANIMACIONES
+   14. ESTADOS DE CARGA
+   15. PERSONALIZACIÓN DE SCROLLBAR
+   16. BREAKPOINTS RESPONSIVOS
+   17. EFECTOS VISUALES MEJORADOS
+   18. UTILIDADES Y HELPERS
+   19. ACCESIBILIDAD
+   20. ESTILOS DE IMPRESIÓN
+   ============================================== */
+
+/* ==============================================
+   1. RESET Y ESTILOS BASE
    ============================================== */
 * {
     box-sizing: border-box;
@@ -17,10 +43,12 @@ body {
     color: #333;
     overflow-x: hidden;
     font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1, 'ss01' 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 /* ==============================================
-   CONTAINER SYSTEM
+   2. SISTEMA DE CONTENEDORES
    ============================================== */
 .container {
     width: 100%;
@@ -42,7 +70,7 @@ body {
 }
 
 /* ==============================================
-   HEADER IMPROVEMENTS
+   3. MEJORAS DE HEADER
    ============================================== */
 .header-nav {
     position: sticky;
@@ -54,6 +82,7 @@ body {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     padding: 0.75rem 0;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    animation: headerFadeIn 0.6s ease-out;
 }
 
 .header-nav.scrolled {
@@ -67,10 +96,25 @@ body {
 .header-container {
     max-width: 1400px;
     margin: 0 auto;
-    padding: 0 1rem;
+    padding: 0 1.5rem;
     display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    flex: 1;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
 }
 
 /* Header Top Row */
@@ -88,25 +132,14 @@ body {
     width: 100%;
 }
 
-@media (min-width: 640px) {
-    .header-container {
-        padding: 0 2rem;
-    }
-}
-
-@media (min-width: 1024px) {
-    .header-container {
-        padding: 0 3rem;
-    }
-}
-
-/* Logo and Brand */
+/* Logo y Brand */
 .brand-container {
     display: flex;
     align-items: center;
     gap: 1.25rem;
     margin-right: 2rem;
     transition: all 0.3s ease;
+    animation: slideInLeft 0.8s ease-out;
 }
 
 .brand-logo {
@@ -151,6 +184,10 @@ body {
     filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
 }
 
+.brand-text {
+    max-width: 280px;
+}
+
 .brand-text h1 {
     font-size: 1.75rem;
     font-weight: 800;
@@ -173,7 +210,7 @@ body {
 }
 
 /* ==============================================
-   NAVIGATION IMPROVEMENTS
+   4. NAVEGACIÓN
    ============================================== */
 .nav-button {
     display: flex;
@@ -194,6 +231,7 @@ body {
     position: relative;
     overflow: hidden;
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+    animation: slideInDown 0.6s ease-out;
 }
 
 .nav-button::before {
@@ -245,8 +283,26 @@ body {
     border-radius: 2px;
 }
 
+.nav-button.current-page {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(59, 130, 246, 0.2));
+    border-color: rgba(59, 130, 246, 0.5);
+    box-shadow: 0 4px 20px rgba(59, 130, 246, 0.25);
+}
+
+.nav-button.current-page::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 1), transparent);
+    border-radius: 2px;
+}
+
 /* ==============================================
-   MOBILE NAVIGATION
+   5. NAVEGACIÓN MÓVIL
    ============================================== */
 @media (max-width: 1023px) {
     .desktop-nav {
@@ -287,17 +343,6 @@ body {
         animation: slideDown 0.3s ease-out;
     }
     
-    @keyframes slideDown {
-        from {
-            opacity: 0;
-            transform: translateY(-20px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-    
     #mobile-menu-content .nav-button {
         padding: 1.25rem 1rem;
         font-size: 0.875rem;
@@ -309,6 +354,7 @@ body {
         background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
         border: 1px solid rgba(255, 255, 255, 0.15);
         min-height: 4rem;
+        animation: none;
     }
     
     #mobile-menu-content .nav-button:hover {
@@ -344,7 +390,7 @@ body {
 }
 
 /* ==============================================
-   MAIN CONTENT IMPROVEMENTS
+   6. CONTENIDO PRINCIPAL
    ============================================== */
 .main-container {
     min-height: 100vh;
@@ -381,7 +427,7 @@ body {
 }
 
 /* ==============================================
-   MODEL CARDS IMPROVEMENTS
+   7. TARJETAS DE MODELO
    ============================================== */
 .model-grid {
     display: grid;
@@ -435,20 +481,6 @@ body {
     animation: shimmer 0.8s ease-in-out;
 }
 
-@keyframes shimmer {
-    0% {
-        transform: translateX(-100%) translateY(-100%) rotate(45deg);
-        opacity: 0;
-    }
-    50% {
-        opacity: 1;
-    }
-    100% {
-        transform: translateX(100%) translateY(100%) rotate(45deg);
-        opacity: 0;
-    }
-}
-
 .model-header {
     background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
     color: white;
@@ -492,7 +524,7 @@ body {
 }
 
 /* ==============================================
-   BUTTON IMPROVEMENTS
+   8. MEJORAS DE BOTONES
    ============================================== */
 .select-button {
     background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
@@ -510,6 +542,10 @@ body {
     position: relative;
     overflow: hidden;
     box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .select-button::before {
@@ -557,6 +593,8 @@ body {
     overflow: hidden;
     box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
     border: 1px solid rgba(255, 255, 255, 0.2);
+    text-decoration: none;
+    animation: slideInRight 0.8s ease-out;
 }
 
 .auth-button::before {
@@ -591,7 +629,7 @@ body {
 }
 
 /* ==============================================
-   INFORMATION SECTION
+   9. SECCIÓN DE INFORMACIÓN
    ============================================== */
 .info-section {
     background: rgba(255, 255, 255, 0.1);
@@ -673,7 +711,7 @@ body {
 }
 
 /* ==============================================
-   AUTHENTICATION SECTION
+   10. SECCIÓN DE AUTENTICACIÓN
    ============================================== */
 .auth-container {
     display: flex;
@@ -698,6 +736,7 @@ body {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    font-family: 'Inter', sans-serif;
 }
 
 @media (max-width: 639px) {
@@ -718,11 +757,159 @@ body {
 }
 
 /* ==============================================
-   ADDITIONAL IMPROVEMENTS
+   11. MEJORAS DE PÁGINA DE INICIO
    ============================================== */
+.header-nav .py-4 {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+.text-4xl {
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
+    letter-spacing: -0.05em;
+}
+
+.text-lg {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    letter-spacing: -0.025em;
+}
+
+.mb-12 {
+    margin-bottom: 3rem;
+}
 
 /* ==============================================
-   ANIMATIONS
+   12. UTILIDADES RESPONSIVAS
+   ============================================== */
+/* Visibility utilities */
+.hidden { display: none !important; }
+.block { display: block !important; }
+.inline { display: inline !important; }
+.inline-block { display: inline-block !important; }
+.flex { display: flex !important; }
+.grid { display: grid !important; }
+
+/* Responsive visibility */
+@media (max-width: 639px) {
+    .hidden-sm { display: none !important; }
+    .block-sm { display: block !important; }
+    .flex-sm { display: flex !important; }
+    .grid-sm { display: grid !important; }
+}
+
+@media (min-width: 640px) and (max-width: 1023px) {
+    .hidden-md { display: none !important; }
+    .block-md { display: block !important; }
+    .flex-md { display: flex !important; }
+    .grid-md { display: grid !important; }
+}
+
+@media (min-width: 1024px) {
+    .hidden-lg { display: none !important; }
+    .block-lg { display: block !important; }
+    .flex-lg { display: flex !important; }
+    .grid-lg { display: grid !important; }
+}
+
+/* Spacing utilities */
+.m-0 { margin: 0 !important; }
+.m-1 { margin: 0.25rem !important; }
+.m-2 { margin: 0.5rem !important; }
+.m-3 { margin: 0.75rem !important; }
+.m-4 { margin: 1rem !important; }
+
+.p-0 { padding: 0 !important; }
+.p-1 { padding: 0.25rem !important; }
+.p-2 { padding: 0.5rem !important; }
+.p-3 { padding: 0.75rem !important; }
+.p-4 { padding: 1rem !important; }
+
+/* Text utilities */
+.text-center { text-align: center !important; }
+.text-left { text-align: left !important; }
+.text-right { text-align: right !important; }
+
+.text-sm { font-size: 0.875rem !important; }
+.text-base { font-size: 1rem !important; }
+.text-lg { font-size: 1.125rem !important; }
+.text-xl { font-size: 1.25rem !important; }
+.text-2xl { font-size: 1.5rem !important; }
+
+.font-normal { font-weight: 400 !important; }
+.font-medium { font-weight: 500 !important; }
+.font-semibold { font-weight: 600 !important; }
+.font-bold { font-weight: 700 !important; }
+
+/* Color utilities */
+.text-white { color: white !important; }
+.text-gray-600 { color: #6b7280 !important; }
+.text-blue-200 { color: #bfdbfe !important; }
+
+/* Flexbox utilities */
+.flex-col { flex-direction: column !important; }
+.flex-row { flex-direction: row !important; }
+.items-center { align-items: center !important; }
+.justify-center { justify-content: center !important; }
+.justify-between { justify-content: space-between !important; }
+
+/* Grid utilities */
+.grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)) !important; }
+.grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+.grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; }
+
+.gap-2 { gap: 0.5rem !important; }
+.gap-4 { gap: 1rem !important; }
+.gap-6 { gap: 1.5rem !important; }
+.gap-8 { gap: 2rem !important; }
+
+/* Width utilities */
+.w-full { width: 100% !important; }
+.w-auto { width: auto !important; }
+.max-w-full { max-width: 100% !important; }
+.max-w-3xl { max-width: 48rem !important; }
+.max-w-4xl { max-width: 56rem !important; }
+
+/* Height utilities */
+.h-auto { height: auto !important; }
+.min-h-screen { min-height: 100vh !important; }
+
+/* Position utilities */
+.relative { position: relative !important; }
+.absolute { position: absolute !important; }
+.fixed { position: fixed !important; }
+.sticky { position: sticky !important; }
+
+/* Z-index utilities */
+.z-10 { z-index: 10 !important; }
+.z-20 { z-index: 20 !important; }
+.z-50 { z-index: 50 !important; }
+
+/* Overflow utilities */
+.overflow-hidden { overflow: hidden !important; }
+.overflow-auto { overflow: auto !important; }
+.overflow-x-hidden { overflow-x: hidden !important; }
+
+/* Border radius utilities */
+.rounded { border-radius: 0.25rem !important; }
+.rounded-lg { border-radius: 0.5rem !important; }
+.rounded-xl { border-radius: 0.75rem !important; }
+.rounded-2xl { border-radius: 1rem !important; }
+.rounded-full { border-radius: 9999px !important; }
+
+/* Shadow utilities */
+.shadow-sm { box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important; }
+.shadow { box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06) !important; }
+.shadow-lg { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important; }
+
+/* Backdrop utilities */
+.backdrop-blur { backdrop-filter: blur(4px) !important; }
+.backdrop-blur-md { backdrop-filter: blur(12px) !important; }
+.backdrop-blur-lg { backdrop-filter: blur(16px) !important; }
+
+/* ==============================================
+   13. ANIMACIONES
    ============================================== */
 @keyframes slideInUp {
     from {
@@ -735,28 +922,99 @@ body {
     }
 }
 
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        transform: translateX(-100%) translateY(-100%) rotate(45deg);
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(100%) translateY(100%) rotate(45deg);
+        opacity: 0;
+    }
+}
+
+@keyframes headerFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
 .fade-in {
     animation: slideInUp 0.6s ease-out;
 }
 
-.fade-in:nth-child(1) {
-    animation-delay: 0s;
-}
+.fade-in:nth-child(1) { animation-delay: 0s; }
+.fade-in:nth-child(2) { animation-delay: 0.1s; }
+.fade-in:nth-child(3) { animation-delay: 0.2s; }
+.fade-in:nth-child(4) { animation-delay: 0.3s; }
 
-.fade-in:nth-child(2) {
-    animation-delay: 0.1s;
-}
-
-.fade-in:nth-child(3) {
-    animation-delay: 0.2s;
-}
-
-.fade-in:nth-child(4) {
-    animation-delay: 0.3s;
-}
+/* Animaciones escalonadas para navegación */
+.desktop-nav .nav-button:nth-child(1) { animation-delay: 0.1s; }
+.desktop-nav .nav-button:nth-child(2) { animation-delay: 0.2s; }
+.desktop-nav .nav-button:nth-child(3) { animation-delay: 0.3s; }
+.desktop-nav .nav-button:nth-child(4) { animation-delay: 0.4s; }
+.desktop-nav .nav-button:nth-child(5) { animation-delay: 0.5s; }
+.desktop-nav .nav-button:nth-child(6) { animation-delay: 0.6s; }
 
 /* ==============================================
-   LOADING STATES
+   14. ESTADOS DE CARGA
    ============================================== */
 .loading {
     opacity: 0.6;
@@ -780,7 +1038,7 @@ body {
 }
 
 /* ==============================================
-   SCROLLBAR CUSTOMIZATION
+   15. PERSONALIZACIÓN DE SCROLLBAR
    ============================================== */
 ::-webkit-scrollbar {
     width: 8px;
@@ -801,7 +1059,7 @@ body {
 }
 
 /* ==============================================
-   RESPONSIVE BREAKPOINTS
+   16. BREAKPOINTS RESPONSIVOS
    ============================================== */
 
 /* Small screens - Mobile */
@@ -866,6 +1124,56 @@ body {
     .particles-bg {
         display: none; /* Hide particles on mobile for better performance */
     }
+    
+    .brand-container {
+        gap: 0.75rem;
+    }
+    
+    .brand-container {
+        gap: 1rem;
+    }
+    
+    .brand-text {
+        max-width: 280px;
+    }
+    
+    .header-container {
+        padding: 0 0.5rem;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.75rem;
+    }
+    
+    .header-left {
+        justify-content: center;
+        gap: 1rem;
+    }
+    
+    .header-right {
+        justify-content: center;
+    }
+    
+    .brand-container {
+        justify-content: center;
+        margin-right: 0;
+    }
+    
+    .brand-text {
+        text-align: center;
+    }
+    
+    .brand-text h1 {
+        font-size: 1.375rem;
+    }
+    
+    .brand-text p {
+        font-size: 0.75rem;
+    }
+    
+    .brand-logo img {
+        height: 2.25rem;
+        width: 2.25rem;
+    }
 }
 
 /* Medium screens - Tablet */
@@ -890,39 +1198,9 @@ body {
     .content-section {
         padding: 2.5rem 0;
     }
-}
-
-/* Large screens - Desktop */
-@media (min-width: 1024px) {
-    .nav-button {
-        padding: 0.75rem 1.25rem;
-    }
-    
-    .nav-button img {
-        width: 1.75rem;
-        height: 1.75rem;
-    }
-}
-
-/* ==============================================
-   RESPONSIVE HEADER ADJUSTMENTS
-   ============================================== */
-
-/* Mobile adjustments for header layout */
-@media (max-width: 1023px) {
-    .header-container {
-        gap: 1rem;
-    }
-    
-    .header-top {
-        flex-direction: column;
-        gap: 1rem;
-        align-items: center;
-    }
     
     .brand-container {
-        margin-right: 0;
-        text-align: center;
+        gap: 1rem;
     }
     
     .brand-text h1 {
@@ -933,25 +1211,10 @@ body {
         font-size: 0.8rem;
     }
     
-    .auth-container {
-        width: 100%;
-        justify-content: center;
-        flex-wrap: wrap;
-        gap: 0.5rem;
+    .header-container {
+        padding: 0 1rem;
     }
     
-    .auth-button {
-        font-size: 0.875rem;
-        padding: 0.5rem 1rem;
-    }
-    
-    .header-bottom {
-        margin-top: 0.5rem;
-    }
-}
-
-/* Tablet adjustments */
-@media (min-width: 768px) and (max-width: 1023px) {
     .header-top {
         flex-direction: row;
         align-items: center;
@@ -967,8 +1230,31 @@ body {
     }
 }
 
-/* Desktop improvements */
+/* Large screens - Desktop */
 @media (min-width: 1024px) {
+    .nav-button {
+        padding: 0.75rem 1.25rem;
+    }
+    
+    .nav-button img {
+        width: 1.75rem;
+        height: 1.75rem;
+    }
+    
+    .brand-container {
+        gap: 1.25rem;
+        margin-right: 1.5rem;
+    }
+    
+    .desktop-nav {
+        gap: 0.75rem;
+        margin-right: 2rem;
+    }
+    
+    .auth-container {
+        gap: 1.25rem;
+    }
+    
     .header-container {
         gap: 1rem;
     }
@@ -982,171 +1268,28 @@ body {
     }
 }
 
-/* ==============================================
-   UTILITIES AND HELPERS
-   ============================================== */
-
-/* Tooltips */
-.tooltip {
-    position: relative;
-    cursor: pointer;
-}
-
-.tooltip::before {
-    content: attr(data-tooltip);
-    position: absolute;
-    bottom: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(0, 0, 0, 0.9);
-    color: white;
-    padding: 0.5rem 0.75rem;
-    border-radius: 6px;
-    font-size: 0.875rem;
-    white-space: nowrap;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s ease;
-    z-index: 1000;
-    pointer-events: none;
-}
-
-.tooltip:hover::before {
-    opacity: 1;
-    visibility: visible;
-    transform: translateX(-50%) translateY(-5px);
-}
-
-/* Focus styles for accessibility */
-.focus-visible {
-    outline: 2px solid rgba(59, 130, 246, 0.5);
-    outline-offset: 2px;
-}
-
-/* Text utilities */
-.text-overflow-ellipsis {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.line-clamp-2 {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-}
-
-.line-clamp-3 {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-}
-
-/* ==============================================
-   ACCESSIBILITY
-   ============================================== */
-
-/* Reduce motion for users who prefer it */
-@media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
+/* Extra large screens */
+@media (min-width: 1280px) {
+    .container {
+        max-width: 1280px;
     }
     
-    .particle {
-        animation: none;
+    .brand-container {
+        gap: 1.25rem;
+        margin-right: 1.5rem;
     }
     
-    .model-card:hover {
-        transform: none;
+    .desktop-nav {
+        gap: 0.75rem;
+        margin-right: 2rem;
     }
     
-    .select-button:hover {
-        transform: none;
+    .auth-container {
+        gap: 1.25rem;
     }
 }
 
-/* High contrast mode support */
-@media (prefers-contrast: high) {
-    .model-card {
-        border: 2px solid #000;
-    }
-    
-    .nav-button {
-        border: 1px solid rgba(255, 255, 255, 0.5);
-    }
-    
-    .select-button {
-        border: 2px solid #000;
-    }
-}
-
-/* ==============================================
-   PRINT STYLES
-   ============================================== */
-@media print {
-    .header-nav,
-    .particles-bg,
-    .nav-button,
-    .auth-button {
-        display: none !important;
-    }
-    
-    .model-card {
-        break-inside: avoid;
-        box-shadow: none;
-        border: 1px solid #ccc;
-    }
-    
-    .content-section {
-        padding: 1rem 0;
-    }
-}
-
-/* ==============================================
-   ENHANCED HEADER CONTAINER
-   ============================================== */
-.header-container {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 1.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 1rem;
-}
-
-.header-left {
-    display: flex;
-    align-items: center;
-    gap: 2rem;
-    flex: 1;
-}
-
-.header-right {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-
-/* Enhanced glass effect */
-.glass-effect {
-    background: rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 16px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-}
-
-/* Improved responsive breakpoints for header */
+/* Header responsive adjustments */
 @media (max-width: 1199px) {
     .header-container {
         padding: 0 1rem;
@@ -1188,45 +1331,44 @@ body {
     .desktop-nav {
         display: none;
     }
-}
-
-@media (max-width: 767px) {
-    .header-container {
-        padding: 0 0.75rem;
-        flex-direction: column;
-        align-items: stretch;
-        gap: 0.75rem;
-    }
     
-    .header-left {
-        justify-content: center;
+    .header-container {
         gap: 1rem;
     }
     
-    .header-right {
-        justify-content: center;
+    .header-top {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: center;
     }
     
     .brand-container {
-        justify-content: center;
         margin-right: 0;
-    }
-    
-    .brand-text {
         text-align: center;
     }
     
     .brand-text h1 {
-        font-size: 1.375rem;
+        font-size: 1.5rem;
     }
     
     .brand-text p {
-        font-size: 0.75rem;
+        font-size: 0.8rem;
     }
     
-    .brand-logo img {
-        height: 2.25rem;
-        width: 2.25rem;
+    .auth-container {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    
+    .auth-button {
+        font-size: 0.875rem;
+        padding: 0.5rem 1rem;
+    }
+    
+    .header-bottom {
+        margin-top: 0.5rem;
     }
 }
 
@@ -1265,8 +1407,16 @@ body {
 }
 
 /* ==============================================
-   ENHANCED VISUAL EFFECTS
+   17. EFECTOS VISUALES MEJORADOS
    ============================================== */
+.glass-effect {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
 .header-glow {
     position: relative;
 }
@@ -1288,100 +1438,160 @@ body {
     animation: gradientShift 6s ease infinite;
 }
 
-@keyframes gradientShift {
-    0%, 100% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-}
-
 .header-glow:hover::before {
     opacity: 0.3;
 }
 
-/* Active page indicator */
-.nav-button.current-page {
-    background: linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(59, 130, 246, 0.2));
-    border-color: rgba(59, 130, 246, 0.5);
-    box-shadow: 0 4px 20px rgba(59, 130, 246, 0.25);
+/* ==============================================
+   18. UTILIDADES Y HELPERS
+   ============================================== */
+.tooltip {
+    position: relative;
+    cursor: pointer;
 }
 
-.nav-button.current-page::after {
-    content: '';
+.tooltip::before {
+    content: attr(data-tooltip);
     position: absolute;
-    bottom: -1px;
+    bottom: 100%;
     left: 50%;
     transform: translateX(-50%);
-    width: 40px;
-    height: 3px;
-    background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 1), transparent);
-    border-radius: 2px;
+    background: rgba(0, 0, 0, 0.9);
+    color: white;
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 1000;
+    pointer-events: none;
+}
+
+.tooltip:hover::before {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(-5px);
+}
+
+.text-overflow-ellipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 /* ==============================================
-   HEADER ANIMATIONS
+   19. ACCESIBILIDAD
    ============================================== */
-@keyframes headerFadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-20px);
+.focus-visible {
+    outline: 2px solid rgba(59, 130, 246, 0.5);
+    outline-offset: 2px;
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
     }
-    to {
-        opacity: 1;
-        transform: translateY(0);
+    
+    .particle {
+        animation: none;
     }
-}
-
-.header-nav {
-    animation: headerFadeIn 0.6s ease-out;
-}
-
-.brand-container > * {
-    animation: slideInLeft 0.8s ease-out;
-}
-
-.desktop-nav .nav-button {
-    animation: slideInDown 0.6s ease-out;
-}
-
-.desktop-nav .nav-button:nth-child(1) { animation-delay: 0.1s; }
-.desktop-nav .nav-button:nth-child(2) { animation-delay: 0.2s; }
-.desktop-nav .nav-button:nth-child(3) { animation-delay: 0.3s; }
-.desktop-nav .nav-button:nth-child(4) { animation-delay: 0.4s; }
-.desktop-nav .nav-button:nth-child(5) { animation-delay: 0.5s; }
-.desktop-nav .nav-button:nth-child(6) { animation-delay: 0.6s; }
-
-.auth-container > * {
-    animation: slideInRight 0.8s ease-out;
-}
-
-@keyframes slideInLeft {
-    from {
-        opacity: 0;
-        transform: translateX(-30px);
+    
+    .model-card:hover {
+        transform: none;
     }
-    to {
-        opacity: 1;
-        transform: translateX(0);
+    
+    .select-button:hover {
+        transform: none;
+    }
+    
+    .nav-button:hover {
+        transform: none;
+    }
+    
+    .auth-button:hover {
+        transform: none;
     }
 }
 
-@keyframes slideInRight {
-    from {
-        opacity: 0;
-        transform: translateX(30px);
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .model-card {
+        border: 2px solid #000;
     }
-    to {
-        opacity: 1;
-        transform: translateX(0);
+    
+    .nav-button {
+        border: 1px solid rgba(255, 255, 255, 0.5);
+    }
+    
+    .select-button {
+        border: 2px solid #000;
+    }
+    
+    .auth-button {
+        border: 2px solid #000;
     }
 }
 
-@keyframes slideInDown {
-    from {
-        opacity: 0;
-        transform: translateY(-20px);
+/* ==============================================
+   20. ESTILOS DE IMPRESIÓN
+   ============================================== */
+@media print {
+    .header-nav,
+    .particles-bg,
+    .nav-button,
+    .auth-button {
+        display: none !important;
     }
-    to {
-        opacity: 1;
-        transform: translateY(0);
+    
+    .model-card {
+        break-inside: avoid;
+        box-shadow: none;
+        border: 1px solid #ccc;
+    }
+    
+    .content-section {
+        padding: 1rem 0;
+    }
+    
+    body {
+        background: white !important;
+        color: black !important;
+    }
+    
+    .model-header {
+        background: #f0f0f0 !important;
+        color: black !important;
+    }
+    
+    .accuracy-badge {
+        background: #e0e0e0 !important;
+        color: black !important;
     }
 }
+
+/* ==============================================
+   FIN DE INPUT.CSS
+   ============================================== */

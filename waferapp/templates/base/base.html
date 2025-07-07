@@ -8,9 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="{% static 'src/output.css' %}" rel="stylesheet">
-    <link href="{% static 'src/improvements.css' %}" rel="stylesheet">
-    <link href="{% static 'src/responsive-utilities.css' %}" rel="stylesheet">
-    <link href="{% static 'src/home-enhancements.css' %}" rel="stylesheet">
+    <link href="{% static 'src/input.css' %}" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         /* Minimal inline styles for immediate page render */
@@ -718,5 +716,8 @@
             });
         });
     </script>
+    
+    <!-- Bloque para JavaScript específico de cada página -->
+    {% block extra_js %}{% endblock %}
 </body>
 </html>

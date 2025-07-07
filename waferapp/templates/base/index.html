@@ -6,15 +6,38 @@
 {% block page_header %}
 <div class="text-center mb-12 fade-in">
     <h2 class="text-4xl font-bold text-white mb-4">Modelos CNN Disponibles</h2>
-    <p class="text-blue-200 text-lg">Selecciona uno de nuestros modelos preentrenados para realizar predicciones con tus imágenes.</p>
+    <p class="text-blue-200 text-lg">Selecciona uno de nuestros {{ total_modelos }} modelos preentrenados para realizar predicciones con tus imágenes.</p>
+    {% if modelo_destacado %}
+        <div class="mt-4 inline-block bg-green-500/20 text-green-200 px-4 py-2 rounded-lg">
+            <span class="font-semibold">Modelo destacado: {{ modelo_destacado.nombre }}</span> - {{ modelo_destacado.accuracy }} accuracy
+        </div>
+    {% endif %}
 </div>
 {% endblock %}
 
 {% block content %}
+    <!-- Sección de estadísticas -->
+    <div class="mt-12 mb-8 fade-in">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20 text-center">
+                <div class="text-3xl font-bold text-white mb-2">{{ total_modelos }}</div>
+                <div class="text-blue-200">Modelos Disponibles</div>
+            </div>
+            <div class="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20 text-center">
+                <div class="text-3xl font-bold text-white mb-2">99%</div>
+                <div class="text-blue-200">Precisión Promedio</div>
+            </div>
+            <div class="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20 text-center">
+                <div class="text-3xl font-bold text-white mb-2">24/7</div>
+                <div class="text-blue-200">Disponibilidad</div>
+            </div>
+        </div>
+    </div>
+
     <!-- Grid de modelos -->
     <div class="model-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {% for model in modelos %}
-            <div class="model-card fade-in">
+            <div class="model-card fade-in" data-model="{{ model.nombre }}">
                 <div class="model-header">
                     <h3 class="text-2xl font-bold">{{ model.nombre }}</h3>
                     <div class="accuracy-badge">{{ model.accuracy }} accuracy</div>
@@ -23,55 +46,20 @@
                     <p class="text-gray-600 mb-6">
                         {{ model.descripcion }}
                     </p>
-                    <button class="select-button">
+                    <a href="{% url 'waferapp:zona_pruebas' %}?model={{ model.nombre }}" class="select-button">
                         Seleccionar
-                    </button>
+                    </a>
                 </div>
             </div>
         {% empty %}
-            <!-- Modelos por defecto si no hay en la base de datos -->
-            <div class="model-card fade-in">
-                <div class="model-header">
-                    <h3 class="text-2xl font-bold">CNN</h3>
-                    <div class="accuracy-badge">96.4% accuracy</div>
-                </div>
-                <div class="p-6">
-                    <p class="text-gray-600 mb-6">
-                        Inception V3 utiliza módulos de inicio que aplican filtros de diferentes tamaños para capturar características a múltiples escalas.
-                    </p>
-                    <button class="select-button">
-                        Seleccionar
-                    </button>
-                </div>
-            </div>
-
-            <div class="model-card fade-in">
-                <div class="model-header">
-                    <h3 class="text-2xl font-bold">Resnet</h3>
-                    <div class="accuracy-badge">98.7% accuracy</div>
-                </div>
-                <div class="p-6">
-                    <p class="text-gray-600 mb-6">
-                        Modelo ResNet entrenado para detectar defectos en obleas de silicio con alta precisión, utilizando imágenes de inspección visual.
-                    </p>
-                    <button class="select-button">
-                        Seleccionar
-                    </button>
-                </div>
-            </div>
-
-            <div class="model-card fade-in">
-                <div class="model-header">
-                    <h3 class="text-2xl font-bold">VGG16</h3>
-                    <div class="accuracy-badge">90% accuracy</div>
-                </div>
-                <div class="p-6">
-                    <p class="text-gray-600 mb-6">
-                        Modelo VGG entrenado para inspección visual de defectos, basado en convoluciones profundas y simples.
-                    </p>
-                    <button class="select-button">
-                        Seleccionar
-                    </button>
+            <!-- Mensaje cuando no hay modelos disponibles -->
+            <div class="col-span-full text-center py-16">
+                <div class="bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20">
+                    <h3 class="text-2xl font-bold text-white mb-4">No hay modelos disponibles</h3>
+                    <p class="text-blue-200 mb-6">Por favor, contacta al administrador para configurar los modelos.</p>
+                    <a href="{% url 'waferapp:dash' %}" class="bg-blue-500/20 text-blue-200 px-6 py-3 rounded-lg hover:bg-blue-500/30 transition-colors">
+                        Ir al Dashboard
+                    </a>
                 </div>
             </div>
         {% endfor %}
@@ -106,4 +94,42 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Animación de entrada escalonada para las tarjetas
+    const modelCards = document.querySelectorAll('.model-card');
+    modelCards.forEach((card, index) => {
+        card.style.animationDelay = `${index * 0.2}s`;
+    });
+    
+    // Efecto hover mejorado
+    modelCards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-8px) scale(1.02)';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0) scale(1)';
+        });
+    });
+    
+    // Efecto de clic en botones
+    const selectButtons = document.querySelectorAll('.select-button');
+    selectButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Efecto visual
+            this.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                this.style.transform = 'scale(1)';
+                window.location.href = this.href;
+            }, 150);
+        });
+    });
+});
+</script>
 {% endblock %}
