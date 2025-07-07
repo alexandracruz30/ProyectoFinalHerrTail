@@ -104,11 +104,12 @@
 
     <!-- Header -->
     <header class="header-nav sticky top-0 z-50">
-        <div class="container mx-auto px-4">
-            <div class="flex items-center justify-between py-4">
+        <div class="header-container">
+            <!-- Primera fila: Logo y botones de autenticación -->
+            <div class="header-top flex justify-between items-center w-full">
                 <!-- Logo y título -->
-                <div class="brand-container">
-                    <div class="brand-logo">
+                <div class="brand-container header-glow">
+                    <div class="brand-logo glass-effect">
                         <img src="{% static 'iconos/principal.png' %}" alt="Logo AI">
                     </div>
                     <div class="brand-text">
@@ -117,68 +118,71 @@
                     </div>
                 </div>
                 
-                <!-- Navegación Desktop -->
-                <nav class="desktop-nav">
-                    <a href="{% url 'waferapp:home' %}" class="nav-button">
-                        <img src="{% static 'iconos/modelos.png' %}" alt="Modelos">
-                        <span>Modelos</span>
-                    </a>
-                    <a href="{% url 'waferapp:proceso_entrenamiento' %}" class="nav-button">
-                        <img src="{% static 'iconos/dataset.png' %}" alt="Dataset">
-                        <span>Dataset</span>
-                    </a>
-                    <a href="{% url 'waferapp:modeloView' %}" class="nav-button">
-                        <img src="{% static 'iconos/arquitectura.png' %}" alt="Arquitectura">
-                        <span>Arquitectura</span>
-                    </a>
-                    <a href="{% url 'waferapp:detalles_uso' %}" class="nav-button">
-                        <img src="{% static 'iconos/guiauso.png' %}" alt="Guía">
-                        <span>Guía de uso</span>
-                    </a>
-                    <a href="{% url 'waferapp:zona_pruebas' %}" class="nav-button">
-                        <img src="{% static 'iconos/test.png' %}" alt="Pruebas">
-                        <span>Pruebas</span>
-                    </a>
-                    <a href="{% url 'waferapp:dash' %}" class="nav-button">
-                        <img src="{% static 'iconos/data.png' %}" alt="Dashboard">
-                        <span>Dashboard</span>
-                    </a>
-                </nav>
-                
                 <!-- Botones de autenticación -->
-                <div class="auth-container">
+                <div class="auth-container glass-effect">
                     {% if user.is_authenticated %}
                         <span class="user-info">
-                            AI Neural Network
+                            🧠 AI Neural Network
                         </span>
-                        <button class="auth-button">
-                            Nuevo Modelo
+                        <button class="auth-button header-glow">
+                            ➕ Nuevo Modelo
                         </button>
                         <form method="post" action="{% url 'waferapp:logout' %}" class="inline">
                             {% csrf_token %}
                             <button type="submit" class="auth-button logout-button">
-                                Cerrar sesión
+                                🚪 Cerrar sesión
                             </button>
                         </form>
                     {% else %}
                         <a href="{% url 'waferapp:login' %}" class="auth-button">
-                            Iniciar sesión
+                            🔐 Iniciar sesión
                         </a>
                         <a href="{% url 'waferapp:signup' %}" class="auth-button">
-                            Registrarse
+                            📝 Registrarse
                         </a>
                     {% endif %}
                 </div>
             </div>
             
+            <!-- Segunda fila: Navegación Desktop -->
+            <div class="header-bottom w-full">
+                <nav class="desktop-nav glass-effect">
+                    <a href="{% url 'waferapp:home' %}" class="nav-button {% if request.resolver_match.url_name == 'home' %}current-page{% endif %}">
+                        <img src="{% static 'iconos/modelos.png' %}" alt="Modelos">
+                        <span>Modelos</span>
+                    </a>
+                    <a href="{% url 'waferapp:proceso_entrenamiento' %}" class="nav-button {% if request.resolver_match.url_name == 'proceso_entrenamiento' %}current-page{% endif %}">
+                        <img src="{% static 'iconos/dataset.png' %}" alt="Dataset">
+                        <span>Dataset</span>
+                    </a>
+                    <a href="{% url 'waferapp:modeloView' %}" class="nav-button {% if request.resolver_match.url_name == 'modeloView' %}current-page{% endif %}">
+                        <img src="{% static 'iconos/arquitectura.png' %}" alt="Arquitectura">
+                        <span>Arquitectura</span>
+                    </a>
+                    <a href="{% url 'waferapp:detalles_uso' %}" class="nav-button {% if request.resolver_match.url_name == 'detalles_uso' %}current-page{% endif %}">
+                        <img src="{% static 'iconos/guiauso.png' %}" alt="Guía">
+                        <span>Guía de uso</span>
+                    </a>
+                    <a href="{% url 'waferapp:zona_pruebas' %}" class="nav-button {% if request.resolver_match.url_name == 'zona_pruebas' %}current-page{% endif %}">
+                        <img src="{% static 'iconos/test.png' %}" alt="Pruebas">
+                        <span>Pruebas</span>
+                    </a>
+                    <a href="{% url 'waferapp:dash' %}" class="nav-button {% if request.resolver_match.url_name == 'dash' %}current-page{% endif %}">
+                        <img src="{% static 'iconos/data.png' %}" alt="Dashboard">
+                        <span>Dashboard</span>
+                    </a>
+                </nav>
+            </div>
+        </div>
+            
             <!-- Navegación Mobile -->
             <div class="mobile-nav">
                 <div class="w-full">
-                    <button id="mobile-menu-button" class="nav-button w-full justify-center">
+                    <button id="mobile-menu-button" class="nav-button w-full justify-center glass-effect">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                         </svg>
-                        Menú
+                        <span>Menú de Navegación</span>
                     </button>
                     
                     <div id="mobile-menu-content" class="hidden">
@@ -196,7 +200,7 @@
                         </a>
                         <a href="{% url 'waferapp:detalles_uso' %}" class="nav-button">
                             <img src="{% static 'iconos/guiauso.png' %}" alt="Guía">
-                            <span>Guía</span>
+                            <span>Guía de uso</span>
                         </a>
                         <a href="{% url 'waferapp:zona_pruebas' %}" class="nav-button">
                             <img src="{% static 'iconos/test.png' %}" alt="Pruebas">
@@ -353,6 +357,98 @@
                 imageObserver.observe(img);
             });
         }
+
+        // Enhanced Header Functionality
+        const header = document.querySelector('.header-nav');
+        let lastScrollY = window.scrollY;
+        let ticking = false;
+
+        function updateHeader() {
+            const scrollY = window.scrollY;
+            
+            if (scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+            
+            lastScrollY = scrollY;
+            ticking = false;
+        }
+
+        function requestTick() {
+            if (!ticking) {
+                requestAnimationFrame(updateHeader);
+                ticking = true;
+            }
+        }
+
+        window.addEventListener('scroll', requestTick);
+
+        // Enhanced Mobile Menu
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenuContent = document.getElementById('mobile-menu-content');
+        let isMenuOpen = false;
+
+        if (mobileMenuButton && mobileMenuContent) {
+            mobileMenuButton.addEventListener('click', function(e) {
+                e.stopPropagation();
+                isMenuOpen = !isMenuOpen;
+                
+                if (isMenuOpen) {
+                    mobileMenuContent.classList.remove('hidden');
+                    mobileMenuContent.classList.add('grid');
+                    mobileMenuButton.querySelector('svg').style.transform = 'rotate(90deg)';
+                } else {
+                    mobileMenuContent.classList.add('hidden');
+                    mobileMenuContent.classList.remove('grid');
+                    mobileMenuButton.querySelector('svg').style.transform = 'rotate(0deg)';
+                }
+            });
+        }
+
+        // Enhanced Button Interactions
+        document.querySelectorAll('.nav-button, .auth-button').forEach(button => {
+            button.addEventListener('mouseenter', function() {
+                if (!this.classList.contains('loading')) {
+                    this.style.transform = 'translateY(-2px)';
+                }
+            });
+            
+            button.addEventListener('mouseleave', function() {
+                if (!this.classList.contains('loading')) {
+                    this.style.transform = 'translateY(0)';
+                }
+            });
+        });
+
+        // Add active state to current page
+        const headerCurrentPath = window.location.pathname;
+        document.querySelectorAll('.nav-button').forEach(link => {
+            if (link.getAttribute('href') === headerCurrentPath) {
+                link.classList.add('current-page');
+            }
+        });
+
+        // Performance optimizations
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (prefersReducedMotion) {
+            document.documentElement.style.setProperty('--animation-duration', '0.01ms');
+        }
+        
+        // Smooth scrolling for internal links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
     </script>
 </body>
 </html>
