@@ -4,107 +4,355 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}CNN Model Explorer{% endblock %}</title>
-    <link href="{% static 'src/output.css' %}" rel="stylesheet">  <!-- ✅ Cambiado -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="{% static 'src/output.css' %}" rel="stylesheet">
+    <link href="{% static 'src/improvements.css' %}" rel="stylesheet">
+    <link href="{% static 'src/responsive-utilities.css' %}" rel="stylesheet">
+    <link href="{% static 'src/home-enhancements.css' %}" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* Minimal inline styles for immediate page render */
+        .main-gradient {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #06b6d4 100%);
+        }
+        
+        .particles-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                       radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+                       radial-gradient(circle at 40% 80%, rgba(120, 219, 255, 0.3) 0%, transparent 50%);
+            z-index: -1;
+        }
+        
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .particle:nth-child(1) { 
+            width: 60px; height: 60px; 
+            background: rgba(255, 255, 255, 0.1); 
+            top: 20%; left: 10%; 
+            animation-delay: 0s; 
+        }
+        
+        .particle:nth-child(2) { 
+            width: 80px; height: 80px; 
+            background: rgba(59, 130, 246, 0.1); 
+            top: 60%; right: 15%; 
+            animation-delay: 2s; 
+        }
+        
+        .particle:nth-child(3) { 
+            width: 40px; height: 40px; 
+            background: rgba(168, 85, 247, 0.1); 
+            bottom: 20%; left: 20%; 
+            animation-delay: 4s; 
+        }
+        
+        .particle:nth-child(4) { 
+            width: 100px; height: 100px; 
+            background: rgba(34, 197, 94, 0.1); 
+            top: 40%; right: 30%; 
+            animation-delay: 1s; 
+        }
+        
+        .particle:nth-child(5) { 
+            width: 50px; height: 50px; 
+            background: rgba(245, 158, 11, 0.1); 
+            bottom: 30%; right: 10%; 
+            animation-delay: 3s; 
+        }
+        
+        .particle:nth-child(6) { 
+            width: 70px; height: 70px; 
+            background: rgba(239, 68, 68, 0.1); 
+            top: 10%; right: 50%; 
+            animation-delay: 5s; 
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+        
+        /* Hide particles on mobile */
+        @media (max-width: 639px) {
+            .particles-bg {
+                display: none;
+            }
+        }
+    </style>
 </head>
-<body class="bg-gray-100 min-h-screen flex flex-col">
-    <div class="fixed inset-0 -z-10">
-        <script src="{% static 'js/particle.js' %}"></script>
-        <div class="particles-bg"></div>
+<body class="main-container">
+    <!-- Fondo con partículas -->
+    <div class="particles-bg">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
     </div>
-    <header class="bg-blue-900 text-white shadow-md">
-        <div class="flex justify-between items-center max-w-6xl mx-auto px-8 py-8">
-            <div>
-                <h1 class="text-4xl font-bold mb-1 tracking-tight">CNN Model Explorer</h1>
-                <p class="text-blue-100 text-lg m-0">Prueba modelos de CNN preentrenados con tus propias imágenes</p>
+
+    <!-- Header -->
+    <header class="header-nav sticky top-0 z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between py-4">
+                <!-- Logo y título -->
+                <div class="brand-container">
+                    <div class="brand-logo">
+                        <img src="{% static 'iconos/principal.png' %}" alt="Logo AI">
+                    </div>
+                    <div class="brand-text">
+                        <h1>CNN Model Explorer</h1>
+                        <p>Prueba modelos de CNN preentrenados con tus propias imágenes</p>
+                    </div>
+                </div>
+                
+                <!-- Navegación Desktop -->
+                <nav class="desktop-nav">
+                    <a href="{% url 'waferapp:home' %}" class="nav-button">
+                        <img src="{% static 'iconos/modelos.png' %}" alt="Modelos">
+                        <span>Modelos</span>
+                    </a>
+                    <a href="{% url 'waferapp:proceso_entrenamiento' %}" class="nav-button">
+                        <img src="{% static 'iconos/dataset.png' %}" alt="Dataset">
+                        <span>Dataset</span>
+                    </a>
+                    <a href="{% url 'waferapp:modeloView' %}" class="nav-button">
+                        <img src="{% static 'iconos/arquitectura.png' %}" alt="Arquitectura">
+                        <span>Arquitectura</span>
+                    </a>
+                    <a href="{% url 'waferapp:detalles_uso' %}" class="nav-button">
+                        <img src="{% static 'iconos/guiauso.png' %}" alt="Guía">
+                        <span>Guía de uso</span>
+                    </a>
+                    <a href="{% url 'waferapp:zona_pruebas' %}" class="nav-button">
+                        <img src="{% static 'iconos/test.png' %}" alt="Pruebas">
+                        <span>Pruebas</span>
+                    </a>
+                    <a href="{% url 'waferapp:dash' %}" class="nav-button">
+                        <img src="{% static 'iconos/data.png' %}" alt="Dashboard">
+                        <span>Dashboard</span>
+                    </a>
+                </nav>
+                
+                <!-- Botones de autenticación -->
+                <div class="auth-container">
+                    {% if user.is_authenticated %}
+                        <span class="user-info">
+                            AI Neural Network
+                        </span>
+                        <button class="auth-button">
+                            Nuevo Modelo
+                        </button>
+                        <form method="post" action="{% url 'waferapp:logout' %}" class="inline">
+                            {% csrf_token %}
+                            <button type="submit" class="auth-button logout-button">
+                                Cerrar sesión
+                            </button>
+                        </form>
+                    {% else %}
+                        <a href="{% url 'waferapp:login' %}" class="auth-button">
+                            Iniciar sesión
+                        </a>
+                        <a href="{% url 'waferapp:signup' %}" class="auth-button">
+                            Registrarse
+                        </a>
+                    {% endif %}
+                </div>
             </div>
-            <div class="flex items-center gap-2">
-                <span class="text-blue-100 font-medium text-lg whitespace-nowrap">AI Neural Network</span>
-                <img src="{% static 'iconos/principal.png' %}" alt="Logo AI" class="h-20">
+            
+            <!-- Navegación Mobile -->
+            <div class="mobile-nav">
+                <div class="w-full">
+                    <button id="mobile-menu-button" class="nav-button w-full justify-center">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                        Menú
+                    </button>
+                    
+                    <div id="mobile-menu-content" class="hidden">
+                        <a href="{% url 'waferapp:home' %}" class="nav-button">
+                            <img src="{% static 'iconos/modelos.png' %}" alt="Modelos">
+                            <span>Modelos</span>
+                        </a>
+                        <a href="{% url 'waferapp:proceso_entrenamiento' %}" class="nav-button">
+                            <img src="{% static 'iconos/dataset.png' %}" alt="Dataset">
+                            <span>Dataset</span>
+                        </a>
+                        <a href="{% url 'waferapp:modeloView' %}" class="nav-button">
+                            <img src="{% static 'iconos/arquitectura.png' %}" alt="Arquitectura">
+                            <span>Arquitectura</span>
+                        </a>
+                        <a href="{% url 'waferapp:detalles_uso' %}" class="nav-button">
+                            <img src="{% static 'iconos/guiauso.png' %}" alt="Guía">
+                            <span>Guía</span>
+                        </a>
+                        <a href="{% url 'waferapp:zona_pruebas' %}" class="nav-button">
+                            <img src="{% static 'iconos/test.png' %}" alt="Pruebas">
+                            <span>Pruebas</span>
+                        </a>
+                        <a href="{% url 'waferapp:dash' %}" class="nav-button">
+                            <img src="{% static 'iconos/data.png' %}" alt="Dashboard">
+                            <span>Dashboard</span>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </header>
 
-    <nav class="flex justify-center items-center bg-white border-b-2 border-gray-200 gap-4 pt-2">
-        <div class="flex gap-2">
-            <a href="{% url 'waferapp:home' %}" class="flex items-center gap-2 px-6 py-3 text-blue-900 font-semibold text-base border-b-2 border-transparent hover:text-orange-500 hover:border-orange-500 transition">
-                <img src="{% static 'iconos/modelos.png' %}" alt="icono" class="w-10 h-10" /> Modelos
-            </a>
-            <a href="{% url 'waferapp:proceso_entrenamiento' %}" class="flex items-center gap-2 px-6 py-3 text-blue-900 font-semibold text-base border-b-2 border-transparent hover:text-orange-500 hover:border-orange-500 transition">
-                <img src="{% static 'iconos/dataset.png' %}" alt="icono" class="w-10 h-10" /> Dataset
-            </a>
-            <a href="{% url 'waferapp:modeloView' %}" class="flex items-center gap-2 px-6 py-3 text-blue-900 font-semibold text-base border-b-2 border-transparent hover:text-orange-500 hover:border-orange-500 transition">
-                <img src="{% static 'iconos/arquitectura.png' %}" alt="icono" class="w-10 h-10" /> Arquitectura
-            </a>
-            <a href="{% url 'waferapp:detalles_uso' %}" class="flex items-center gap-2 px-6 py-3 text-blue-900 font-semibold text-base border-b-2 border-transparent hover:text-orange-500 hover:border-orange-500 transition">
-                <img src="{% static 'iconos/guiauso.png' %}" alt="icono" class="w-10 h-10" /> Guía de uso
-            </a>
-            <a href="{% url 'waferapp:zona_pruebas' %}" class="flex items-center gap-2 px-6 py-3 text-blue-900 font-semibold text-base border-b-2 border-transparent hover:text-orange-500 hover:border-orange-500 transition">
-                <img src="{% static 'iconos/test.png' %}" alt="icono" class="w-10 h-10" /> Pruebas
-            </a>
-            <a href="{% url 'waferapp:dash' %}" class="flex items-center gap-2 px-6 py-3 text-blue-900 font-semibold text-base border-b-2 border-transparent hover:text-orange-500 hover:border-orange-500 transition">
-                <img src="{% static 'iconos/data.png' %}" alt="icono" class="w-10 h-10" /> Dashboard
-            </a>
-        </div>
-        <div class="flex gap-2 ml-auto">
-            {% if user.is_authenticated %}
-                <!-- <a href="{% url 'waferapp:add_modelo' %}" class="bg-pink-700 text-white font-bold px-4 py-2 rounded hover:bg-pink-900 transition">Nuevo Modelo</a> -->
-                <form method="post" action="{% url 'waferapp:logout' %}" class="inline">
-                    {% csrf_token %}
-                    <button type="submit" class="bg-gray-200 text-blue-900 font-semibold px-4 py-2 rounded hover:bg-red-600 hover:text-white transition">Cerrar sesión</button>
-                </form>
-            {% else %}
-                <a href="{% url 'waferapp:login' %}" class="bg-pink-700 text-white font-bold px-4 py-2 rounded hover:bg-pink-900 transition">Iniciar sesión</a>
-                <a href="{% url 'waferapp:signup' %}" class="bg-pink-700 text-white font-bold px-4 py-2 rounded hover:bg-pink-900 transition">Registrarse</a>
-            {% endif %}
-        </div>
-    </nav>
-
-    {% if messages %}
-        <div class="max-w-5xl mx-auto mt-6">
-            {% for message in messages %}
-                <div class="p-4 mb-4 rounded text-white
-                    {% if message.tags == 'error' %}bg-red-600
-                    {% elif message.tags == 'success' %}bg-green-600
-                    {% else %}bg-blue-600{% endif %}">
-                    {{ message }}
+    <!-- Contenido Principal -->
+    <main class="content-wrapper">
+        <div class="content-section main-content">
+            <!-- Mensajes -->
+            {% if messages %}
+                <div class="mb-6">
+                    {% for message in messages %}
+                        <div class="p-4 mb-4 rounded-xl backdrop-blur-md border shadow-lg fade-in
+                            {% if message.tags == 'error' %}bg-red-500/20 border-red-300 text-red-100
+                            {% elif message.tags == 'success' %}bg-green-500/20 border-green-300 text-green-100
+                            {% else %}bg-blue-500/20 border-blue-300 text-blue-100{% endif %}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
                 </div>
-            {% endfor %}
-        </div>
-    {% endif %}
+            {% endif %}
 
-    <main class="flex-1 max-w-5xl mx-auto py-9 px-5">
-        {% block content %}{% endblock %}
-    </main>
-    
-    <footer class="bg-blue-950 text-white py-8 mt-10">
-        <div class="max-w-6xl mx-auto flex flex-wrap justify-between items-start">
-            <div>
-                <h2 class="text-xl font-bold mb-2">CNN Model Explorer</h2>
-                <p class="text-base">Una herramienta para probar y comparar modelos de redes neuronales convolucionales.</p>
-            </div>
-            <div class="flex items-center text-base">
-                <span>&copy; 2025 CNN Model Explorer. Todos los derechos reservados.</span>
-            </div>
+            <!-- Título de la sección -->
+            {% block page_header %}
+            {% endblock %}
+
+            <!-- Contenido principal -->
+            {% block content %}
+            {% endblock %}
         </div>
-    </footer>
-    <button class="fixed bottom-6 right-6 bg-gray-800 text-white rounded-full p-3 shadow-lg hover:bg-gray-600 transition" onclick="toggleDarkMode()" title="Alternar modo oscuro">🌙</button>
-    <script src="{% static 'js/particles-bg.js' %}"></script>
+    </main>
+
+    <!-- Scripts -->
     <script>
-        function toggleDarkMode() {
-            document.body.classList.toggle('dark');
-            if (document.body.classList.contains('dark')) {
-                localStorage.setItem('theme', 'dark');
+        // Menú mobile
+        document.getElementById('mobile-menu-button')?.addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu-content');
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
+                menu.classList.add('grid');
             } else {
-                localStorage.setItem('theme', 'light');
-            }
-        }
-        window.addEventListener('DOMContentLoaded', () => {
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme === 'dark') {
-                document.body.classList.add('dark');
+                menu.classList.add('hidden');
+                menu.classList.remove('grid');
             }
         });
+
+        // Cerrar menú mobile al hacer clic en un enlace
+        document.querySelectorAll('#mobile-menu-content a').forEach(link => {
+            link.addEventListener('click', () => {
+                const menu = document.getElementById('mobile-menu-content');
+                menu.classList.add('hidden');
+                menu.classList.remove('grid');
+            });
+        });
+
+        // Marcar enlace activo
+        const currentPath = window.location.pathname;
+        document.querySelectorAll('.nav-button').forEach(link => {
+            if (link.getAttribute('href') === currentPath) {
+                link.classList.add('active');
+            }
+        });
+
+        // Efecto de scroll en header
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('.header-nav');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Animaciones de aparición al hacer scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in');
+                }
+            });
+        }, observerOptions);
+
+        // Observar elementos para animaciones
+        document.querySelectorAll('.model-card, .bg-white\\/10').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Efecto de carga en botones
+        document.querySelectorAll('.select-button').forEach(button => {
+            button.addEventListener('click', function() {
+                const originalText = this.textContent;
+                this.innerHTML = '<span class="spinner"></span> Cargando...';
+                this.classList.add('loading');
+                
+                // Simular carga
+                setTimeout(() => {
+                    this.textContent = originalText;
+                    this.classList.remove('loading');
+                }, 2000);
+            });
+        });
+
+        // Cerrar menú mobile al hacer clic fuera
+        document.addEventListener('click', function(event) {
+            const menu = document.getElementById('mobile-menu-content');
+            const button = document.getElementById('mobile-menu-button');
+            
+            if (!menu.contains(event.target) && !button.contains(event.target)) {
+                menu.classList.add('hidden');
+                menu.classList.remove('grid');
+            }
+        });
+
+        // Mejorar accesibilidad del teclado
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                const menu = document.getElementById('mobile-menu-content');
+                menu.classList.add('hidden');
+                menu.classList.remove('grid');
+            }
+        });
+
+        // Lazy loading para imágenes
+        if ('IntersectionObserver' in window) {
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        if (img.dataset.src) {
+                            img.src = img.dataset.src;
+                            img.classList.remove('lazy');
+                            imageObserver.unobserve(img);
+                        }
+                    }
+                });
+            });
+
+            document.querySelectorAll('img[data-src]').forEach(img => {
+                imageObserver.observe(img);
+            });
+        }
     </script>
 </body>
 </html>

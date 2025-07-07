@@ -1,0 +1,97 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Modelos CNN - CNN Model Explorer{% endblock %}
+
+{% block page_header %}
+<div class="container">
+    <div class="text-center mb-12">
+        <h2 class="text-4xl font-bold text-white mb-4">Modelos CNN Disponibles</h2>
+        <p class="text-blue-200 text-lg max-w-3xl mx-auto">
+            Selecciona uno de nuestros modelos preentrenados para realizar predicciones con tus imágenes de alta calidad.
+        </p>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Grid de modelos -->
+    <div class="model-grid">
+        <!-- Modelo CNN -->
+        <div class="model-card fade-in">
+            <div class="model-header">
+                <h3>Modelo CNN de Prueba</h3>
+                <div class="accuracy-badge">95% accuracy</div>
+            </div>
+            <div class="p-6">
+                <p class="line-clamp-3">
+                    Este es un modelo de ejemplo para probar el diseño. Inception V3 utiliza módulos de inicio que aplican filtros de diferentes tamaños para capturar características a múltiples escalas.
+                </p>
+                <button class="select-button">
+                    Seleccionar
+                </button>
+            </div>
+        </div>
+
+        <!-- Modelo Resnet -->
+        <div class="model-card fade-in">
+            <div class="model-header">
+                <h3>Modelo Resnet</h3>
+                <div class="accuracy-badge">98.7% accuracy</div>
+            </div>
+            <div class="p-6">
+                <p class="line-clamp-3">
+                    Modelo ResNet entrenado para detectar defectos en obleas de silicio con alta precisión, utilizando imágenes de inspección visual y técnicas avanzadas de deep learning.
+                </p>
+                <button class="select-button">
+                    Seleccionar
+                </button>
+            </div>
+        </div>
+
+        <!-- Modelo VGG16 -->
+        <div class="model-card fade-in">
+            <div class="model-header">
+                <h3>Modelo VGG16</h3>
+                <div class="accuracy-badge">90% accuracy</div>
+            </div>
+            <div class="p-6">
+                <p class="line-clamp-3">
+                    Modelo VGG entrenado para inspección visual de defectos, basado en convoluciones profundas y simples que proporcionan resultados confiables.
+                </p>
+                <button class="select-button">
+                    Seleccionar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Información adicional -->
+    <div class="info-section">
+        <h3>¿Cómo funciona?</h3>
+        <div class="info-grid">
+            <div class="info-item">
+                <div class="info-icon">
+                    <span>1</span>
+                </div>
+                <h4>Selecciona un modelo</h4>
+                <p>Elige el modelo CNN que mejor se adapte a tus necesidades</p>
+            </div>
+            <div class="info-item">
+                <div class="info-icon">
+                    <span>2</span>
+                </div>
+                <h4>Sube tu imagen</h4>
+                <p>Carga la imagen que quieres analizar</p>
+            </div>
+            <div class="info-item">
+                <div class="info-icon">
+                    <span>3</span>
+                </div>
+                <h4>Obtén resultados</h4>
+                <p>Visualiza las predicciones y análisis del modelo</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
