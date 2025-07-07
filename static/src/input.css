@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: 'Hitake';
+  src: url('../assets/fonts/hitake-font/Hitake-YqK94.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* Si quieres usar la fuente, agrégala en tu tailwind.config.js como fontFamily personalizada */

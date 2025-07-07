@@ -1,0 +1,110 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}CNN Model Explorer{% endblock %}</title>
+    <link href="{% static 'src/output.css' %}" rel="stylesheet">  <!-- ✅ Cambiado -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col">
+    <div class="fixed inset-0 -z-10">
+        <script src="{% static 'js/particle.js' %}"></script>
+        <div class="particles-bg"></div>
+    </div>
+    <header class="bg-blue-900 text-white shadow-md">
+        <div class="flex justify-between items-center max-w-6xl mx-auto px-8 py-8">
+            <div>
+                <h1 class="text-4xl font-bold mb-1 tracking-tight">CNN Model Explorer</h1>
+                <p class="text-blue-100 text-lg m-0">Prueba modelos de CNN preentrenados con tus propias imágenes</p>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="text-blue-100 font-medium text-lg whitespace-nowrap">AI Neural Network</span>
+                <img src="{% static 'iconos/principal.png' %}" alt="Logo AI" class="h-20">
+            </div>
+        </div>
+    </header>
+
+    <nav class="flex justify-center items-center bg-white border-b-2 border-gray-200 gap-4 pt-2">
+        <div class="flex gap-2">
+            <a href="{% url 'waferapp:home' %}" class="flex items-center gap-2 px-6 py-3 text-blue-900 font-semibold text-base border-b-2 border-transparent hover:text-orange-500 hover:border-orange-500 transition">
+                <img src="{% static 'iconos/modelos.png' %}" alt="icono" class="w-10 h-10" /> Modelos
+            </a>
+            <a href="{% url 'waferapp:proceso_entrenamiento' %}" class="flex items-center gap-2 px-6 py-3 text-blue-900 font-semibold text-base border-b-2 border-transparent hover:text-orange-500 hover:border-orange-500 transition">
+                <img src="{% static 'iconos/dataset.png' %}" alt="icono" class="w-10 h-10" /> Dataset
+            </a>
+            <a href="{% url 'waferapp:modeloView' %}" class="flex items-center gap-2 px-6 py-3 text-blue-900 font-semibold text-base border-b-2 border-transparent hover:text-orange-500 hover:border-orange-500 transition">
+                <img src="{% static 'iconos/arquitectura.png' %}" alt="icono" class="w-10 h-10" /> Arquitectura
+            </a>
+            <a href="{% url 'waferapp:detalles_uso' %}" class="flex items-center gap-2 px-6 py-3 text-blue-900 font-semibold text-base border-b-2 border-transparent hover:text-orange-500 hover:border-orange-500 transition">
+                <img src="{% static 'iconos/guiauso.png' %}" alt="icono" class="w-10 h-10" /> Guía de uso
+            </a>
+            <a href="{% url 'waferapp:zona_pruebas' %}" class="flex items-center gap-2 px-6 py-3 text-blue-900 font-semibold text-base border-b-2 border-transparent hover:text-orange-500 hover:border-orange-500 transition">
+                <img src="{% static 'iconos/test.png' %}" alt="icono" class="w-10 h-10" /> Pruebas
+            </a>
+            <a href="{% url 'waferapp:dash' %}" class="flex items-center gap-2 px-6 py-3 text-blue-900 font-semibold text-base border-b-2 border-transparent hover:text-orange-500 hover:border-orange-500 transition">
+                <img src="{% static 'iconos/data.png' %}" alt="icono" class="w-10 h-10" /> Dashboard
+            </a>
+        </div>
+        <div class="flex gap-2 ml-auto">
+            {% if user.is_authenticated %}
+                <!-- <a href="{% url 'waferapp:add_modelo' %}" class="bg-pink-700 text-white font-bold px-4 py-2 rounded hover:bg-pink-900 transition">Nuevo Modelo</a> -->
+                <form method="post" action="{% url 'waferapp:logout' %}" class="inline">
+                    {% csrf_token %}
+                    <button type="submit" class="bg-gray-200 text-blue-900 font-semibold px-4 py-2 rounded hover:bg-red-600 hover:text-white transition">Cerrar sesión</button>
+                </form>
+            {% else %}
+                <a href="{% url 'waferapp:login' %}" class="bg-pink-700 text-white font-bold px-4 py-2 rounded hover:bg-pink-900 transition">Iniciar sesión</a>
+                <a href="{% url 'waferapp:signup' %}" class="bg-pink-700 text-white font-bold px-4 py-2 rounded hover:bg-pink-900 transition">Registrarse</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    {% if messages %}
+        <div class="max-w-5xl mx-auto mt-6">
+            {% for message in messages %}
+                <div class="p-4 mb-4 rounded text-white
+                    {% if message.tags == 'error' %}bg-red-600
+                    {% elif message.tags == 'success' %}bg-green-600
+                    {% else %}bg-blue-600{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <main class="flex-1 max-w-5xl mx-auto py-9 px-5">
+        {% block content %}{% endblock %}
+    </main>
+    
+    <footer class="bg-blue-950 text-white py-8 mt-10">
+        <div class="max-w-6xl mx-auto flex flex-wrap justify-between items-start">
+            <div>
+                <h2 class="text-xl font-bold mb-2">CNN Model Explorer</h2>
+                <p class="text-base">Una herramienta para probar y comparar modelos de redes neuronales convolucionales.</p>
+            </div>
+            <div class="flex items-center text-base">
+                <span>&copy; 2025 CNN Model Explorer. Todos los derechos reservados.</span>
+            </div>
+        </div>
+    </footer>
+    <button class="fixed bottom-6 right-6 bg-gray-800 text-white rounded-full p-3 shadow-lg hover:bg-gray-600 transition" onclick="toggleDarkMode()" title="Alternar modo oscuro">🌙</button>
+    <script src="{% static 'js/particles-bg.js' %}"></script>
+    <script>
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark');
+            if (document.body.classList.contains('dark')) {
+                localStorage.setItem('theme', 'dark');
+            } else {
+                localStorage.setItem('theme', 'light');
+            }
+        }
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark');
+            }
+        });
+    </script>
+</body>
+</html>
