@@ -1,0 +1,164 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block title %}Dashboard de Rendimiento del Modelo ML{% endblock %}
+
+{% block content %}
+<!-- Cambia el contenedor para que sea más ancho y responsive -->
+<div class="w-full max-w-[1400px] mx-auto py-8 px-4">
+    <!-- Header -->
+    <div class="bg-blue-900 text-white rounded-2xl shadow-lg p-8 mb-8 text-center">
+        <h1 class="text-3xl md:text-4xl font-bold mb-2">🤖 Dashboard de Rendimiento del Modelo ML</h1>
+        <p class="text-blue-100 text-lg">Análisis completo del entrenamiento y evaluación del modelo de clasificación</p>
+    </div>
+
+    <!-- Primera fila: Pérdida y Métricas - FORZAR 2 COLUMNAS -->
+    <div class="grid grid-cols-1 xl:grid-cols-2 gap-6 mb-8">
+        <!-- Pérdida por Época -->
+        <div class="bg-white rounded-xl shadow-md p-6 min-h-[500px]">
+            <h2 class="text-xl font-bold text-blue-900 border-b-2 border-blue-900 pb-2 mb-6 flex items-center gap-2">
+                📈 Pérdida por Época
+            </h2>
+            <div class="relative h-64 mb-4">
+                <canvas id="lossChart"></canvas>
+            </div>
+            <div class="grid grid-cols-3 gap-4 bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg p-4">
+                <div class="text-center">
+                    <h3 class="text-xl font-bold text-pink-700">0.163</h3>
+                    <p class="text-sm text-gray-500">Pérdida Inicial</p>
+                </div>
+                <div class="text-center">
+                    <h3 class="text-xl font-bold text-pink-700">0.023</h3>
+                    <p class="text-sm text-gray-500">Pérdida Final</p>
+                </div>
+                <div class="text-center">
+                    <h3 class="text-xl font-bold text-pink-700">85.6%</h3>
+                    <p class="text-sm text-gray-500">Reducción</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Métricas Generales -->
+        <div class="bg-white rounded-xl shadow-md p-6 min-h-[500px]">
+            <h2 class="text-xl font-bold text-blue-900 border-b-2 border-blue-900 pb-2 mb-6 flex items-center gap-2">
+                🎯 Métricas Generales
+            </h2>
+            <!-- Métricas numéricas en 2x2 -->
+            <div class="grid grid-cols-2 gap-3 mb-6">
+                <div class="text-center bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-3 shadow">
+                    <div class="text-2xl font-bold text-pink-700">99.6%</div>
+                    <div class="text-sm text-gray-500">Precisión</div>
+                </div>
+                <div class="text-center bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-3 shadow">
+                    <div class="text-2xl font-bold text-pink-700">99%</div>
+                    <div class="text-sm text-gray-500">Recall</div>
+                </div>
+                <div class="text-center bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-3 shadow">
+                    <div class="text-2xl font-bold text-pink-700">99%</div>
+                    <div class="text-sm text-gray-500">F1-Score</div>
+                </div>
+                <div class="text-center bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-3 shadow">
+                    <div class="text-2xl font-bold text-pink-700">6,504</div>
+                    <div class="text-sm text-gray-500">Muestras</div>
+                </div>
+            </div>
+            <!-- Gráfico de barras -->
+            <div class="relative h-48">
+                <canvas id="metricsChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Segunda fila: Rendimiento por Clase y Distribución - FORZAR 2 COLUMNAS -->
+    <div class="grid grid-cols-1 xl:grid-cols-2 gap-6 mb-8">
+        <!-- Rendimiento por Clase -->
+        <div class="bg-white rounded-xl shadow-md p-6">
+            <h2 class="text-xl font-bold text-blue-900 border-b-2 border-blue-900 pb-2 mb-6 flex items-center gap-2">
+                📊 Rendimiento por Clase
+            </h2>
+            <div class="overflow-x-auto">
+                <table class="min-w-full text-sm">
+                    <thead>
+                        <tr class="bg-blue-50 text-blue-900 text-xs uppercase">
+                            <th class="py-2 px-2 text-left">Clase</th>
+                            <th class="py-2 px-2">Precisión</th>
+                            <th class="py-2 px-2">Recall</th>
+                            <th class="py-2 px-2">F1</th>
+                            <th class="py-2 px-2">Soporte</th>
+                            <th class="py-2 px-2">Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody id="classTable" class="text-xs"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Distribución de Clases -->
+        <div class="bg-white rounded-xl shadow-md p-6">
+            <h2 class="text-xl font-bold text-blue-900 border-b-2 border-blue-900 pb-2 mb-6 flex items-center gap-2">
+                🔄 Distribución de Clases
+            </h2>
+            <div class="relative h-80 flex justify-center items-center">
+                <canvas id="distributionChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tercera fila: Matriz de Confusión (ancho completo) -->
+    <div class="bg-white rounded-xl shadow-md p-6">
+        <h2 class="text-xl font-bold text-blue-900 border-b-2 border-blue-900 pb-2 mb-6 flex items-center gap-2">
+            🎭 Matriz de Confusión
+        </h2>
+        <div class="overflow-x-auto">
+            <table class="min-w-full text-xs">
+                <thead>
+                    <tr class="bg-blue-50 text-blue-900 uppercase">
+                        <th class="py-2 px-2">Verdadero \ Predicho</th>
+                        <th class="py-2 px-2">Center</th>
+                        <th class="py-2 px-2">Donut</th>
+                        <th class="py-2 px-2">Edge-Loc</th>
+                        <th class="py-2 px-2">Edge-Ring</th>
+                        <th class="py-2 px-2">Loc</th>
+                        <th class="py-2 px-2">Near-full</th>
+                        <th class="py-2 px-2">Random</th>
+                        <th class="py-2 px-2">Scratch</th>
+                        <th class="py-2 px-2">None</th>
+                    </tr>
+                </thead>
+                <tbody id="confusionMatrix"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+<script src="{% static 'js/dash.js' %}"></script>
+
+<style>
+    /* Forzar grid de 2 columnas en pantallas grandes */
+    @media (min-width: 1280px) {
+        .xl\:grid-cols-2 {
+            grid-template-columns: repeat(2, 1fr) !important;
+        }
+    }
+
+    /* Estilos adicionales para la matriz de confusión */
+    #confusionMatrix td {
+        padding: 4px 8px;
+        text-align: center;
+        border: 1px solid #e5e7eb;
+    }
+    
+    /* Diagonal principal en verde */
+    .diagonal {
+        background-color: #dcfce7 !important;
+        color: #166534 !important;
+        font-weight: bold;
+    }
+    
+    /* Ajustar el ancho del contenedor principal */
+    .max-w-\[1400px\] {
+        max-width: 1400px;
+    }
+</style>
+{% endblock %}

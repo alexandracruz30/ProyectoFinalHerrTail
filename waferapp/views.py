@@ -28,7 +28,8 @@ class_labels = [
 ]
 
 class DashboardView(TemplateView):
-    template_name = "dash/dash.html"  # ✅ Corregido
+    """Vista que muestra el dashboard con métricas del modelo."""
+    template_name = "dash.html"  # ✅ Corregido (era "dash/dash.html")
 
 class procesoModeloView(TemplateView):
     """Vista que muestra la plantilla para el entrenamiento del modelo."""
