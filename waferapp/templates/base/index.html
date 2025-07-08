@@ -3,32 +3,133 @@
 
 {% block title %}CNN Model Explorer - Selección de Modelos{% endblock %}
 
+{% block page_header %}
+<div class="text-center mb-12 fade-in">
+    <h2 class="text-4xl font-bold text-white mb-4">Modelos CNN Disponibles</h2>
+    <p class="text-blue-200 text-lg">Selecciona uno de nuestros {{ total_modelos }} modelos preentrenados para realizar predicciones con tus imágenes.</p>
+    {% if modelo_destacado %}
+        <div class="mt-4 inline-block bg-green-500/20 text-green-200 px-4 py-2 rounded-lg">
+            <span class="font-semibold">Modelo destacado: {{ modelo_destacado.nombre }}</span> - {{ modelo_destacado.accuracy }} accuracy
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+
 {% block content %}
-    <h2 class="text-2xl font-bold text-blue-900 mb-2">Modelos CNN Disponibles</h2>
-    <p class="text-gray-500 text-lg mb-8">Selecciona uno de nuestros modelos preentrenados para realizar predicciones con tus imágenes.</p>
-    
-    <div class="flex flex-wrap gap-7 justify-start">
+    <!-- Sección de estadísticas -->
+    <div class="mt-12 mb-8 fade-in">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20 text-center">
+                <div class="text-3xl font-bold text-white mb-2">{{ total_modelos }}</div>
+                <div class="text-blue-200">Modelos Disponibles</div>
+            </div>
+            <div class="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20 text-center">
+                <div class="text-3xl font-bold text-white mb-2">99%</div>
+                <div class="text-blue-200">Precisión Promedio</div>
+            </div>
+            <div class="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20 text-center">
+                <div class="text-3xl font-bold text-white mb-2">24/7</div>
+                <div class="text-blue-200">Disponibilidad</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Grid de modelos -->
+    <div class="model-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {% for model in modelos %}
-            <div class="bg-white rounded-xl shadow-lg w-80 min-w-[260px] flex flex-col overflow-hidden mb-6 border border-gray-200">
-                <div class="bg-blue-900 text-white px-5 pt-4 pb-3 rounded-t-xl flex flex-col gap-2 min-h-[66px]">
-                    <h3 class="m-0 text-lg font-bold tracking-tight">{{ model.nombre }}</h3>
-                    <span class="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-semibold w-fit">{{ model.accuracy }} accuracy</span>
+            <div class="model-card fade-in" data-model="{{ model.nombre }}">
+                <div class="model-header">
+                    <h3 class="text-2xl font-bold">{{ model.nombre }}</h3>
+                    <div class="accuracy-badge">{{ model.accuracy }} accuracy</div>
                 </div>
-                <div class="p-5 bg-white rounded-b-xl flex flex-col gap-4 min-h-[130px]">
-                    <p class="m-0 text-blue-900 text-base flex-grow">{{ model.descripcion }}</p>
-                    <button class="self-start px-5 py-2 bg-white text-blue-900 border-2 border-blue-900 rounded font-semibold text-base transition hover:bg-gray-100 hover:text-orange-500 hover:border-orange-500">Seleccionar</button>
+                <div class="p-6">
+                    <p class="text-gray-600 mb-6">
+                        {{ model.descripcion }}
+                    </p>
+                    <a href="{% url 'waferapp:zona_pruebas' %}?model={{ model.nombre }}" class="select-button">
+                        Seleccionar
+                    </a>
                 </div>
             </div>
         {% empty %}
-            <div class="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4 rounded">
-                <p class="font-bold">¡Tailwind CSS está funcionando!</p>
-                <p>No hay modelos disponibles, pero puedes ver que los estilos se aplican correctamente.</p>
-                <div class="mt-4">
-                    <a href="{% url 'waferapp:zona_pruebas' %}" class="bg-blue-600 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded">
-                        Ir a Pruebas
+            <!-- Mensaje cuando no hay modelos disponibles -->
+            <div class="col-span-full text-center py-16">
+                <div class="bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20">
+                    <h3 class="text-2xl font-bold text-white mb-4">No hay modelos disponibles</h3>
+                    <p class="text-blue-200 mb-6">Por favor, contacta al administrador para configurar los modelos.</p>
+                    <a href="{% url 'waferapp:dash' %}" class="bg-blue-500/20 text-blue-200 px-6 py-3 rounded-lg hover:bg-blue-500/30 transition-colors">
+                        Ir al Dashboard
                     </a>
                 </div>
             </div>
         {% endfor %}
     </div>
+
+    <!-- Información adicional -->
+    <div class="mt-16 fade-in">
+        <div class="bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20">
+            <h3 class="text-2xl font-bold text-white mb-6 text-center">¿Cómo funciona?</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="text-center">
+                    <div class="bg-blue-500/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl font-bold text-white">1</span>
+                    </div>
+                    <h4 class="text-lg font-semibold text-white mb-2">Selecciona un modelo</h4>
+                    <p class="text-blue-200 text-sm">Elige el modelo CNN que mejor se adapte a tus necesidades</p>
+                </div>
+                <div class="text-center">
+                    <div class="bg-green-500/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl font-bold text-white">2</span>
+                    </div>
+                    <h4 class="text-lg font-semibold text-white mb-2">Sube tu imagen</h4>
+                    <p class="text-blue-200 text-sm">Carga la imagen que quieres analizar</p>
+                </div>
+                <div class="text-center">
+                    <div class="bg-purple-500/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl font-bold text-white">3</span>
+                    </div>
+                    <h4 class="text-lg font-semibold text-white mb-2">Obtén resultados</h4>
+                    <p class="text-blue-200 text-sm">Visualiza las predicciones y análisis del modelo</p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Animación de entrada escalonada para las tarjetas
+    const modelCards = document.querySelectorAll('.model-card');
+    modelCards.forEach((card, index) => {
+        card.style.animationDelay = `${index * 0.2}s`;
+    });
+    
+    // Efecto hover mejorado
+    modelCards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-8px) scale(1.02)';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0) scale(1)';
+        });
+    });
+    
+    // Efecto de clic en botones
+    const selectButtons = document.querySelectorAll('.select-button');
+    selectButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Efecto visual
+            this.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                this.style.transform = 'scale(1)';
+                window.location.href = this.href;
+            }, 150);
+        });
+    });
+});
+</script>
 {% endblock %}
