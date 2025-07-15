@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'waferapp',  # Your app
-    'tailwind',  # Tailwind CSS integration    
+    'widget_tweaks',    
 ]
 
 MIDDLEWARE = [
