@@ -37,7 +37,7 @@ class procesoModeloView(TemplateView):
 
 # Crea una vista simple para home
 class HomeView(TemplateView):
-    template_name = "base/index.html"
+    template_name = "base/home.html"
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -76,7 +76,7 @@ class SignUpView(FormView):
     """Vista para el registro de nuevos usuarios utilizando el formulario por defecto de Django."""
     template_name = 'usuario/signup.html'
     form_class = UserCreationForm
-    success_url = reverse_lazy('waferapp:home')  
+    success_url = reverse_lazy('modelos:home')  
 
     def form_valid(self, form):
         user = form.save()
@@ -91,7 +91,7 @@ class UserLoginView(LoginView):
     """Vista para iniciar sesión de usuario autenticado."""
     template_name = 'usuario/login.html'
     redirect_authenticated_user = True
-    success_url = reverse_lazy('waferapp:home')  
+    success_url = reverse_lazy('modelos:home')  
 
     def get_success_url(self):
         return str(self.success_url)
@@ -102,7 +102,7 @@ class UserLoginView(LoginView):
 
 class UserLogoutView(LogoutView):
     """Vista para cerrar sesión del usuario."""
-    next_page = reverse_lazy('waferapp:home') 
+    next_page = reverse_lazy('modelos:home') 
 
 class EntrenamientoView(TemplateView):
     """Vista que muestra la plantilla para el entrenamiento del modelo."""
@@ -111,6 +111,14 @@ class EntrenamientoView(TemplateView):
 class DetallesUsoView(TemplateView):
     """Vista que muestra detalles del uso del modelo CNN."""
     template_name = "modelos/detalles.html"  # ✅ Corregido (era "modelos/modelos/detalles.html")
+
+class GaleriaView(TemplateView):
+    """Vista para mostrar la galería de imágenes."""
+    template_name = "modelos/galeria.html"
+
+class ModeloCreateView(TemplateView):
+    """Vista para crear y registrar un nuevo modelo CNN."""
+    template_name = "modelos/add_modelo.html"
 
 class PruebasView(TemplateView):
     """Vista para realizar pruebas con el modelo CNN entrenado."""
@@ -169,7 +177,7 @@ class HistorialView(LoginRequiredMixin, ListView):
         model = HistorialPrediccion
         template_name = 'pruebas/historial.html'
         context_object_name = 'historial'
-        
+
         def get_queryset(self):
         # Solo muestra el historial del usuario autenticado, ordenado por fecha descendente
             return HistorialPrediccion.objects.filter(usuario=self.request.user).order_by('-fecha')
