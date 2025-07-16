@@ -129,6 +129,27 @@ class GaleriaView(TemplateView):
     """Vista para mostrar la galería de imágenes."""
     template_name = "modelos/galeria.html"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Lista de imágenes para el carrusel de datos
+        context['datos_imgs'] = [
+            {'src': 'galeria/datos/1.png', 'alt': 'Dato 1', 'title': 'Imagen 1', 'desc': 'Descripción de la imagen 1'},
+            {'src': 'galeria/datos/2.png', 'alt': 'Dato 2', 'title': 'Imagen 2', 'desc': 'Descripción de la imagen 2'},
+            {'src': 'galeria/datos/3.png', 'alt': 'Dato 3', 'title': 'Imagen 3', 'desc': 'Descripción de la imagen 3'},
+            {'src': 'galeria/datos/4.png', 'alt': 'Dato 4', 'title': 'Imagen 4', 'desc': 'Descripción de la imagen 4'},
+            {'src': 'galeria/datos/5.png', 'alt': 'Dato 5', 'title': 'Imagen 5', 'desc': 'Descripción de la imagen 5'},
+            {'src': 'galeria/datos/6.png', 'alt': 'Dato 6', 'title': 'Imagen 6', 'desc': 'Descripción de la imagen 6'},
+            {'src': 'galeria/datos/7.png', 'alt': 'Dato 7', 'title': 'Imagen 7', 'desc': 'Descripción de la imagen 7'},
+        ]
+        # Lista de imágenes para el carrusel de obleas
+        context['obleas_imgs'] = [
+            {'src': 'galeria/obleas/8.png', 'alt': 'Oblea 8', 'title': 'Oblea 8', 'desc': 'Descripción de la oblea 8'},
+            {'src': 'galeria/obleas/9.png', 'alt': 'Oblea 9', 'title': 'Oblea 9', 'desc': 'Descripción de la oblea 9'},
+            {'src': 'galeria/obleas/10.png', 'alt': 'Oblea 10', 'title': 'Oblea 10', 'desc': 'Descripción de la oblea 10'},
+            {'src': 'galeria/obleas/11.png', 'alt': 'Oblea 11', 'title': 'Oblea 11', 'desc': 'Descripción de la oblea 11'},
+        ]
+        return context
+
 class ModeloCreateView(TemplateView):
     """Vista para crear y registrar un nuevo modelo CNN."""
     template_name = "modelos/add_modelo.html"
