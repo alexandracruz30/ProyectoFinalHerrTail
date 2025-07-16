@@ -1,723 +1,235 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
+    <!-- Configuración básica del documento -->
     <meta charset="UTF-8">
-    <title>{% block title %}CNN Model Explorer{% endblock %}</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link href="{% static 'src/output.css' %}" rel="stylesheet">
-    <link href="{% static 'src/input.css' %}" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}CNN Model Explorer{% endblock %}</title>
+    
+    <!-- Carga de archivos estáticos (como CSS de Tailwind) -->
+    {% load static %}
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#183b6b',
+                        secondary: '#1b325f',
+                        accent: '#e97228',
+                        pink: '#ba3259',
+                        success: '#00c37e',
+                        gray: {
+                            100: '#f4f6f9',
+                            200: '#e9eefa',
+                            300: '#d1e1ff',
+                            400: '#bfc8d3',
+                            500: '#7b8497',
+                            600: '#25396e',
+                        }
+                    },
+                    animation: {
+                        'fadeInUp': 'fadeInUp 0.6s ease-out',
+                        'shake': 'shake 0.5s ease-in-out',
+                        'spin': 'spin 1s linear infinite'
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': {
+                                opacity: '0',
+                                transform: 'translateY(30px)'
+                            },
+                            '100%': {
+                                opacity: '1',
+                                transform: 'translateY(0)'
+                            }
+                        },
+                        shake: {
+                            '0%, 100%': { transform: 'translateX(0)' },
+                            '25%': { transform: 'translateX(-5px)' },
+                            '75%': { transform: 'translateX(5px)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        /* Minimal inline styles for immediate page render */
-        .main-gradient {
-            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #06b6d4 100%);
-        }
-        
-        .particles-bg {
+        /* Particles.js container styles */
+        #particles-js {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
-                       radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
-                       radial-gradient(circle at 40% 80%, rgba(120, 219, 255, 0.3) 0%, transparent 50%);
-            z-index: -1;
-        }
-        
-        .particle {
-            position: absolute;
-            border-radius: 50%;
-            animation: float 6s ease-in-out infinite;
-        }
-        
-        .particle:nth-child(1) { 
-            width: 60px; height: 60px; 
-            background: rgba(255, 255, 255, 0.1); 
-            top: 20%; left: 10%; 
-            animation-delay: 0s; 
-        }
-        
-        .particle:nth-child(2) { 
-            width: 80px; height: 80px; 
-            background: rgba(59, 130, 246, 0.1); 
-            top: 60%; right: 15%; 
-            animation-delay: 2s; 
-        }
-        
-        .particle:nth-child(3) { 
-            width: 40px; height: 40px; 
-            background: rgba(168, 85, 247, 0.1); 
-            bottom: 20%; left: 20%; 
-            animation-delay: 4s; 
-        }
-        
-        .particle:nth-child(4) { 
-            width: 100px; height: 100px; 
-            background: rgba(34, 197, 94, 0.1); 
-            top: 40%; right: 30%; 
-            animation-delay: 1s; 
-        }
-        
-        .particle:nth-child(5) { 
-            width: 50px; height: 50px; 
-            background: rgba(245, 158, 11, 0.1); 
-            bottom: 30%; right: 10%; 
-            animation-delay: 3s; 
-        }
-        
-        .particle:nth-child(6) { 
-            width: 70px; height: 70px; 
-            background: rgba(239, 68, 68, 0.1); 
-            top: 10%; right: 50%; 
-            animation-delay: 5s; 
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(180deg); }
-        }
-        
-        /* Hide particles on mobile */
-        @media (max-width: 639px) {
-            .particles-bg {
-                display: none;
-            }
-        }
-
-        /* Header Logo Section Styles */
-        .header-nav {
-            background: rgba(30, 58, 138, 0.9);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s ease;
-        }
-
-        .header-nav.scrolled {
-            background: rgba(30, 58, 138, 0.95);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        .header-nav.scrolled .header-top {
-            transform: translateY(-100%);
-            opacity: 0;
-            height: 0;
+            z-index: 0;
+            top: 0; 
+            left: 0; 
+            right: 0; 
+            bottom: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
             overflow: hidden;
-            margin-bottom: 0;
+            background: transparent;
         }
 
-        .header-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 1rem;
-        }
-
-        .header-top {
-            transition: all 0.3s ease;
-            padding: 1rem 0;
-            margin-bottom: 0.5rem;
-        }
-
-        .header-bottom {
-            transition: all 0.3s ease;
-            padding: 0.75rem 0;
-            width: 100%;
-        }
-
-        .desktop-nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 0.5rem;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 0.75rem;
-            padding: 0.5rem;
-        }
-
-        .nav-button {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.25rem;
-            padding: 0.75rem 0.5rem;
-            border-radius: 0.5rem;
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            text-decoration: none;
-            font-size: 0.8rem;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            flex: 1;
-            min-width: 0;
-            text-align: center;
-        }
-
-        .nav-button:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: translateY(-2px);
-        }
-
-        .nav-button.current-page {
-            background: rgba(59, 130, 246, 0.8);
-            color: white;
-        }
-
-        .nav-button img {
-            width: 24px;
-            height: 24px;
-            object-fit: contain;
-            flex-shrink: 0;
-        }
-
-        .nav-button span {
-            font-size: 0.75rem;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 100%;
-        }
-
-        .brand-container {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            flex: 1;
-            min-width: 0;
-        }
-
-        .brand-logo {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        .brand-logo img {
-            width: 40px;
-            height: 40px;
-            object-fit: contain;
-        }
-
-        .brand-text {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .brand-text h1 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: white;
-            margin-bottom: 0.25rem;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-        }
-
-        .brand-text p {
-            font-size: 0.875rem;
-            color: rgba(255, 255, 255, 0.8);
-            margin: 0;
-        }
-
-        .auth-container {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            flex-wrap: wrap;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 0.5rem;
-            padding: 0.5rem;
-        }
-
-        .user-info {
-            color: white;
-            font-size: 0.875rem;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .auth-button {
-            padding: 0.5rem 1rem;
-            border-radius: 0.5rem;
-            background: rgba(59, 130, 246, 0.8);
-            color: white;
-            text-decoration: none;
-            font-size: 0.875rem;
-            font-weight: 500;
-            border: none;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            cursor: pointer;
-            white-space: nowrap;
-        }
-
-        .auth-button:hover {
-            background: rgba(59, 130, 246, 1);
-            transform: translateY(-1px);
-        }
-
-        .logout-button {
-            background: rgba(239, 68, 68, 0.8);
-        }
-
-        .logout-button:hover {
-            background: rgba(239, 68, 68, 1);
-        }
-
-        /* Mobile Navigation */
-        .mobile-nav {
-            display: none;
-        }
-
-        /* Responsive adjustments */
-        @media (max-width: 1024px) {
-            .nav-button span {
-                font-size: 0.7rem;
-            }
-            
-            .nav-button {
-                padding: 0.5rem 0.25rem;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .desktop-nav {
-                display: none;
-            }
-            
-            .mobile-nav {
-                display: block;
-                padding: 0.5rem 0;
-            }
-            
-            .header-top {
-                flex-direction: column;
-                gap: 1rem;
-                text-align: center;
-            }
-
-            .brand-container {
-                flex-direction: row;
-                justify-content: center;
-                gap: 1rem;
-            }
-
-            .brand-text h1 {
-                font-size: 1.25rem;
-            }
-
-            .brand-text p {
-                font-size: 0.8rem;
-            }
-
-            .auth-container {
-                justify-content: center;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .brand-logo {
-                width: 50px;
-                height: 50px;
-            }
-
-            .brand-logo img {
-                width: 35px;
-                height: 35px;
-            }
-
-            .brand-text h1 {
-                font-size: 1.1rem;
-            }
-
-            .auth-container {
-                padding: 0.4rem;
-            }
-
-            .auth-button {
-                padding: 0.4rem 0.8rem;
-                font-size: 0.8rem;
-            }
+        body, html {
+            position: relative;
+            z-index: 1;
         }
     </style>
-</head>
-<body class="main-container">
-    <!-- Fondo con partículas -->
-    <div class="particles-bg">
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-    </div>
 
-    <!-- Header -->
-    <header id="header-logo-section" class="header-nav sticky top-0 z-50">
-        <div class="header-container">
-            <!-- Primera fila: Logo y botones de autenticación -->
-            <div class="header-top flex justify-between items-center w-full">
-                <!-- Logo y título -->
-                <div class="brand-container header-glow">
-                    <div class="brand-logo glass-effect">
-                        <img src="{% static 'iconos/principal.png' %}" alt="Logo AI">
-                    </div>
-                    <div class="brand-text">
-                        <h1>CNN Model Explorer</h1>
-                        <p>Prueba modelos de CNN preentrenados con tus propias imágenes</p>
-                    </div>
-                </div>
-                
-                <!-- Botones de autenticación -->
-                <div class="auth-container glass-effect">
-                    {% if user.is_authenticated %}
-                        <span class="user-info">
-                            🧠 AI Neural Network
-                        </span>
-                        <button class="auth-button header-glow">
-                            ➕ Nuevo Modelo
-                        </button>
-                        <form method="post" action="{% url 'waferapp:logout' %}" class="inline">
-                            {% csrf_token %}
-                            <button type="submit" class="auth-button logout-button">
-                                🚪 Cerrar sesión
-                            </button>
-                        </form>
-                    {% else %}
-                        <a href="{% url 'waferapp:login' %}" class="auth-button">
-                            🔐 Iniciar sesión
-                        </a>
-                        <a href="{% url 'waferapp:signup' %}" class="auth-button">
-                            📝 Registrarse
-                        </a>
-                    {% endif %}
-                </div>
+</head>
+
+<body class="font-sans min-h-screen flex flex-col bg-gray-100 dark:bg-gray-900 transition-colors duration-300">
+    <!-- Particles.js container -->
+    <div id="particles-js"></div>
+    
+    <!-- HEADER: Encabezado principal con título y logo -->
+    <header class="bg-primary text-white shadow-lg">
+        <div class="flex justify-between items-center max-w-screen-2xl mx-auto px-8 pt-8 pb-5">
+            <!-- Título y subtítulo -->
+            <div>
+                <h1 class="text-5xl font-bold mb-1 tracking-tight">CNN Model Explorer</h1>
+                <p class="text-gray-300 text-lg">Prueba modelos de CNN preentrenados con tus propias imágenes</p>
             </div>
-            
-            <!-- Segunda fila: Navegación Desktop -->
-            <div class="header-bottom w-full">
-                <nav class="desktop-nav glass-effect">
-                    <a href="{% url 'waferapp:home' %}" class="nav-button {% if request.resolver_match.url_name == 'home' %}current-page{% endif %}">
-                        <img src="{% static 'iconos/modelos.png' %}" alt="Modelos">
-                        <span>Modelos</span>
-                    </a>
-                    <a href="{% url 'waferapp:proceso_entrenamiento' %}" class="nav-button {% if request.resolver_match.url_name == 'proceso_entrenamiento' %}current-page{% endif %}">
-                        <img src="{% static 'iconos/dataset.png' %}" alt="Dataset">
-                        <span>Dataset</span>
-                    </a>
-                    <a href="{% url 'waferapp:modeloView' %}" class="nav-button {% if request.resolver_match.url_name == 'modeloView' %}current-page{% endif %}">
-                        <img src="{% static 'iconos/arquitectura.png' %}" alt="Arquitectura">
-                        <span>Arquitectura</span>
-                    </a>
-                    <a href="{% url 'waferapp:detalles_uso' %}" class="nav-button {% if request.resolver_match.url_name == 'detalles_uso' %}current-page{% endif %}">
-                        <img src="{% static 'iconos/guiauso.png' %}" alt="Guía">
-                        <span>Guía de uso</span>
-                    </a>
-                    <a href="{% url 'waferapp:zona_pruebas' %}" class="nav-button {% if request.resolver_match.url_name == 'zona_pruebas' %}current-page{% endif %}">
-                        <img src="{% static 'iconos/test.png' %}" alt="Pruebas">
-                        <span>Pruebas</span>
-                    </a>
-                    <a href="{% url 'waferapp:dash' %}" class="nav-button {% if request.resolver_match.url_name == 'dash' %}current-page{% endif %}">
-                        <img src="{% static 'iconos/data.png' %}" alt="Dashboard">
-                        <span>Dashboard</span>
-                    </a>
-                </nav>
-            </div>
-            
-            <!-- Navegación Mobile -->
-            <div class="mobile-nav">
-                <div class="w-full">
-                    <button id="mobile-menu-button" class="nav-button w-full justify-center glass-effect">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                        </svg>
-                        <span>Menú de Navegación</span>
-                    </button>
-                    
-                    <div id="mobile-menu-content" class="hidden">
-                        <a href="{% url 'waferapp:home' %}" class="nav-button">
-                            <img src="{% static 'iconos/modelos.png' %}" alt="Modelos">
-                            <span>Modelos</span>
-                        </a>
-                        <a href="{% url 'waferapp:proceso_entrenamiento' %}" class="nav-button">
-                            <img src="{% static 'iconos/dataset.png' %}" alt="Dataset">
-                            <span>Dataset</span>
-                        </a>
-                        <a href="{% url 'waferapp:modeloView' %}" class="nav-button">
-                            <img src="{% static 'iconos/arquitectura.png' %}" alt="Arquitectura">
-                            <span>Arquitectura</span>
-                        </a>
-                        <a href="{% url 'waferapp:detalles_uso' %}" class="nav-button">
-                            <img src="{% static 'iconos/guiauso.png' %}" alt="Guía">
-                            <span>Guía de uso</span>
-                        </a>
-                        <a href="{% url 'waferapp:zona_pruebas' %}" class="nav-button">
-                            <img src="{% static 'iconos/test.png' %}" alt="Pruebas">
-                            <span>Pruebas</span>
-                        </a>
-                        <a href="{% url 'waferapp:dash' %}" class="nav-button">
-                            <img src="{% static 'iconos/data.png' %}" alt="Dashboard">
-                            <span>Dashboard</span>
-                        </a>
-                    </div>
-                </div>
+            <!-- Logo y nombre de la app -->
+            <div class="flex items-center gap-3 ml-auto">
+                <span class="text-lg text-gray-300 font-medium whitespace-nowrap">AI Neural Network</span>
+                <img src="{% static 'iconos/principal.png' %}" alt="Logo AI" class="w-20 h-20 object-contain" />
             </div>
         </div>
     </header>
 
-    <!-- Contenido Principal -->
-    <main class="content-wrapper">
-        <div class="content-section main-content">
-            <!-- Mensajes -->
-            {% if messages %}
-                <div class="mb-6">
-                    {% for message in messages %}
-                        <div class="p-4 mb-4 rounded-xl backdrop-blur-md border shadow-lg fade-in
-                            {% if message.tags == 'error' %}bg-red-500/20 border-red-300 text-red-100
-                            {% elif message.tags == 'success' %}bg-green-500/20 border-green-300 text-green-100
-                            {% else %}bg-blue-500/20 border-blue-300 text-blue-100{% endif %}">
-                            {{ message }}
-                        </div>
-                    {% endfor %}
-                </div>
-            {% endif %}
-
-            <!-- Título de la sección -->
-            {% block page_header %}
-            {% endblock %}
-
-            <!-- Contenido principal -->
-            {% block content %}
-            {% endblock %}
+    <!-- NAV: Barra de navegación principal -->
+    <nav class="bg-white dark:bg-gray-800 text-gray-900 dark:text-white shadow-md px-4 py-2 flex justify-between items-center w-full border-b-2 border-gray-200 dark:border-gray-700">
+        <div class="flex items-center space-x-4 max-w-screen-2xl mx-auto">
+            <!-- Menú de navegación con iconos -->
+            <div class="flex space-x-6 px-2">
+                <!-- Enlace a la página principal de modelos -->
+                <a href="{% url 'modelos:home' %}" class="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-blue-50 dark:hover:bg-gray-700 transition-all duration-200 text-primary dark:text-blue-400 font-semibold">
+                    <img src="{% static 'iconos/modelos.png' %}" alt="icono" class="w-10 h-10">
+                    <span>Modelos</span>
+                </a>
+                <!-- Enlace a la sección de dataset -->
+                <a href="{% url 'modelos:proceso_entrenamiento' %}" class="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-blue-50 dark:hover:bg-gray-700 transition-all duration-200 text-primary dark:text-blue-400 font-semibold">
+                    <img src="{% static 'iconos/dataset.png' %}" alt="icono" class="w-10 h-10">
+                    <span>Dataset</span>
+                </a>
+                <!-- Enlace a la arquitectura del modelo -->
+                <a href="{% url 'modelos:modeloView' %}" class="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-blue-50 dark:hover:bg-gray-700 transition-all duration-200 text-primary dark:text-blue-400 font-semibold">
+                    <img src="{% static 'iconos/arquitectura.png' %}" alt="icono arquitectura" class="w-10 h-10 object-contain" />
+                    <span>Arquitectura</span>
+                </a>
+                <!-- Enlace a la guía de uso -->
+                <a href="{% url 'modelos:detalles_uso' %}" class="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-blue-50 dark:hover:bg-gray-700 transition-all duration-200 text-primary dark:text-blue-400 font-semibold">
+                    <img src="{% static 'iconos/guiauso.png' %}" alt="icono guía de uso" class="w-10 h-10 object-contain" />
+                    <span>Guía de uso</span>
+                </a>
+                <!-- Enlace a la zona de pruebas -->
+                <a href="{% url 'modelos:zona_pruebas' %}" class="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-blue-50 dark:hover:bg-gray-700 transition-all duration-200 text-primary dark:text-blue-400 font-semibold">
+                    <img src="{% static 'iconos/test.png' %}" alt="icono pruebas" class="w-10 h-10 object-contain" />
+                    <span>Pruebas</span>
+                </a>
+                <!-- Enlace al dashboard -->
+                <a href="{% url 'modelos:dash' %}" class="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-blue-50 dark:hover:bg-gray-700 transition-all duration-200 text-primary dark:text-blue-400 font-semibold">
+                    <img src="{% static 'iconos/data.png' %}" alt="icono dashboard" class="w-10 h-10 object-contain" />
+                    <span>Dashboard</span>
+                </a>
+                <!-- Enlace a la galería -->
+                <a href="{% url 'modelos:galeria' %}" class="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-blue-50 dark:hover:bg-gray-700 transition-all duration-200 text-primary dark:text-blue-400 font-semibold">
+                    <img src="{% static 'iconos/principal.png' %}" alt="icono galería" class="w-10 h-10 object-contain" />
+                    <span>Galería</span>
+                </a>
+                <!-- Opción deshabilitada para LLM -->
+                <a href="#" class="flex items-center gap-2 px-3 py-2 opacity-50 cursor-not-allowed pointer-events-none text-gray-500">
+                    <img src="{% static 'iconos/LLM.png' %}" alt="icono LLM" class="w-10 h-10 object-contain" />
+                    <span>LLM (no disponible)</span>
+                </a>
+            </div>
+            <!-- Botones de usuario (login, logout, registro, nuevo modelo) -->
+            <div class="flex items-center gap-2 ml-auto">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'modelos:add_modelo' %}" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md transition-colors duration-200">Nuevo Modelo</a>
+                    <form method="post" action="{% url 'modelos:logout' %}" class="inline">
+                        {% csrf_token %}
+                        <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-md transition-colors duration-200">Cerrar sesión</button>
+                    </form>
+                {% else %}
+                    <a href="{% url 'modelos:login' %}" 
+                    class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-8 rounded-md transition-colors duration-200 whitespace-nowrap">Iniciar sesión</a>
+                    <a href="{% url 'modelos:signup' %}" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-8 rounded-md transition-colors duration-200">Registrarse</a>
+                {% endif %}
+            </div>
         </div>
+    </nav>
+
+    <!-- MENSAJES: Muestra mensajes de éxito, error o información -->
+    {% if messages %}
+    <div class="max-w-5xl mx-auto mt-6 px-4">
+        {% for message in messages %}
+            <div class="p-4 mb-4 rounded-lg text-white font-medium text-lg tracking-tight
+                {% if message.tags == 'error' %} bg-red-600 border-l-4 border-red-800
+                {% elif message.tags == 'success' %} bg-green-600 border-l-4 border-green-800
+                {% else %} bg-blue-600 border-l-4 border-blue-800
+                {% endif %}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- MAIN: Contenido principal de la página -->
+    <main class="flex-1">
+        {% block content %}{% endblock %}
     </main>
-
-    <!-- Scripts -->
+    
+    <!-- FOOTER: Pie de página con información y derechos -->
+    <footer class="bg-gray-800 dark:bg-gray-900 text-white py-8 mt-10">
+        <div class="max-w-screen-xl mx-auto px-4">
+            <div class="flex flex-wrap justify-between items-start">
+                <div class="mb-4 md:mb-0">
+                    <h2 class="text-2xl font-bold mb-2">CNN Model Explorer</h2>
+                    <p class="text-gray-300 max-w-md">Una herramienta para probar y comparar modelos de redes neuronales convolucionales.</p>
+                </div>
+                <div class="flex items-center">
+                    <span class="text-gray-300">&copy; 2025 CNN Model Explorer. Todos los derechos reservados.</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Botón para alternar modo oscuro -->
+    <button class="fixed right-7 bottom-6 z-50 bg-white dark:bg-primary text-primary dark:text-white rounded-full border-none shadow-lg w-12 h-12 text-xl cursor-pointer transition-all duration-300 hover:bg-primary hover:text-white dark:hover:bg-white dark:hover:text-primary" onclick="toggleDarkMode()" title="Alternar modo oscuro">
+        🌙
+    </button>
+    
+    <!-- Particles.js library -->
+    <script src="{% static 'js/particles.min.js' %}"></script>
+    <!-- Particles configuration -->
+    <script src="{% static 'js/particles-config.js' %}"></script>
+    
     <script>
-        // Menú mobile
-        document.getElementById('mobile-menu-button')?.addEventListener('click', function() {
-            const menu = document.getElementById('mobile-menu-content');
-            if (menu.classList.contains('hidden')) {
-                menu.classList.remove('hidden');
-                menu.classList.add('grid');
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+            if (document.documentElement.classList.contains('dark')) {
+                localStorage.setItem('theme', 'dark');
             } else {
-                menu.classList.add('hidden');
-                menu.classList.remove('grid');
+                localStorage.setItem('theme', 'light');
             }
-        });
-
-        // Cerrar menú mobile al hacer clic en un enlace
-        document.querySelectorAll('#mobile-menu-content a').forEach(link => {
-            link.addEventListener('click', () => {
-                const menu = document.getElementById('mobile-menu-content');
-                menu.classList.add('hidden');
-                menu.classList.remove('grid');
-            });
-        });
-
-        // Marcar enlace activo
-        const currentPath = window.location.pathname;
-        document.querySelectorAll('.nav-button').forEach(link => {
-            if (link.getAttribute('href') === currentPath) {
-                link.classList.add('active');
+            // Reinitialize particles with new theme
+            if (window.reinitializeParticlesOnThemeChange) {
+                window.reinitializeParticlesOnThemeChange();
             }
-        });
-
-        // Efecto de scroll en header
-        window.addEventListener('scroll', function() {
-            const header = document.querySelector('.header-nav');
-            if (window.scrollY > 50) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-        });
-
-        // Animaciones de aparición al hacer scroll
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver(function(entries) {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('fade-in');
-                }
-            });
-        }, observerOptions);
-
-        // Observar elementos para animaciones
-        document.querySelectorAll('.model-card, .bg-white\\/10').forEach(el => {
-            observer.observe(el);
-        });
-
-        // Efecto de carga en botones
-        document.querySelectorAll('.select-button').forEach(button => {
-            button.addEventListener('click', function() {
-                const originalText = this.textContent;
-                this.innerHTML = '<span class="spinner"></span> Cargando...';
-                this.classList.add('loading');
-                
-                // Simular carga
-                setTimeout(() => {
-                    this.textContent = originalText;
-                    this.classList.remove('loading');
-                }, 2000);
-            });
-        });
-
-        // Cerrar menú mobile al hacer clic fuera
-        document.addEventListener('click', function(event) {
-            const menu = document.getElementById('mobile-menu-content');
-            const button = document.getElementById('mobile-menu-button');
-            
-            if (!menu.contains(event.target) && !button.contains(event.target)) {
-                menu.classList.add('hidden');
-                menu.classList.remove('grid');
-            }
-        });
-
-        // Mejorar accesibilidad del teclado
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'Escape') {
-                const menu = document.getElementById('mobile-menu-content');
-                menu.classList.add('hidden');
-                menu.classList.remove('grid');
-            }
-        });
-
-        // Lazy loading para imágenes
-        if ('IntersectionObserver' in window) {
-            const imageObserver = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const img = entry.target;
-                        if (img.dataset.src) {
-                            img.src = img.dataset.src;
-                            img.classList.remove('lazy');
-                            imageObserver.unobserve(img);
-                        }
-                    }
-                });
-            });
-
-            document.querySelectorAll('img[data-src]').forEach(img => {
-                imageObserver.observe(img);
-            });
-        }
-
-        // Enhanced Header Functionality with Logo Section Hide/Show
-        const header = document.querySelector('.header-nav');
-        let lastScrollY = window.scrollY;
-        let ticking = false;
-
-        function updateHeader() {
-            const scrollY = window.scrollY;
-            const scrollThreshold = 100; // Threshold for hiding logo section
-            
-            if (scrollY > scrollThreshold) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-            
-            lastScrollY = scrollY;
-            ticking = false;
-        }
-
-        function requestTick() {
-            if (!ticking) {
-                requestAnimationFrame(updateHeader);
-                ticking = true;
-            }
-        }
-
-        window.addEventListener('scroll', requestTick);
-
-        // Enhanced Mobile Menu
-        const mobileMenuButton = document.getElementById('mobile-menu-button');
-        const mobileMenuContent = document.getElementById('mobile-menu-content');
-        let isMenuOpen = false;
-
-        if (mobileMenuButton && mobileMenuContent) {
-            mobileMenuButton.addEventListener('click', function(e) {
-                e.stopPropagation();
-                isMenuOpen = !isMenuOpen;
-                
-                if (isMenuOpen) {
-                    mobileMenuContent.classList.remove('hidden');
-                    mobileMenuContent.classList.add('grid');
-                    mobileMenuButton.querySelector('svg').style.transform = 'rotate(90deg)';
-                } else {
-                    mobileMenuContent.classList.add('hidden');
-                    mobileMenuContent.classList.remove('grid');
-                    mobileMenuButton.querySelector('svg').style.transform = 'rotate(0deg)';
-                }
-            });
-        }
-
-        // Enhanced Button Interactions
-        document.querySelectorAll('.nav-button, .auth-button').forEach(button => {
-            button.addEventListener('mouseenter', function() {
-                if (!this.classList.contains('loading')) {
-                    this.style.transform = 'translateY(-2px)';
-                }
-            });
-            
-            button.addEventListener('mouseleave', function() {
-                if (!this.classList.contains('loading')) {
-                    this.style.transform = 'translateY(0)';
-                }
-            });
-        });
-
-        // Add active state to current page
-        const headerCurrentPath = window.location.pathname;
-        document.querySelectorAll('.nav-button').forEach(link => {
-            if (link.getAttribute('href') === headerCurrentPath) {
-                link.classList.add('current-page');
-            }
-        });
-
-        // Performance optimizations
-        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        if (prefersReducedMotion) {
-            document.documentElement.style.setProperty('--animation-duration', '0.01ms');
         }
         
-        // Smooth scrolling for internal links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.documentElement.classList.add('dark');
+            }
         });
     </script>
-    
-    <!-- Bloque para JavaScript específico de cada página -->
-    {% block extra_js %}{% endblock %}
 </body>
 </html>

@@ -1,0 +1,152 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% block title %}Dashboard de Rendimiento del Modelo ML{% endblock %}
+
+{% block content %}
+<main class="min-h-screen bg-gray-100 dark:bg-gray-900 transition-colors duration-300 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+        
+        <!-- Header -->
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-6 transition-colors duration-300">
+            <div class="flex items-center justify-between flex-wrap gap-4">
+                <div>
+                    <h1 class="text-4xl font-bold text-primary dark:text-blue-400 mb-2 flex items-center gap-3">
+                        <span class="text-3xl">📊</span> Dashboard de Rendimiento ML
+                    </h1>
+                    <p class="text-gray-600 dark:text-gray-400 text-lg">Análisis completo del entrenamiento y evaluación del modelo de clasificación CNN</p>
+                </div>
+                <div class="bg-success text-white px-6 py-3 rounded-lg font-semibold shadow-md">
+                    <span class="text-xl mr-2">✅</span> Modelo Entrenado
+                </div>
+            </div>
+        </div>
+
+        <!-- Pérdida por Época -->
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 transition-colors duration-300">
+            <div class="bg-primary text-white font-bold text-xl px-6 py-4 rounded-t-lg flex items-center gap-3">
+                <span class="text-xl">📈</span> Evolución de la Pérdida
+            </div>
+            <div class="p-6">
+                <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 mb-6">
+                    <canvas id="lossChart" class="w-full h-64"></canvas>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-blue-50 dark:bg-blue-900 border border-blue-200 dark:border-blue-700 rounded-lg p-4 text-center">
+                        <div class="text-3xl font-bold text-primary dark:text-blue-300 mb-2">0.163</div>
+                        <p class="text-gray-700 dark:text-gray-300 font-semibold">Pérdida Inicial</p>
+                    </div>
+                    <div class="bg-green-50 dark:bg-green-900 border border-green-200 dark:border-green-700 rounded-lg p-4 text-center">
+                        <div class="text-3xl font-bold text-success dark:text-green-300 mb-2">0.023</div>
+                        <p class="text-gray-700 dark:text-gray-300 font-semibold">Pérdida Final</p>
+                    </div>
+                    <div class="bg-orange-50 dark:bg-orange-900 border border-orange-200 dark:border-orange-700 rounded-lg p-4 text-center">
+                        <div class="text-3xl font-bold text-accent dark:text-orange-300 mb-2">85.6%</div>
+                        <p class="text-gray-700 dark:text-gray-300 font-semibold">Reducción</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Métricas Generales -->
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 transition-colors duration-300">
+            <div class="bg-success text-white font-bold text-xl px-6 py-4 rounded-t-lg flex items-center gap-3">
+                <span class="text-xl">🎯</span> Métricas de Rendimiento
+            </div>
+            <div class="p-6">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                    <div class="bg-success text-white rounded-lg p-4 text-center">
+                        <div class="text-2xl font-bold mb-1">99.6%</div>
+                        <div class="text-green-100 font-semibold">Precisión</div>
+                    </div>
+                    <div class="bg-primary text-white rounded-lg p-4 text-center">
+                        <div class="text-2xl font-bold mb-1">99%</div>
+                        <div class="text-blue-100 font-semibold">Recall</div>
+                    </div>
+                    <div class="bg-secondary text-white rounded-lg p-4 text-center">
+                        <div class="text-2xl font-bold mb-1">99%</div>
+                        <div class="text-blue-100 font-semibold">F1-Score</div>
+                    </div>
+                    <div class="bg-accent text-white rounded-lg p-4 text-center">
+                        <div class="text-2xl font-bold mb-1">6,504</div>
+                        <div class="text-orange-100 font-semibold">Muestras</div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                    <canvas id="metricsChart" class="w-full h-64"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rendimiento por Clase -->
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 transition-colors duration-300">
+            <div class="bg-secondary text-white font-bold text-xl px-6 py-4 rounded-t-lg flex items-center gap-3">
+                <span class="text-xl">📊</span> Rendimiento por Clase
+            </div>
+            <div class="p-6">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="bg-gray-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600">
+                                <th class="px-4 py-3 text-left text-gray-700 dark:text-gray-300 font-semibold">Clase</th>
+                                <th class="px-4 py-3 text-center text-gray-700 dark:text-gray-300 font-semibold">Precisión</th>
+                                <th class="px-4 py-3 text-center text-gray-700 dark:text-gray-300 font-semibold">Recall</th>
+                                <th class="px-4 py-3 text-center text-gray-700 dark:text-gray-300 font-semibold">F1-Score</th>
+                                <th class="px-4 py-3 text-center text-gray-700 dark:text-gray-300 font-semibold">Soporte</th>
+                                <th class="px-4 py-3 text-center text-gray-700 dark:text-gray-300 font-semibold">Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody id="classTable" class="divide-y divide-gray-200 dark:divide-gray-600">
+                            <!-- Las filas se llenarán dinámicamente -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Distribución de Clases -->
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 transition-colors duration-300">
+            <div class="bg-accent text-white font-bold text-xl px-6 py-4 rounded-t-lg flex items-center gap-3">
+                <span class="text-xl">🔄</span> Distribución de Clases
+            </div>
+            <div class="p-6">
+                <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                    <canvas id="distributionChart" width="620" height="400" class="w-full"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Matriz de Confusión - Ancho completo -->
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 transition-colors duration-300">
+            <div class="bg-pink text-white font-bold text-xl px-6 py-4 rounded-t-lg flex items-center gap-3">
+                <span class="text-xl">🎭</span> Matriz de Confusión
+            </div>
+            <div class="p-6">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="bg-gray-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600">
+                                <th class="px-3 py-3 text-left text-gray-700 dark:text-gray-300 font-semibold">Verdadero \ Predicho</th>
+                                <th class="px-3 py-3 text-center text-gray-700 dark:text-gray-300 font-semibold">Center</th>
+                                <th class="px-3 py-3 text-center text-gray-700 dark:text-gray-300 font-semibold">Donut</th>
+                                <th class="px-3 py-3 text-center text-gray-700 dark:text-gray-300 font-semibold">Edge-Loc</th>
+                                <th class="px-3 py-3 text-center text-gray-700 dark:text-gray-300 font-semibold">Edge-Ring</th>
+                                <th class="px-3 py-3 text-center text-gray-700 dark:text-gray-300 font-semibold">Loc</th>
+                                <th class="px-3 py-3 text-center text-gray-700 dark:text-gray-300 font-semibold">Near-full</th>
+                                <th class="px-3 py-3 text-center text-gray-700 dark:text-gray-300 font-semibold">Random</th>
+                                <th class="px-3 py-3 text-center text-gray-700 dark:text-gray-300 font-semibold">Scratch</th>
+                                <th class="px-3 py-3 text-center text-gray-700 dark:text-gray-300 font-semibold">None</th>
+                            </tr>
+                        </thead>
+                        <tbody id="confusionMatrix" class="divide-y divide-gray-200 dark:divide-gray-600">
+                            <!-- Las filas se llenarán dinámicamente -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+<script src="{% static 'js/dash.js' %}"></script>
+{% endblock %}

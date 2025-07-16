@@ -1,0 +1,75 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Galería - CNN Model Explorer{% endblock %}
+
+{% block page_header %}
+<div class="container">
+    <div class="text-center mb-12">
+        <h2 class="text-4xl font-bold text-white mb-4">Galería de Imágenes</h2>
+        <p class="text-blue-200 text-lg max-w-3xl mx-auto">
+            Explora las imágenes de muestra y resultados de nuestros modelos CNN.
+        </p>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Imagen 1 -->
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <img src="{% static 'entrenapng/original.png' %}" alt="Imagen Original" class="w-full h-48 object-cover">
+            <div class="p-4">
+                <h3 class="text-lg font-semibold mb-2">Imagen Original</h3>
+                <p class="text-gray-600">Imagen de oblea de silicio sin procesar</p>
+            </div>
+        </div>
+
+        <!-- Imagen 2 -->
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <img src="{% static 'entrenapng/reconstruida.png' %}" alt="Imagen Reconstruida" class="w-full h-48 object-cover">
+            <div class="p-4">
+                <h3 class="text-lg font-semibold mb-2">Imagen Reconstruida</h3>
+                <p class="text-gray-600">Resultado del procesamiento del modelo</p>
+            </div>
+        </div>
+
+        <!-- Imagen 3 -->
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <img src="{% static 'entrenapng/ruido.png' %}" alt="Imagen con Ruido" class="w-full h-48 object-cover">
+            <div class="p-4">
+                <h3 class="text-lg font-semibold mb-2">Imagen con Ruido</h3>
+                <p class="text-gray-600">Ejemplo de imagen con ruido detectado</p>
+            </div>
+        </div>
+
+        <!-- Imagen 4 -->
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <img src="{% static 'entrenapng/wCenter.png' %}" alt="Defecto Centro" class="w-full h-48 object-cover">
+            <div class="p-4">
+                <h3 class="text-lg font-semibold mb-2">Defecto Centro</h3>
+                <p class="text-gray-600">Defecto detectado en el centro de la oblea</p>
+            </div>
+        </div>
+
+        <!-- Imagen 5 -->
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <img src="{% static 'entrenapng/wDonut.png' %}" alt="Defecto Donut" class="w-full h-48 object-cover">
+            <div class="p-4">
+                <h3 class="text-lg font-semibold mb-2">Defecto Donut</h3>
+                <p class="text-gray-600">Patrón de defecto tipo donut</p>
+            </div>
+        </div>
+
+        <!-- Imagen 6 -->
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <img src="{% static 'entrenapng/wEdgeLoc.png' %}" alt="Defecto Borde" class="w-full h-48 object-cover">
+            <div class="p-4">
+                <h3 class="text-lg font-semibold mb-2">Defecto en Borde</h3>
+                <p class="text-gray-600">Defecto localizado en el borde de la oblea</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

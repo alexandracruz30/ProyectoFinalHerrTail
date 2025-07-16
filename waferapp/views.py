@@ -50,7 +50,7 @@ class procesoModeloView(TemplateView):
 
 # Crea una vista simple para home temporalmente
 class HomeView(TemplateView):
-    template_name = "base/index.html"
+    template_name = "base/home.html"
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -124,6 +124,14 @@ class EntrenamientoView(TemplateView):
 class DetallesUsoView(TemplateView):
     """Vista que muestra detalles del uso del modelo CNN."""
     template_name = "modelos/detalles.html"  # ✅ Corregido (era "modelos/modelos/detalles.html")
+
+class GaleriaView(TemplateView):
+    """Vista para mostrar la galería de imágenes."""
+    template_name = "modelos/galeria.html"
+
+class ModeloCreateView(TemplateView):
+    """Vista para crear y registrar un nuevo modelo CNN."""
+    template_name = "modelos/add_modelo.html"
 
 class PruebasView(TemplateView):
     """Vista para realizar pruebas con el modelo CNN entrenado."""
