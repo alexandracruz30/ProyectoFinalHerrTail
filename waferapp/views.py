@@ -16,11 +16,8 @@ from django.views.generic.edit import FormView
 from django.contrib.auth.views import LoginView, LogoutView
 from tensorflow.keras.models import load_model
 
-# ❌ COMENTA ESTAS LÍNEAS QUE CAUSAN ERROR:
-# from .models import ModeloCNN  
-# from .forms import ModeloCNNForm  
 
-# Define la ruta pero NO cargues el modelo aquí
+# Define la ruta
 MODEL_PATH = os.path.join(settings.BASE_DIR, 'modelos', 'mi_modelo.h5')
 class_labels = [
     "Center", "Donut", "Edge-Loc", "Edge-Ring", "Loc",
@@ -28,34 +25,21 @@ class_labels = [
 ]
 
 class DashboardView(TemplateView):
-    template_name = "dash/dash.html"  # ✅ Corregido
+    template_name = "dash/dash.html"  
 
 class procesoModeloView(TemplateView):
     """Vista que muestra la plantilla para el entrenamiento del modelo."""
-    template_name = "modelos/procesoModelo.html"  # ✅ Corregido
+    template_name = "modelos/procesoModelo.html"  
 
-# Comenta estas vistas temporalmente
-# class HomeView(ListView):
-#     """Vista que muestra una lista de modelos CNN registrados en la base de datos."""
-#     model = ModeloCNN
-#     template_name = "base/index.html"  # ✅ Corregido
-#     context_object_name = "modelos"
 
-# class ModeloCreateView(CreateView):
-#     """Vista para crear y registrar un nuevo modelo CNN."""
-#     model = ModeloCNN
-#     form_class = ModeloCNNForm
-#     template_name = "modelos/modelos/add_modelo.html"
-#     success_url = reverse_lazy('modelos:home')
-
-# Crea una vista simple para home temporalmente
+# Crea una vista simple para home
 class HomeView(TemplateView):
     template_name = "base/index.html"
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         
-        # Datos de modelos predefinidos con información más completa
+        # Datos de modelos predefinidos
         context['modelos'] = [
             {
                 'nombre': 'InceptionV3',
@@ -89,7 +73,7 @@ class SignUpView(FormView):
     """Vista para el registro de nuevos usuarios utilizando el formulario por defecto de Django."""
     template_name = 'usuario/signup.html'
     form_class = UserCreationForm
-    success_url = reverse_lazy('waferapp:home')  # ✅ Cambiado
+    success_url = reverse_lazy('waferapp:home')  
 
     def form_valid(self, form):
         user = form.save()
@@ -104,7 +88,7 @@ class UserLoginView(LoginView):
     """Vista para iniciar sesión de usuario autenticado."""
     template_name = 'usuario/login.html'
     redirect_authenticated_user = True
-    success_url = reverse_lazy('waferapp:home')  # ✅ Cambiado
+    success_url = reverse_lazy('waferapp:home')  
 
     def get_success_url(self):
         return str(self.success_url)
@@ -115,7 +99,7 @@ class UserLoginView(LoginView):
 
 class UserLogoutView(LogoutView):
     """Vista para cerrar sesión del usuario."""
-    next_page = reverse_lazy('waferapp:home')  # ✅ Cambiado
+    next_page = reverse_lazy('waferapp:home') 
 
 class EntrenamientoView(TemplateView):
     """Vista que muestra la plantilla para el entrenamiento del modelo."""
