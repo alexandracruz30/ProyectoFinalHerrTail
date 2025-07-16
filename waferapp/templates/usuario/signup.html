@@ -1,0 +1,214 @@
+{% extends 'base/base.html' %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block content %}
+
+<div class="bg-white min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8 animate-fadeInUp">
+        <!-- Header con logo y título -->
+        <div class="text-center">
+            <div class="flex justify-center mb-6">
+                <div class="bg-primary dark:bg-blue-600 p-4 rounded-full shadow-lg">
+                    <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
+                    </svg>
+                </div>
+            </div>
+            <h2 class="text-3xl font-bold text-gray-900 dark:text-white">
+                Crear Cuenta
+            </h2>
+            <p class="mt-2 text-sm text-blue-800 dark:text-blue-200 font-bold">
+                Únete a CNN Model Explorer y comienza a explorar
+            </p>
+        </div>
+
+        <!-- Formulario de registro -->
+        <div class="bg-white dark:bg-gray-800 py-8 px-6 shadow-xl rounded-lg border border-gray-200 dark:border-gray-700">
+            <form method="post" class="space-y-6" autocomplete="off" id="signupForm">
+                {% csrf_token %}
+                
+                <!-- Errores generales del formulario -->
+                {% for error in form.non_field_errors %}
+                    <div class="animate-shake bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 px-4 py-3 rounded-md">
+                        {{ error }}
+                    </div>
+                {% endfor %}
+
+                <!-- Campos del formulario -->
+                {% for field in form %}
+                <div class="space-y-2">
+                    <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700 dark:text-gray-300 {% if field.field.required %}after:content-['*'] after:text-red-500 after:font-bold{% endif %}">
+                        {{ field.label }}
+                    </label>
+                    {{ field|add_class:"w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white transition-all duration-200 focus:-translate-y-0.5 focus:shadow-lg" }}
+                    {% if field.errors %}
+                        <p class="animate-shake text-sm text-red-600 dark:text-red-400">{{ field.errors.0 }}</p>
+                    {% endif %}
+                    <!-- Texto de ayuda para campos específicos -->
+                    {% if field.name == 'password1' %}
+                        <p class="text-xs text-gray-500 dark:text-gray-400">
+                            <i class="fas fa-info-circle mr-1"></i>
+                            Tu contraseña debe tener al menos 8 caracteres y no ser muy común.
+                        </p>
+                    {% elif field.name == 'password2' %}
+                        <p class="text-xs text-gray-500 dark:text-gray-400">
+                            <i class="fas fa-check-circle mr-1"></i>
+                            Ingresa la misma contraseña para confirmar.
+                        </p>
+                    {% elif field.name == 'username' %}
+                        <p class="text-xs text-gray-500 dark:text-gray-400">
+                            <i class="fas fa-user mr-1"></i>
+                            Solo letras, números y los caracteres @/./+/-/_ están permitidos.
+                        </p>
+                    {% elif field.name == 'email' %}
+                        <p class="text-xs text-gray-500 dark:text-gray-400">
+                            <i class="fas fa-envelope mr-1"></i>
+                            Usaremos tu email para notificaciones importantes.
+                        </p>
+                    {% endif %}
+                </div>
+                {% endfor %}
+
+                <!-- Términos y condiciones -->
+                <div class="flex items-start">
+                    <div class="flex items-center h-5">
+                        <input type="checkbox" id="terms" name="terms" required class="h-4 w-4 text-primary focus:ring-primary border-gray-300 dark:border-gray-600 rounded dark:bg-gray-700">
+                    </div>
+                    <div class="ml-3 text-sm">
+                        <label for="terms" class="text-gray-700 dark:text-gray-300">
+                            Acepto los 
+                            <a href="#" class="text-primary dark:text-blue-400 hover:text-secondary dark:hover:text-blue-300 transition-colors duration-200">
+                                términos y condiciones
+                            </a> 
+                            y la 
+                            <a href="#" class="text-primary dark:text-blue-400 hover:text-secondary dark:hover:text-blue-300 transition-colors duration-200">
+                                política de privacidad
+                            </a>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Indicador de fortaleza de contraseña -->
+                <div id="passwordStrength" class="hidden">
+                    <div class="text-xs text-gray-600 dark:text-gray-400 mb-1">Fortaleza de la contraseña:</div>
+                    <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                        <div id="strengthBar" class="h-2 rounded-full transition-all duration-300"></div>
+                    </div>
+                    <div id="strengthText" class="text-xs mt-1"></div>
+                </div>
+
+                <!-- Botón de submit -->
+                <div>
+                    <button type="submit" class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover:bg-secondary dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all duration-200 shadow-lg hover:shadow-xl hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed">
+                        <span class="absolute left-0 inset-y-0 flex items-center pl-3">
+                            <svg class="h-5 w-5 text-white group-hover:text-gray-200" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z"/>
+                            </svg>
+                        </span>
+                        <span id="btnText">CREAR CUENTA</span>
+                    </button>
+                </div>
+            </form>
+
+            <!-- Link de inicio de sesión -->
+            <div class="mt-6 text-center">
+                <p class="text-sm text-gray-600 dark:text-gray-400">
+                    ¿Ya tienes una cuenta?
+                    <a href="{% url 'modelos:login' %}" class="font-medium text-primary dark:text-blue-400 hover:text-secondary dark:hover:text-blue-300 transition-colors duration-200 ml-1">
+                        INICIAR SESIÓN
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Password strength indicator
+function checkPasswordStrength(password) {
+    let strength = 0;
+    let feedback = [];
+    
+    if (password.length >= 8) strength += 1;
+    else feedback.push('Al menos 8 caracteres');
+    
+    if (/[a-z]/.test(password)) strength += 1;
+    else feedback.push('Una letra minúscula');
+    
+    if (/[A-Z]/.test(password)) strength += 1;
+    else feedback.push('Una letra mayúscula');
+    
+    if (/[0-9]/.test(password)) strength += 1;
+    else feedback.push('Un número');
+    
+    if (/[^A-Za-z0-9]/.test(password)) strength += 1;
+    else feedback.push('Un carácter especial');
+    
+    return { strength, feedback };
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const passwordField = document.querySelector('input[name="password1"]');
+    const strengthIndicator = document.getElementById('passwordStrength');
+    const strengthBar = document.getElementById('strengthBar');
+    const strengthText = document.getElementById('strengthText');
+    
+    if (passwordField) {
+        passwordField.addEventListener('input', function() {
+            const password = this.value;
+            if (password.length > 0) {
+                strengthIndicator.classList.remove('hidden');
+                const { strength, feedback } = checkPasswordStrength(password);
+                
+                // Update bar
+                const percentage = (strength / 5) * 100;
+                strengthBar.style.width = percentage + '%';
+                
+                // Update colors and text
+                if (strength <= 2) {
+                    strengthBar.className = 'h-2 rounded-full transition-all duration-300 bg-red-500';
+                    strengthText.textContent = 'Débil: ' + feedback.slice(0, 2).join(', ');
+                    strengthText.className = 'text-xs mt-1 text-red-500';
+                } else if (strength <= 3) {
+                    strengthBar.className = 'h-2 rounded-full transition-all duration-300 bg-yellow-500';
+                    strengthText.textContent = 'Media: ' + (feedback.length > 0 ? feedback.slice(0, 1).join(', ') : 'Mejorando');
+                    strengthText.className = 'text-xs mt-1 text-yellow-500';
+                } else {
+                    strengthBar.className = 'h-2 rounded-full transition-all duration-300 bg-green-500';
+                    strengthText.textContent = 'Fuerte: ¡Excelente contraseña!';
+                    strengthText.className = 'text-xs mt-1 text-green-500';
+                }
+            } else {
+                strengthIndicator.classList.add('hidden');
+            }
+        });
+    }
+});
+
+// Form submission
+document.getElementById('signupForm').addEventListener('submit', function(e) {
+    const btn = this.querySelector('button[type="submit"]');
+    const btnText = document.getElementById('btnText');
+    const termsCheckbox = document.getElementById('terms');
+    
+    if (!termsCheckbox.checked) {
+        e.preventDefault();
+        alert('Debes aceptar los términos y condiciones para continuar.');
+        return;
+    }
+    
+    btn.disabled = true;
+    btn.classList.add('opacity-50', 'cursor-not-allowed');
+    btnText.innerHTML = '<div class="inline-block animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>CREANDO CUENTA...';
+    
+    // Re-enable after 5 seconds in case of no response
+    setTimeout(() => {
+        btn.disabled = false;
+        btn.classList.remove('opacity-50', 'cursor-not-allowed');
+        btnText.textContent = 'CREAR CUENTA';
+    }, 5000);
+});
+</script>
+
+{% endblock %}
