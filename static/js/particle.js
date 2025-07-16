@@ -1,4 +1,4 @@
-// particles-bg.js
+ particles-bg.js
 (function(){
     const colors = [
         'particle-blue', 'particle-orange', 'particle-green', 'particle-purple', 'particle-gray'

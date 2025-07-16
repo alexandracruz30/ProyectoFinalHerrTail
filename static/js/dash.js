@@ -264,26 +264,14 @@
             row.forEach((cell, cellIndex) => {
                 const td = document.createElement('td');
                 td.textContent = cell;
-                td.className = 'px-3 py-3 text-center font-semibold text-sm';
+                td.className = 'px-3 py-3 text-center font-semibold text-sm text-gray-700 dark:text-gray-300';
                 
                 if (cellIndex === 0) {
                     // Primera columna (etiquetas de fila)
-                    td.className = 'px-3 py-3 text-left bg-gray-100 dark:bg-gray-600 text-gray-800 dark:text-gray-200 font-bold border-r border-gray-300 dark:border-gray-500';
-                } else if (cellIndex === rowIndex) {
-                    // Diagonal principal - resaltada con el color success del proyecto
-                    td.className += ' bg-success text-white font-bold text-lg border-2 border-green-300 dark:border-green-500';
-                    td.style.backgroundColor = '#00c37e'; // Color success del proyecto
-                    td.style.color = 'white';
-                    td.style.fontWeight = 'bold';
-                    td.style.fontSize = '1.1em';
-                } else if (cell > 0 && cellIndex > 0) {
-                    // Valores fuera de la diagonal (errores) - resaltados con el color pink del proyecto
-                    td.className += ' bg-pink text-white font-semibold border border-red-300 dark:border-red-500';
-                    td.style.backgroundColor = '#ba3259'; // Color pink del proyecto
-                    td.style.color = 'white';
-                } else if (cellIndex > 0) {
-                    // Ceros - color neutral
-                    td.className += ' text-gray-500 dark:text-gray-400';
+                    td.className = 'px-3 py-3 text-left text-gray-800 dark:text-gray-200 font-bold';
+                } else if (typeof cell === 'number' && cell >= 600) {
+                    // Resaltar números grandes (600 o más) con fondo azul
+                    td.className = 'px-3 py-3 text-center font-bold text-lg bg-blue-100 dark:bg-blue-800 text-blue-800 dark:text-blue-100 border border-blue-200 dark:border-blue-600';
                 }
                 
                 tr.appendChild(td);
