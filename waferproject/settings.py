@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'waferapp',  # Your app
     'tailwind',  # Tailwind CSS integration    
+    'widget_tweaks',  # ← Agrega esta línea
 ]
 
 MIDDLEWARE = [

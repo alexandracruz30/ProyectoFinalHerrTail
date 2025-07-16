@@ -104,7 +104,7 @@ class UserLoginView(LoginView):
     """Vista para iniciar sesión de usuario autenticado."""
     template_name = 'usuario/login.html'
     redirect_authenticated_user = True
-    success_url = reverse_lazy('waferapp:home')  # ✅ Cambiado
+    success_url = reverse_lazy('modelos/home.html')  # ✅ Cambiado
 
     def get_success_url(self):
         return str(self.success_url)
