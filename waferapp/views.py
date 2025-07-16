@@ -15,6 +15,9 @@ from django.views.generic import ListView, CreateView, TemplateView
 from django.views.generic.edit import FormView
 from django.contrib.auth.views import LoginView, LogoutView
 from tensorflow.keras.models import load_model
+from django.contrib.auth.mixins import LoginRequiredMixin
+from .models import HistorialPrediccion
+
 
 
 # Define la ruta
@@ -161,4 +164,14 @@ class PruebasView(TemplateView):
             'image_preview': image_preview,
         }
         return render(request, self.template_name, context)
+    
+class HistorialView(LoginRequiredMixin, ListView):
+        model = HistorialPrediccion
+        template_name = 'pruebas/historial.html'
+        context_object_name = 'historial'
+        
+        def get_queryset(self):
+        # Solo muestra el historial del usuario autenticado, ordenado por fecha descendente
+            return HistorialPrediccion.objects.filter(usuario=self.request.user).order_by('-fecha')
+
 

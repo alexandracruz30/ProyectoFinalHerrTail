@@ -6,12 +6,12 @@ from .views import (
     SignUpView,
     UserLoginView,
     UserLogoutView,
-    # ModeloCreateView,  # ❌ ELIMINA ESTA LÍNEA
     EntrenamientoView,
     DetallesUsoView,
     PruebasView,
     procesoModeloView,
     DashboardView,
+    HistorialView,
 )
 
 app_name = 'waferapp'
@@ -27,4 +27,5 @@ urlpatterns = [
     path('zona-pruebas/', PruebasView.as_view(), name='zona_pruebas'),
     path('proceso/', procesoModeloView.as_view(), name='modeloView'),
     path('dashboard/', DashboardView.as_view(), name='dash'),
+    path('historial/', HistorialView.as_view(), name='historial'),
 ]

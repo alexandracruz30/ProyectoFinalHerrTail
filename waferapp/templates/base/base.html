@@ -436,7 +436,13 @@
                     <a href="{% url 'waferapp:dash' %}" class="nav-button {% if request.resolver_match.url_name == 'dash' %}current-page{% endif %}">
                         <img src="{% static 'iconos/data.png' %}" alt="Dashboard">
                         <span>Dashboard</span>
-                    </a>
+                    </a> 
+                    <a href="{% url 'waferapp:historial' %}" class="nav-button {% if request.resolver_match.url_name == 'historial' %}current-page{% endif %}">
+                        <img src="{% static 'iconos/historial.png' %}" alt="Historial">
+                            <span>Historial</span>
+</a>
+
+                    
                 </nav>
             </div>
             
@@ -474,6 +480,11 @@
                         <a href="{% url 'waferapp:dash' %}" class="nav-button">
                             <img src="{% static 'iconos/data.png' %}" alt="Dashboard">
                             <span>Dashboard</span>
+                        <a href="{% url 'waferapp:historial' %}" class="nav-button">
+                            <img src="{% static 'iconos/historial.png' %}" alt="Historial">
+                            <span>Historial</span>
+</a>
+
                         </a>
                     </div>
                 </div>

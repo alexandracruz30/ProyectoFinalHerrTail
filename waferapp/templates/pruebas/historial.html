@@ -1,0 +1,31 @@
+{% extends 'base/base.html' %}
+{% block title %}Historial{% endblock %}
+
+{% block content %}
+<h2>🧾 Historial de predicciones</h2>
+
+{% if historial %}
+<table>
+    <thead>
+        <tr>
+            <th>Imagen</th>
+            <th>Resultado</th>
+            <th>Probabilidad</th>
+            <th>Fecha</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in historial %}
+        <tr>
+            <td><img src="{{ item.imagen.url }}" width="80"></td>
+            <td>{{ item.resultado }}</td>
+            <td>{{ item.probabilidad|floatformat:2 }}%</td>
+            <td>{{ item.fecha|date:"d M Y H:i" }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No hay predicciones registradas aún.</p>
+{% endif %}
+{% endblock %}
