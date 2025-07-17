@@ -101,7 +101,8 @@ document.addEventListener("DOMContentLoaded", function() {
         input.value = "";
         input.style.height = 'auto';
         sendButton.disabled = true;
-        sendButton.className = sendButton.className.replace('gradient-primary', 'bg-gray-300') + ' cursor-not-allowed';
+        sendButton.classList.remove('gradient-primary');
+        sendButton.classList.add('bg-gray-300', 'cursor-not-allowed');
         
         showLoadingMessage();
 
@@ -133,7 +134,8 @@ document.addEventListener("DOMContentLoaded", function() {
         }
         
         sendButton.disabled = false;
-        sendButton.className = sendButton.className.replace('bg-gray-300 cursor-not-allowed', 'gradient-primary');
+        sendButton.classList.remove('bg-gray-300', 'cursor-not-allowed');
+        sendButton.classList.add('gradient-primary');
     });
 
     // Grabación de audio
