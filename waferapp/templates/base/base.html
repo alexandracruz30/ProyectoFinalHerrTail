@@ -139,7 +139,7 @@
                 </a>
                 <!-- Enlace a la galería -->
                 <a href="{% url 'modelos:galeria' %}" class="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-blue-50 dark:hover:bg-gray-700 transition-all duration-200 text-primary dark:text-blue-400 font-semibold">
-                    <img src="{% static 'iconos/principal.png' %}" alt="icono galería" class="w-10 h-10 object-contain" />
+                    <img src="{% static 'iconos/galeria.png' %}" alt="icono galería" class="w-10 h-10 object-contain" />
                     <span>Galería</span>
                 </a>
                 <!-- Enlace al historial -->
@@ -150,10 +150,10 @@
                 </a>
                 {% endif %}
                 <!-- Opción deshabilitada para LLM -->
-                <a href="#" class="flex items-center gap-2 px-3 py-2 opacity-50 cursor-not-allowed pointer-events-none text-gray-500">
-                    <img src="{% static 'iconos/LLM.png' %}" alt="icono LLM" class="w-10 h-10 object-contain" />
-                    <span>LLM (no disponible)</span>
-                </a>
+<a href="{% url 'modelos:llm' %}" class="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-blue-50 dark:hover:bg-gray-700 transition-all duration-200 text-primary dark:text-blue-400 font-semibold">
+    <img src="{% static 'iconos/LLM.png' %}" alt="icono LLM" class="w-10 h-10 object-contain" />
+    <span>LLM</span>
+</a>
             </div>
             <!-- Botones de usuario (login, logout, registro, nuevo modelo) -->
             <div class="flex items-center gap-2 ml-auto">

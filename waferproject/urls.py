@@ -27,6 +27,7 @@ urlpatterns = [
     # path("__reload__/", include("django_browser_reload.urls")),  # ❌ COMENTA ESTA LÍNEA
 ]
 
-# Para servir archivos estáticos en desarrollo
+# Para servir archivos estáticos y media en desarrollo
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.BASE_DIR / 'static')
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

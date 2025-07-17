@@ -18,7 +18,7 @@
         <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-600">
             <thead class="bg-blue-100 dark:bg-gray-700 text-gray-900 dark:text-white">
                 <tr>
-                    <th class="px-6 py-3 text-left text-sm font-semibold uppercase tracking-wider"> Imagen</th>
+                    <th class="px-6 py-3 text-left text-sm font-semibold uppercase tracking-wider">Imagen</th>
                     <th class="px-6 py-3 text-left text-sm font-semibold uppercase tracking-wider">Clase</th>
                     <th class="px-6 py-3 text-left text-sm font-semibold uppercase tracking-wider">Probabilidad</th>
                     <th class="px-6 py-3 text-left text-sm font-semibold uppercase tracking-wider">Modelo</th>
@@ -26,14 +26,14 @@
                 </tr>
             </thead>
             <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-600">
-                {% for c in clasificaciones %}
+                {% for c in historial %}
                 <tr class="hover:bg-blue-50 dark:hover:bg-gray-700 transition duration-200">
                     <td class="px-6 py-4 whitespace-nowrap">
                         <img src="{{ c.imagen.url }}" alt="img" class="w-16 h-16 object-cover rounded-md border border-gray-300 dark:border-gray-600">
                     </td>
-                    <td class="px-6 py-4 text-blue-600 dark:text-blue-300 font-semibold text-lg">{{ c.clase }}</td>
+                    <td class="px-6 py-4 text-blue-600 dark:text-blue-300 font-semibold text-lg">{{ c.resultado }}</td>
                     <td class="px-6 py-4 text-gray-800 dark:text-gray-100">{{ c.probabilidad|floatformat:2 }}%</td>
-                    <td class="px-6 py-4 text-gray-800 dark:text-gray-100">{{ c.modelo_usado }}</td>
+                    <td class="px-6 py-4 text-gray-800 dark:text-gray-100">CNN Personalizado</td>
                     <td class="px-6 py-4 text-gray-600 dark:text-gray-300">{{ c.fecha|date:"d/m/Y H:i" }}</td>
                 </tr>
                 {% empty %}
@@ -49,4 +49,5 @@
 </div>
 
 {% endblock %}
+
 
