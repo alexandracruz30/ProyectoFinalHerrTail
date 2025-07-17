@@ -51,12 +51,7 @@
                 <div class="p-6">
                     <div class="flex flex-col items-center justify-center">
                         {% if image_preview %}
-                            <img src="data:image/png;base64,{{ image_preview }}" alt="Imagen analizada" class="w-full max-w-xs h-64 object-contain bg-gray-100 dark:bg-gray-700 rounded-lg">
-                            {% if resultado %}
-                                <div class="mt-4 bg-blue-50 dark:bg-gray-700 border-l-4 border-blue-500 px-4 py-3 rounded-lg">
-                                    <strong>Predicción:</strong> {{ resultado }}
-                                </div>
-                            {% endif %}
+                            <img src="{{ image_preview }}" alt="Imagen analizada" class="w-full max-w-xs h-64 object-contain bg-gray-100 dark:bg-gray-700 rounded-lg">
                         {% else %}
                             <div class="flex flex-col items-center justify-center h-64 text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 rounded-lg">
                                 <span class="text-4xl mb-2">📷</span>
