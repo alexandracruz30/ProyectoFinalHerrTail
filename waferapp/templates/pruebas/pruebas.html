@@ -1,107 +1,99 @@
 {% extends 'base/base.html' %}
 {% load static %}
 {% block content %}
-<script src="{% static 'js/pruebas.js' %}"></script>
-
 <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
     <h2 class="text-3xl lg:text-4xl font-extrabold text-blue-900 dark:text-blue-100 mb-8 flex items-center gap-3 tracking-tight">
         <span class="text-3xl lg:text-4xl">🧪</span> Zona de Pruebas
     </h2>
-    
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <!-- Columna izquierda: Subir imagen y vista de imagen -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Columna izquierda: Subir imagen y previsualización -->
         <div class="space-y-6">
             <!-- Subir imagen -->
-            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 transition-colors duration-300">
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700">
                 <div class="bg-blue-600 dark:bg-blue-700 text-white font-bold text-lg px-5 py-3 rounded-t-2xl flex items-center gap-3">
                     <span class="text-lg">&#128228;</span> Subir Imagen
                 </div>
                 <div class="p-6">
                     <form method="post" enctype="multipart/form-data" id="form-prediccion" autocomplete="off">
                         {% csrf_token %}
-                        <label class="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-blue-300 dark:border-blue-600 rounded-xl cursor-pointer bg-blue-50 dark:bg-gray-700 hover:bg-blue-100 dark:hover:bg-gray-600 transition-all duration-300" for="file-input">
-                            <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                        <label class="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-blue-300 dark:border-blue-600 rounded-xl cursor-pointer bg-blue-50 dark:bg-gray-700 hover:bg-blue-100 dark:hover:bg-gray-600 transition-all duration-300" for="file-input" id="dropzone-label">
+                            <div class="flex flex-col items-center justify-center pt-5 pb-6" id="dropzone-text">
                                 <span class="text-4xl text-blue-500 dark:text-blue-400 mb-2">&#9729;</span>
-                                <div class="text-center" id="dropzone-text">
-                                    <p class="mb-2 text-sm text-gray-700 dark:text-gray-300">
-                                        <span class="font-semibold">Arrastra tu imagen aquí o haz clic para seleccionar</span>
-                                    </p>
-                                    <p class="text-xs text-gray-500 dark:text-gray-400">Formatos soportados: JPG, PNG, TIFF</p>
+                                <div class="text-center">
+                                    Arrastra tu imagen aquí o haz clic para seleccionar<br>
+                                    <span class="text-xs text-gray-500 dark:text-gray-400">Formatos soportados: JPG, PNG, TIFF</span>
                                 </div>
+                            </div>
+                            <div id="preview-container" class="w-full text-center mt-2 hidden">
+                                <img id="image-preview" src="" alt="Vista previa" class="max-w-full max-h-52 rounded-lg mx-auto">
                             </div>
                             <input id="file-input" type="file" name="uploaded_image" accept="image/*" required class="hidden">
                         </label>
-                        <button class="w-full mt-4 bg-pink-600 hover:bg-pink-700 dark:bg-pink-700 dark:hover:bg-pink-800 text-white font-bold py-3 px-4 rounded-lg transition-colors duration-300 shadow-md hover:shadow-lg flex items-center justify-center gap-2" type="submit">
-                            <span>🎤</span> Predecir
-                        </button>
+                        <div class="flex gap-2 mt-4">
+                            <button type="button" id="btn-cancelar" class="hidden bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 font-semibold py-2 px-4 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-all duration-200">
+                                <span>❌</span> Cancelar
+                            </button>
+                            <button class="bg-pink-600 hover:bg-pink-700 dark:bg-pink-700 dark:hover:bg-pink-800 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300 shadow-md hover:shadow-lg flex items-center gap-2 disabled:opacity-50" type="submit" id="btn-predecir" disabled>
+                                <span>🔍</span> Predecir
+                            </button>
+                        </div>
                     </form>
                     {% if error %}
                         <div class="mt-4 bg-red-100 dark:bg-red-900 border border-red-400 dark:border-red-600 text-red-700 dark:text-red-200 px-4 py-3 rounded-lg">{{ error }}</div>
                     {% endif %}
                 </div>
             </div>
-            
-            <!-- Vista de imagen -->
-            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 transition-colors duration-300">
+            <!-- Imagen analizada -->
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700">
                 <div class="bg-gray-100 dark:bg-gray-700 text-blue-900 dark:text-blue-100 font-bold text-lg px-5 py-3 rounded-t-2xl flex items-center gap-3 border-b border-gray-200 dark:border-gray-600">
-                    <span class="text-lg">🖼️</span> Imagen
+                    <span class="text-lg">🖼️</span> Imagen Analizada
                 </div>
                 <div class="p-6">
-                    {% if image_preview %}
-                        <div class="relative">
-                            <img src="{{ image_preview }}" alt="Imagen subida" class="w-full h-64 object-contain bg-gray-100 dark:bg-gray-700 rounded-lg">
+                    <div class="flex flex-col items-center justify-center">
+                        {% if image_preview %}
+                            <img src="data:image/png;base64,{{ image_preview }}" alt="Imagen analizada" class="w-full max-w-xs h-64 object-contain bg-gray-100 dark:bg-gray-700 rounded-lg">
                             {% if resultado %}
                                 <div class="mt-4 bg-blue-50 dark:bg-gray-700 border-l-4 border-blue-500 px-4 py-3 rounded-lg">
-                                    <p class="text-blue-900 dark:text-blue-100">
-                                        <strong>Predicción:</strong> {{ resultado }}
-                                    </p>
+                                    <strong>Predicción:</strong> {{ resultado }}
                                 </div>
                             {% endif %}
-                        </div>
-                    {% else %}
-                        <div class="flex flex-col items-center justify-center h-64 text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 rounded-lg">
-                            <span class="text-4xl mb-2">📷</span>
-                            <div class="text-center">No hay imagen cargada</div>
-                        </div>
-                    {% endif %}
+                        {% else %}
+                            <div class="flex flex-col items-center justify-center h-64 text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 rounded-lg">
+                                <span class="text-4xl mb-2">📷</span>
+                                <div>No hay imagen analizada</div>
+                            </div>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>
-        
-        <!-- Cuadro de resultados -->
-        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 transition-colors duration-300">
+        <!-- Columna central: Resultados detallados -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 flex flex-col">
             <div class="bg-green-600 dark:bg-green-700 text-white font-bold text-lg px-5 py-3 rounded-t-2xl flex items-center gap-3">
-                <span class="text-lg">&#128196;</span> Resultados
+                <span class="text-lg">&#128196;</span> Resultados Detallados
             </div>
-            <div class="p-6">
+            <div class="p-6 flex-1 flex flex-col justify-center">
                 {% if resultado %}
                     <div class="space-y-6">
-                        {% if image_preview %}
-                            <div class="flex justify-center">
-                                <img src="{{ image_preview }}" alt="Imagen resultado" class="w-48 h-48 object-contain bg-gray-100 dark:bg-gray-700 rounded-lg">
+                        <div class="bg-green-50 dark:bg-green-900 border border-green-200 dark:border-green-700 rounded-lg p-4">
+                            <p class="text-green-900 dark:text-green-100">
+                                <strong>Predicción del modelo:</strong><br>
+                                <span class="text-xl font-bold text-green-700 dark:text-green-300">{{ resultado }}</span>
+                            </p>
+                        </div>
+                        {% if probabilities %}
+                            <div class="bg-blue-50 dark:bg-blue-900 border border-blue-200 dark:border-blue-700 rounded-lg p-4">
+                                <h4 class="text-lg font-semibold text-blue-900 dark:text-blue-100 mb-3">Probabilidades:</h4>
+                                <ul class="space-y-2">
+                                    {% for label, prob in probabilities.items %}
+                                        <li class="flex justify-between items-center p-2 bg-white dark:bg-gray-800 rounded-lg border border-blue-200 dark:border-blue-700">
+                                            <strong class="text-gray-700 dark:text-gray-300">{{ label }}:</strong>
+                                            <span class="text-blue-600 dark:text-blue-400 font-mono">{{ prob|floatformat:3 }}</span>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
                             </div>
                         {% endif %}
-                        <div class="space-y-4">
-                            <div class="bg-green-50 dark:bg-green-900 border border-green-200 dark:border-green-700 rounded-lg p-4">
-                                <p class="text-green-900 dark:text-green-100">
-                                    <strong>Predicción del modelo:</strong><br>
-                                    <span class="text-xl font-bold text-green-700 dark:text-green-300">{{ resultado }}</span>
-                                </p>
-                            </div>
-                            {% if probabilities %}
-                                <div class="bg-blue-50 dark:bg-blue-900 border border-blue-200 dark:border-blue-700 rounded-lg p-4">
-                                    <h4 class="text-lg font-semibold text-blue-900 dark:text-blue-100 mb-3">Probabilidades:</h4>
-                                    <ul class="space-y-2">
-                                        {% for label, prob in probabilities.items %}
-                                            <li class="flex justify-between items-center p-2 bg-white dark:bg-gray-800 rounded-lg border border-blue-200 dark:border-blue-700">
-                                                <strong class="text-gray-700 dark:text-gray-300">{{ label }}:</strong>
-                                                <span class="text-blue-600 dark:text-blue-400 font-mono">{{ prob|floatformat:3 }}</span>
-                                            </li>
-                                        {% endfor %}
-                                    </ul>
-                                </div>
-                            {% endif %}
-                        </div>
                     </div>
                 {% else %}
                     <div class="flex flex-col items-center justify-center h-64 text-gray-500 dark:text-gray-400">
@@ -112,6 +104,115 @@
                 {% endif %}
             </div>
         </div>
+        <!-- Columna derecha: Historial de imágenes -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 flex flex-col">
+            <div class="bg-yellow-500 dark:bg-yellow-700 text-white font-bold text-lg px-5 py-3 rounded-t-2xl flex items-center gap-3">
+                <span>🕓</span> Historial de Imágenes 
+                <span class="ml-2">{% if historial %}({{ historial|length }}){% endif %}</span>
+            </div>
+            <div class="p-6 flex-1 flex flex-col">
+                {% if historial %}
+                    <ul class="space-y-4">
+                        {% for img in historial %}
+                            <li class="flex gap-4 items-center bg-gray-50 dark:bg-gray-900 rounded-lg p-2 border border-gray-200 dark:border-gray-700">
+                                <a href="{{ img.imagen.url }}" target="_blank" class="block">
+                                    <img src="{{ img.imagen.url }}" alt="Imagen previa" class="w-16 h-16 object-cover rounded shadow">
+                                </a>
+                                <div class="flex-1">
+                                    <small class="block text-gray-500 dark:text-gray-400">{{ img.fecha_subida|date:"d/m/Y H:i" }}</small>
+                                    {% if img.resultado %}
+                                        <div class="text-sm text-gray-700 dark:text-gray-200">
+                                            <strong>Predicción:</strong> {{ img.resultado }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <div class="flex flex-col items-center justify-center h-64 text-gray-500 dark:text-gray-400">
+                        <span class="text-4xl mb-2">📅</span>
+                        <div>No hay imágenes en el historial</div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
     </div>
 </main>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const fileInput = document.getElementById('file-input');
+    const btnPredecir = document.getElementById('btn-predecir');
+    const previewContainer = document.getElementById('preview-container');
+    const imagePreview = document.getElementById('image-preview');
+    const btnCancelar = document.getElementById('btn-cancelar');
+    const dropzoneLabel = document.getElementById('dropzone-label');
+    const dropzoneText = document.getElementById('dropzone-text');
+
+    fileInput.addEventListener('change', function() {
+        if (fileInput.files && fileInput.files[0]) {
+            btnPredecir.disabled = false;
+            previewContainer.classList.remove('hidden');
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                imagePreview.src = e.target.result;
+            };
+            reader.readAsDataURL(fileInput.files[0]);
+            btnCancelar.classList.remove('hidden');
+            dropzoneText.classList.add('hidden');
+            dropzoneLabel.classList.add('has-preview');
+        } else {
+            btnPredecir.disabled = true;
+            previewContainer.classList.add('hidden');
+            imagePreview.src = '';
+            btnCancelar.classList.add('hidden');
+            dropzoneText.classList.remove('hidden');
+            dropzoneLabel.classList.remove('has-preview');
+        }
+    });
+
+    btnCancelar.addEventListener('click', function() {
+        fileInput.value = '';
+        btnPredecir.disabled = true;
+        previewContainer.classList.add('hidden');
+        imagePreview.src = '';
+        btnCancelar.classList.add('hidden');
+        dropzoneText.classList.remove('hidden');
+        dropzoneLabel.classList.remove('has-preview');
+    });
+
+    // Drag & drop
+    ['dragenter', 'dragover'].forEach(eventName => {
+        dropzoneLabel.addEventListener(eventName, function(e) {
+            e.preventDefault();
+            dropzoneLabel.classList.add('ring-2', 'ring-blue-400');
+        }, false);
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+        dropzoneLabel.addEventListener(eventName, function() {
+            dropzoneLabel.classList.remove('ring-2', 'ring-blue-400');
+        }, false);
+    });
+
+    dropzoneLabel.addEventListener('drop', function(e) {
+        e.preventDefault();
+        const dt = e.dataTransfer;
+        const file = dt.files[0];
+        fileInput.files = dt.files;
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                imagePreview.src = e.target.result;
+                previewContainer.classList.remove('hidden');
+                dropzoneText.classList.add('hidden');
+                btnCancelar.classList.remove('hidden');
+                btnPredecir.disabled = false;
+                dropzoneLabel.classList.add('has-preview');
+            };
+            reader.readAsDataURL(file);
+        }
+    }, false);
+});
+</script>
 {% endblock %}
