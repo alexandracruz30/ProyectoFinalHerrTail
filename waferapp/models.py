@@ -11,6 +11,17 @@ class ModeloCNN(models.Model):
 def __str__(self):
     return str(self.nombre)
 
+class HistorialPrediccion(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    imagen = models.ImageField(upload_to='historial/')
+    resultado = models.CharField(max_length=100)
+    probabilidad = models.FloatField()
+    fecha = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.usuario.username} - {self.resultado} - {self.fecha.strftime('%Y-%m-%d %H:%M')}"
+
+
 class ImagenSubida(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE, related_name='imagenes_subidas')
     imagen = models.ImageField(upload_to='imagenes_historial/')

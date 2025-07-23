@@ -90,7 +90,6 @@ def texto_a_audio(texto, output_path):
 def consultar_llm(pregunta):
     contexto = buscar_contexto(pregunta)
     prompt = armar_prompt(contexto, pregunta)
-    #url = "http://host.docker.internal:1234/v1/chat/completions" #ESTA ES PARA LA DE DOCKER
     url = "http://localhost:1234/v1/chat/completions"  # ESTA SERIA PARA LA PC LOCAL
     headers = {"Content-Type": "application/json"}
 

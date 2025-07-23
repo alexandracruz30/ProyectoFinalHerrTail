@@ -16,14 +16,17 @@ document.addEventListener("DOMContentLoaded", function() {
         messageDiv.className = `flex gap-3 items-start max-w-full w-full fade-in-up ${sender === 'user' ? 'user-message' : 'ai-message'}`;
         
         const avatarClass = sender === 'user' 
-            ? 'w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 text-base gradient-secondary text-white shadow-md'
-            : 'w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 text-base gradient-primary text-white shadow-md';
+            ? 'w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 text-base bg-gradient-to-br from-orange-500 to-orange-700 text-white shadow-md'
+            : 'w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 text-base bg-gradient-to-br from-blue-600 to-blue-800 dark:from-blue-500 dark:to-blue-700 text-white shadow-md';
         
         const avatarIcon = sender === 'user' ? 'fas fa-user' : 'fas fa-brain';
         
         const messageTextClass = sender === 'user'
-            ? 'gradient-secondary text-white border-orange-600 shadow-md'
-            : 'bg-white border-blue-100 text-blue-900 shadow-sm';
+            ? 'bg-gradient-to-br from-orange-500 to-orange-700 text-white shadow-md'
+            : 'bg-white dark:bg-gray-800 border border-blue-100 dark:border-gray-600 text-blue-900 dark:text-gray-100 shadow-sm';
+        
+        const userNameClass = 'font-semibold text-sm text-blue-900 dark:text-blue-300';
+        const timeClass = 'text-xs text-gray-500 dark:text-gray-400';
         
         messageDiv.innerHTML = `
             <div class="${avatarClass}">
@@ -31,10 +34,10 @@ document.addEventListener("DOMContentLoaded", function() {
             </div>
             <div class="flex-1 min-w-0 w-full">
                 <div class="flex items-center gap-2 mb-1">
-                    <span class="font-semibold text-sm text-blue-900">${sender === 'user' ? 'Tú' : 'Asistente AI'}</span>
-                    <span class="text-xs text-gray-500">Ahora</span>
+                    <span class="${userNameClass}">${sender === 'user' ? 'Tú' : 'Asistente AI'}</span>
+                    <span class="${timeClass}">Ahora</span>
                 </div>
-                <div class="bg-white p-3 rounded-xl border border-blue-100 text-blue-900 text-base leading-relaxed shadow-sm break-words ${messageTextClass}">
+                <div class="p-3 rounded-xl text-base leading-relaxed break-words ${messageTextClass}">
                     ${content}
                 </div>
             </div>
@@ -51,21 +54,21 @@ document.addEventListener("DOMContentLoaded", function() {
         loadingDiv.id = 'loadingMessage';
         
         loadingDiv.innerHTML = `
-            <div class="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 text-base gradient-primary text-white shadow-md">
+            <div class="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 text-base bg-gradient-to-br from-blue-600 to-blue-800 dark:from-blue-500 dark:to-blue-700 text-white shadow-md">
                 <i class="fas fa-brain"></i>
             </div>
             <div class="flex-1 min-w-0 w-full">
                 <div class="flex items-center gap-2 mb-1">
-                    <span class="font-semibold text-sm text-blue-900">Asistente AI</span>
-                    <span class="text-xs text-gray-500">Escribiendo...</span>
+                    <span class="font-semibold text-sm text-blue-900 dark:text-blue-300">Asistente AI</span>
+                    <span class="text-xs text-gray-500 dark:text-gray-400">Escribiendo...</span>
                 </div>
-                <div class="bg-white p-3 rounded-xl border border-blue-100 text-blue-900 text-base leading-relaxed shadow-sm">
-                    <div class="flex items-center gap-2 text-gray-500 italic">
+                <div class="bg-white dark:bg-gray-800 p-3 rounded-xl border border-blue-100 dark:border-gray-600 text-blue-900 dark:text-gray-100 text-base leading-relaxed shadow-sm">
+                    <div class="flex items-center gap-2 text-gray-500 dark:text-gray-400 italic">
                         <span>Escribiendo</span>
                         <div class="inline-flex gap-1 loading-dots">
-                            <span class="w-1 h-1 rounded-full bg-gray-500"></span>
-                            <span class="w-1 h-1 rounded-full bg-gray-500"></span>
-                            <span class="w-1 h-1 rounded-full bg-gray-500"></span>
+                            <span class="w-1 h-1 rounded-full bg-gray-500 dark:bg-gray-400"></span>
+                            <span class="w-1 h-1 rounded-full bg-gray-500 dark:bg-gray-400"></span>
+                            <span class="w-1 h-1 rounded-full bg-gray-500 dark:bg-gray-400"></span>
                         </div>
                     </div>
                 </div>
@@ -101,8 +104,8 @@ document.addEventListener("DOMContentLoaded", function() {
         input.value = "";
         input.style.height = 'auto';
         sendButton.disabled = true;
-        sendButton.classList.remove('gradient-primary');
-        sendButton.classList.add('bg-gray-300', 'cursor-not-allowed');
+        sendButton.classList.remove('bg-gradient-to-br', 'from-blue-600', 'to-blue-800', 'hover:from-orange-500', 'hover:to-orange-700');
+        sendButton.classList.add('bg-gray-400', 'cursor-not-allowed');
         
         showLoadingMessage();
 
@@ -134,8 +137,8 @@ document.addEventListener("DOMContentLoaded", function() {
         }
         
         sendButton.disabled = false;
-        sendButton.classList.remove('bg-gray-300', 'cursor-not-allowed');
-        sendButton.classList.add('gradient-primary');
+        sendButton.classList.remove('bg-gray-400', 'cursor-not-allowed');
+        sendButton.classList.add('bg-gradient-to-br', 'from-blue-600', 'to-blue-800', 'hover:from-orange-500', 'hover:to-orange-700');
     });
 
     // Grabación de audio

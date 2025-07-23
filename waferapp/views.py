@@ -47,7 +47,7 @@ from rest_framework.response import Response
 # ==============================================================================
 # IMPORTS LOCALES DE LA APLICACIÓN
 # ==============================================================================
-from .models import ModeloCNN, ImagenSubida
+from .models import ModeloCNN, ImagenSubida, HistorialPrediccion
 from .forms import ModeloCNNForm, LLMChatForm
 
 # ==============================================================================
@@ -132,7 +132,6 @@ CLASS_LABELS = [
 class DashboardView(TemplateView):
     """Vista principal del dashboard."""
     template_name = "dash/dash.html"
-
 
 class HomeView(TemplateView):
     """Vista principal que muestra información de modelos."""
@@ -238,21 +237,21 @@ class GaleriaView(TemplateView):
         
         # Lista de imágenes para el carrusel de datos
         context['datos_imgs'] = [
-            {'src': 'galeria/datos/1.png', 'alt': 'Dato 1', 'title': 'Imagen 1', 'desc': 'Descripción de la imagen 1'},
-            {'src': 'galeria/datos/2.png', 'alt': 'Dato 2', 'title': 'Imagen 2', 'desc': 'Descripción de la imagen 2'},
-            {'src': 'galeria/datos/3.png', 'alt': 'Dato 3', 'title': 'Imagen 3', 'desc': 'Descripción de la imagen 3'},
-            {'src': 'galeria/datos/4.png', 'alt': 'Dato 4', 'title': 'Imagen 4', 'desc': 'Descripción de la imagen 4'},
-            {'src': 'galeria/datos/5.png', 'alt': 'Dato 5', 'title': 'Imagen 5', 'desc': 'Descripción de la imagen 5'},
-            {'src': 'galeria/datos/6.png', 'alt': 'Dato 6', 'title': 'Imagen 6', 'desc': 'Descripción de la imagen 6'},
-            {'src': 'galeria/datos/7.png', 'alt': 'Dato 7', 'title': 'Imagen 7', 'desc': 'Descripción de la imagen 7'},
+            {'src': 'galeria/datos/1.png', 'alt': 'Dato 1', 'title': 'Gráfica', 'desc': '. El gráfico de la izquierda ilustra cómo la pérdida (error) disminuye con las épocas, mientras que el de la derecha muestra cómo la precisión del modelo mejora progresivamente, tanto en los datos de entrenamiento como en los de validación.'},
+            {'src': 'galeria/datos/2.png', 'alt': 'Dato 2', 'title': 'Matriz de confusión', 'desc': 'Matriz de confusión del modelo CNN. Cada celda muestra el número de predicciones realizadas por el modelo para cada clase, permitiendo identificar errores comunes y la efectividad del modelo en cada categoría.'},
+            {'src': 'galeria/datos/3.png', 'alt': 'Dato 3', 'title': 'Gráfica dataset balanceado', 'desc': 'Datos sinteticos hechos a base del autoencoder'},
+            {'src': 'galeria/datos/4.png', 'alt': 'Dato 4', 'title': 'Gráfica dataset desbalanceado', 'desc': 'Datos desbalanceados de wafer, mostrando la distribución de defectos en las obleas del dataset.'},
+            {'src': 'galeria/datos/5.png', 'alt': 'Dato 5', 'title': 'Autoencoder', 'desc': 'Arquitectura del autoencoder para la generación de datos sintéticos.'},
+            {'src': 'galeria/datos/6.png', 'alt': 'Dato 6', 'title': 'Red Neuronal CNN', 'desc': 'Arquitectura del modelo CNN utilizado para la clasificación de defectos en obleas de silicio.'},
+            {'src': 'galeria/datos/7.png', 'alt': 'Dato 7', 'title': 'Métricas de evaluación', 'desc': 'Métricas para la evaluación del modelo por clase de defecto.'},
         ]
         
         # Lista de imágenes para el carrusel de obleas
         context['obleas_imgs'] = [
-            {'src': 'galeria/obleas/8.png', 'alt': 'Oblea 8', 'title': 'Oblea 8', 'desc': 'Descripción de la oblea 8'},
-            {'src': 'galeria/obleas/9.png', 'alt': 'Oblea 9', 'title': 'Oblea 9', 'desc': 'Descripción de la oblea 9'},
-            {'src': 'galeria/obleas/10.png', 'alt': 'Oblea 10', 'title': 'Oblea 10', 'desc': 'Descripción de la oblea 10'},
-            {'src': 'galeria/obleas/11.png', 'alt': 'Oblea 11', 'title': 'Oblea 11', 'desc': 'Descripción de la oblea 11'},
+            {'src': 'galeria/obleas/8.png', 'alt': 'Oblea 8', 'title': 'Defectos del dataset', 'desc': 'Tipos de defectos presentes en el dataset WM 811K'},
+            {'src': 'galeria/obleas/9.png', 'alt': 'Oblea 9', 'title': 'Gradientes 1', 'desc': 'Visualización de la detección de defectos mediante Gradientes Integrados. Se muestra la oblea original y los mapas de calor que resaltan las áreas clave en la identificación de defectos la CNN.'},
+            {'src': 'galeria/obleas/10.png', 'alt': 'Oblea 10', 'title': 'Gradientes 2', 'desc': 'Visualización de la detección de defectos mediante Gradientes Integrados. Se muestra la oblea original y los mapas de calor que resaltan las áreas clave en la identificación de defectos la CNN.'},
+            {'src': 'galeria/obleas/11.png', 'alt': 'Oblea 11', 'title': 'Gradientes 3', 'desc': 'Visualización de la detección de defectos mediante Gradientes Integrados. Se muestra la oblea original y los mapas de calor que resaltan las áreas clave en la identificación de defectos la CNN.'},
         ]
         
         return context
@@ -306,7 +305,15 @@ class PruebasView(LoginRequiredMixin, TemplateView):
                     resultado=resultado
                 )
                 image_preview = imagen_obj.imagen.url
-                
+
+        # Guardar en HistorialPrediccion
+            HistorialPrediccion.objects.create(
+                    usuario=request.user,
+                    imagen=imagen_obj.imagen,
+                    resultado=resultado,
+                    probabilidad=float(prediction[0][predicted_class_idx])
+            )
+
         except Exception as e:
             error = f"Error procesando imagen: {str(e)}"
 
@@ -322,6 +329,19 @@ class PruebasView(LoginRequiredMixin, TemplateView):
             'historial': historial,
         }
         return render(request, self.template_name, context)
+
+
+class HistorialView(ListView):
+    """Vista para mostrar el historial de predicciones del usuario."""
+    model = HistorialPrediccion
+    template_name = 'pruebas/historial.html'
+    context_object_name = 'historial'
+
+    def get_queryset(self):
+        # Solo muestra el historial del usuario autenticado, ordenado por fecha descendente
+        return HistorialPrediccion.objects.filter(usuario=self.request.user).order_by('-fecha')
+
+
 
 # ==============================================================================
 # VISTAS DE LLM

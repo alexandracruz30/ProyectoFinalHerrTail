@@ -16,24 +16,24 @@
                 <div class="p-6">
                     <form method="post" enctype="multipart/form-data" id="form-prediccion" autocomplete="off">
                         {% csrf_token %}
-                        <label class="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-blue-300 dark:border-blue-600 rounded-xl cursor-pointer bg-blue-50 dark:bg-gray-700 hover:bg-blue-100 dark:hover:bg-gray-600 transition-all duration-300" for="file-input" id="dropzone-label">
+                        <label class="flex flex-col items-center justify-center w-full h-64 border-2 border-dashed border-blue-300 dark:border-blue-600 rounded-xl cursor-pointer bg-blue-50 dark:bg-gray-700 hover:bg-blue-100 dark:hover:bg-gray-600 transition-all duration-300" for="file-input" id="dropzone-label">
                             <div class="flex flex-col items-center justify-center pt-5 pb-6" id="dropzone-text">
-                                <span class="text-4xl text-blue-500 dark:text-blue-400 mb-2">&#9729;</span>
+                                <span class="text-5xl text-blue-500 dark:text-blue-400 mb-4">&#9729;</span>
                                 <div class="text-center">
-                                    Arrastra tu imagen aquí o haz clic para seleccionar<br>
-                                    <span class="text-xs text-gray-500 dark:text-gray-400">Formatos soportados: JPG, PNG, TIFF</span>
+                                    <p class="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-2">Arrastra tu imagen aquí o haz clic para seleccionar</p>
+                                    <span class="text-sm text-gray-500 dark:text-gray-400">Formatos soportados: JPG, PNG, TIFF</span>
                                 </div>
                             </div>
                             <div id="preview-container" class="w-full text-center mt-2 hidden">
-                                <img id="image-preview" src="" alt="Vista previa" class="max-w-full max-h-52 rounded-lg mx-auto">
+                                <img id="image-preview" src="" alt="Vista previa" class="max-w-full max-h-60 rounded-lg mx-auto">
                             </div>
                             <input id="file-input" type="file" name="uploaded_image" accept="image/*" required class="hidden">
                         </label>
                         <div class="flex gap-2 mt-4">
-                            <button type="button" id="btn-cancelar" class="hidden bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 font-semibold py-2 px-4 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-all duration-200">
+                            <button type="button" id="btn-cancelar" class="hidden bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-white font-semibold py-2 px-4 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-all duration-200">
                                 <span>❌</span> Cancelar
                             </button>
-                            <button class="bg-pink-600 hover:bg-pink-700 dark:bg-pink-700 dark:hover:bg-pink-800 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300 shadow-md hover:shadow-lg flex items-center gap-2 disabled:opacity-50" type="submit" id="btn-predecir" disabled>
+                            <button class="bg-pink-600 hover:bg-pink-700 dark:bg-pink-700 dark:hover:bg-pink-800 text-black dark:text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300 shadow-md hover:shadow-lg flex items-center gap-2 disabled:opacity-50" type="submit" id="btn-predecir" disabled>
                                 <span>🔍</span> Predecir
                             </button>
                         </div>
