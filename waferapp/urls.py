@@ -13,6 +13,11 @@ from .views import (
     procesoModeloView,
     DashboardView,
     GaleriaView,
+    LLMDesdeModelosView,
+    ProcesarAudioView,
+    api_llm_text,
+    procesar_imagen,
+    HistorialView
 )
 
 app_name = 'modelos'
@@ -29,4 +34,9 @@ urlpatterns = [
     path('proceso/', procesoModeloView.as_view(), name='modeloView'),
     path('dashboard/', DashboardView.as_view(), name='dash'),
     path('galeria/', GaleriaView.as_view(), name='galeria'),
+    path('llm/', LLMDesdeModelosView.as_view(), name='llm'),
+    path('llm-api/', api_llm_text, name='llm_api'),          # <-- ESTA LÍNEA ES CLAVE
+    path('procesar_audio/', ProcesarAudioView.as_view(), name='procesar_audio'),
+    path('llm/procesar-imagen/', procesar_imagen, name='procesar_imagen'),
+    path('historial/', HistorialView.as_view(), name='historial')
 ]

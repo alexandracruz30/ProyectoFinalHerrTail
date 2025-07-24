@@ -1,0 +1,316 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% block title %}Arquitectura CNN - Estilo Técnico{% endblock %}
+
+{% block content %}
+<style>
+    .layer-3d {
+        transform-style: preserve-3d;
+        perspective: 1000px;
+    }
+    
+    .feature-map {
+        position: relative;
+        display: inline-block;
+        margin: 3px;
+    }
+    
+    .feature-map::before {
+        content: '';
+        position: absolute;
+        top: -3px;
+        left: -3px;
+        width: 100%;
+        height: 100%;
+        background: inherit;
+        opacity: 0.3;
+        z-index: -1;
+        border-radius: inherit;
+    }
+    
+    .pooling-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(34, 197, 94, 0.2);
+        border: 2px dashed #22c55e;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        font-weight: bold;
+        color: #059669;
+    }
+    
+    .neuron {
+        background: radial-gradient(circle at 30% 30%, #a855f7, #7c3aed);
+        box-shadow: 0 3px 6px rgba(0,0,0,0.2), inset 0 1px 3px rgba(255,255,255,0.3);
+    }
+    
+    .output-neuron {
+        background: radial-gradient(circle at 30% 30%, #ef4444, #dc2626);
+        box-shadow: 0 3px 6px rgba(0,0,0,0.2), inset 0 1px 3px rgba(255,255,255,0.3);
+    }
+    
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+    }
+    
+    .layer-container:hover .feature-map {
+        animation: pulse 2s infinite;
+    }
+    
+    .arrow {
+        font-size: 5rem;
+        color: #6b7280;
+        transition: all 0.3s ease;
+    }
+    
+    .arrow:hover {
+        color: #3b82f6;
+        transform: scale(1.1);
+    }
+    
+    .dimension-label {
+        font-size: 12px;
+        color: #6b7280;
+        background: rgba(255,255,255,0.9);
+        padding: 2px 6px;
+        border-radius: 3px;
+        position: absolute;
+        top: -12px;
+        left: 50%;
+        transform: translateX(-50%);
+        white-space: nowrap;
+    }
+    
+    .dark .dimension-label {
+        background: rgba(31,41,55,0.9);
+        color: #d1d5db;
+    }
+</style>
+
+<main class="min-h-screen py-12 bg-gray-100 dark:bg-gray-900">
+    <div class="max-w-[1800px] mx-auto bg-white dark:bg-gray-800 rounded-xl p-12 shadow-lg">
+        <h1 class="text-4xl md:text-5xl font-bold text-center text-[#2c3e50] dark:text-white mb-16">
+            Arquitectura CNN EXPLORER
+        </h1>
+        
+        <div class="flex items-center justify-between gap-8 overflow-x-auto py-12">
+            <!-- Input Layer -->
+            <div class="flex flex-col items-center layer-container">
+                <div class="font-bold text-lg text-[#34495e] dark:text-white mb-4 bg-gray-100 dark:bg-gray-700 px-4 py-2 rounded-full">
+                    Input
+                </div>
+                <div class="relative">
+                    <div class="w-36 h-28 bg-gradient-to-br from-[#34495e] to-[#2c3e50] rounded-lg flex items-center justify-center text-white font-bold text-sm text-center shadow-lg overflow-hidden border-2 border-gray-300">
+                        <img src="{% static 'entrenapng/original.png' %}" alt="Imagen de entrada" class="object-contain w-full h-full" />
+                    </div>
+                    <div class="dimension-label">Input Image</div>
+                </div>
+            </div>
+            
+            <div class="arrow">→</div>
+            
+            <!-- Conv_1 + Max-Pooling -->
+            <div class="flex flex-col items-center layer-container">
+                <div class="font-bold text-lg text-[#34495e] dark:text-white mb-4 bg-blue-100 dark:bg-blue-900 px-4 py-2 rounded-full">
+                    Conv_1
+                </div>
+                <div class="text-sm text-gray-600 dark:text-gray-400 mb-4 text-center">
+                    Convolution<br>(3×3) kernel<br>same padding
+                </div>
+                <div class="relative">
+                    <div class="flex flex-col gap-2">
+                        <div class="flex gap-2">
+                            <div class="feature-map w-8 h-8 bg-blue-400 rounded shadow-md"></div>
+                            <div class="feature-map w-8 h-8 bg-blue-400 rounded shadow-md"></div>
+                            <div class="feature-map w-8 h-8 bg-blue-400 rounded shadow-md"></div>
+                        </div>
+                        <div class="flex gap-2">
+                            <div class="feature-map w-8 h-8 bg-blue-400 rounded shadow-md"></div>
+                            <div class="feature-map w-8 h-8 bg-blue-400 rounded shadow-md"></div>
+                            <div class="feature-map w-8 h-8 bg-blue-400 rounded shadow-md"></div>
+                        </div>
+                        <div class="flex gap-2">
+                            <div class="feature-map w-8 h-8 bg-blue-400 rounded shadow-md"></div>
+                            <div class="feature-map w-8 h-8 bg-blue-400 rounded shadow-md"></div>
+                            <div class="feature-map w-8 h-8 bg-blue-400 rounded shadow-md"></div>
+                        </div>
+                    </div>
+                    <div class="pooling-overlay">MP</div>
+                </div>
+                <div class="text-sm text-gray-600 dark:text-gray-400 mt-3 text-center">
+                    Max-Pooling<br>(2×2)
+                </div>
+                <div class="text-sm text-gray-600 dark:text-gray-400 mt-2 text-center">
+                    32 channels
+                </div>
+            </div>
+            
+            <div class="arrow">→</div>
+            
+            <!-- Conv_2 + Max-Pooling -->
+            <div class="flex flex-col items-center layer-container">
+                <div class="font-bold text-lg text-[#34495e] dark:text-white mb-4 bg-red-100 dark:bg-red-900 px-4 py-2 rounded-full">
+                    Conv_2
+                </div>
+                <div class="text-sm text-gray-600 dark:text-gray-400 mb-4 text-center">
+                    Convolution<br>(3×3) kernel<br>same padding
+                </div>
+                <div class="relative">
+                    <div class="flex flex-col gap-2">
+                        <div class="flex gap-2">
+                            <div class="feature-map w-8 h-8 bg-red-400 rounded shadow-md"></div>
+                            <div class="feature-map w-8 h-8 bg-red-400 rounded shadow-md"></div>
+                        </div>
+                        <div class="flex gap-2">
+                            <div class="feature-map w-8 h-8 bg-red-400 rounded shadow-md"></div>
+                            <div class="feature-map w-8 h-8 bg-red-400 rounded shadow-md"></div>
+                        </div>
+                    </div>
+                    <div class="pooling-overlay">MP</div>
+                </div>
+                <div class="text-sm text-gray-600 dark:text-gray-400 mt-3 text-center">
+                    Max-Pooling<br>(2×2)
+                </div>
+                <div class="text-sm text-gray-600 dark:text-gray-400 mt-2 text-center">
+                    64 channels
+                </div>
+            </div>
+            
+            <div class="arrow">→</div>
+            
+            <!-- Conv_3 (Sin Max-Pooling) -->
+            <div class="flex flex-col items-center layer-container">
+                <div class="font-bold text-lg text-[#34495e] dark:text-white mb-4 bg-yellow-100 dark:bg-yellow-900 px-4 py-2 rounded-full">
+                    Conv_3
+                </div>
+                <div class="text-sm text-gray-600 dark:text-gray-400 mb-4 text-center">
+                    Convolution<br>(3×3) kernel<br>same padding
+                </div>
+                <div class="relative">
+                    <div class="flex flex-col gap-2">
+                        <div class="flex gap-2">
+                            <div class="feature-map w-8 h-8 bg-yellow-400 rounded shadow-md"></div>
+                            <div class="feature-map w-8 h-8 bg-yellow-400 rounded shadow-md"></div>
+                        </div>
+                        <div class="flex gap-2">
+                            <div class="feature-map w-8 h-8 bg-yellow-400 rounded shadow-md"></div>
+                            <div class="feature-map w-8 h-8 bg-yellow-400 rounded shadow-md"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600 dark:text-gray-400 mt-3 text-center">
+                    64 channels
+                </div>
+            </div>
+            
+            <div class="arrow">→</div>
+            
+            <!-- Flatten -->
+            <div class="flex flex-col items-center layer-container">
+                <div class="font-bold text-lg text-[#34495e] dark:text-white mb-4 bg-orange-100 dark:bg-orange-900 px-4 py-2 rounded-full">
+                    Flattened
+                </div>
+                <div class="text-sm text-gray-600 dark:text-gray-400 mb-4 text-center">
+                    Reshape to 1D Vector<br>576 parameters
+                </div>
+                <div class="relative">
+                    <div class="w-20 h-36 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-lg flex items-center justify-center text-white font-bold text-sm text-center shadow-lg">
+                        576<br>neurons
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600 dark:text-gray-400 mt-3 text-center">
+                    576 units
+                </div>
+            </div>
+            
+            <div class="arrow">→</div>
+            
+            <!-- Dense Layer -->
+            <div class="flex flex-col items-center layer-container">
+                <div class="font-bold text-lg text-[#34495e] dark:text-white mb-4 bg-purple-100 dark:bg-purple-900 px-4 py-2 rounded-full">
+                    Dense
+                </div>
+                <div class="text-sm text-gray-600 dark:text-gray-400 mb-4 text-center">
+                    Fully Connected<br>ReLU activation
+                </div>
+                <div class="flex flex-col gap-2 items-center">
+                    <div class="neuron w-5 h-5 rounded-full"></div>
+                    <div class="neuron w-5 h-5 rounded-full"></div>
+                    <div class="neuron w-5 h-5 rounded-full"></div>
+                    <div class="text-sm text-gray-400 dark:text-white">...</div>
+                    <div class="neuron w-5 h-5 rounded-full"></div>
+                    <div class="neuron w-5 h-5 rounded-full"></div>
+                    <div class="neuron w-5 h-5 rounded-full"></div>
+                </div>
+                <div class="text-sm text-gray-600 dark:text-gray-400 mt-3 text-center">
+                    64 units
+                </div>
+            </div>
+            
+            <div class="arrow">→</div>
+            
+            <!-- Output Layer -->
+            <div class="flex flex-col items-center layer-container">
+                <div class="font-bold text-lg text-[#34495e] dark:text-white mb-4 bg-red-100 dark:bg-red-900 px-4 py-2 rounded-full">
+                    Output
+                </div>
+                <div class="text-sm text-gray-600 dark:text-gray-400 mb-4 text-center">
+                    Softmax activation<br>Classification
+                </div>
+                <div class="flex flex-col gap-2 items-center">
+                <div class="output-neuron w-26 h-6 rounded-full flex items-center justify-center text-white text-base font-bold whitespace-normal break-words px-3">Edge</div>
+                <div class="output-neuron w-26 h-6 rounded-full flex items-center justify-center text-white text-base font-bold whitespace-normal break-words px-4">Edge Loc</div>
+                <div class="output-neuron w-26 h-6 rounded-full flex items-center justify-center text-white text-base font-bold whitespace-normal break-words px-4">None</div>
+                <div class="output-neuron w-26 h-6 rounded-full flex items-center justify-center text-white text-base font-bold whitespace-normal break-words px-4">Donut</div>
+                <div class="output-neuron w-26 h-6 rounded-full flex items-center justify-center text-white text-base font-bold whitespace-normal break-words px-4">Center</div>
+                <div class="output-neuron w-26 h-6 rounded-full flex items-center justify-center text-white text-base font-bold whitespace-normal break-words px-4">Edge Ring</div>
+                <div class="output-neuron w-26 h-6 rounded-full flex items-center justify-center text-white text-base font-bold whitespace-normal break-words px-4">Random</div>
+                <div class="output-neuron w-26 h-6 rounded-full flex items-center justify-center text-white text-base font-bold whitespace-normal break-words px-4">Scratch</div>
+                <div class="output-neuron w-26 h-6 rounded-full flex items-center justify-center text-white text-base font-bold whitespace-normal break-words px-4">Near Full</div>
+                </div>
+                <div class="text-sm text-gray-600 dark:text-gray-400 mt-3 text-center">
+                    9 classes
+                </div>
+            </div>
+        </div>
+        
+        <!-- Model Information -->
+        <div class="mt-16 p-8 bg-gray-100 dark:bg-gray-700 rounded-lg text-center">
+            <h3 class="text-2xl font-bold text-[#2c3e50] dark:text-white mb-6">📊 Especificaciones del Modelo</h3>
+            <div class="flex flex-wrap justify-around gap-6">
+                <div class="bg-white dark:bg-gray-800 p-6 rounded shadow w-44">
+                    <div class="font-bold text-2xl text-[#2c3e50] dark:text-white">3</div>
+                    <div class="text-gray-500 dark:text-gray-300 text-base">Capas Convolucionales</div>
+                </div>
+                <div class="bg-white dark:bg-gray-800 p-6 rounded shadow w-44">
+                    <div class="font-bold text-2xl text-[#2c3e50] dark:text-white">32→64→64</div>
+                    <div class="text-gray-500 dark:text-gray-300 text-base">Filtros por Capa</div>
+                </div>
+                <div class="bg-white dark:bg-gray-800 p-6 rounded shadow w-44">
+                    <div class="font-bold text-2xl text-[#2c3e50] dark:text-white">3×3</div>
+                    <div class="text-gray-500 dark:text-gray-300 text-base">Kernel Size</div>
+                </div>
+                <div class="bg-white dark:bg-gray-800 p-6 rounded shadow w-44">
+                    <div class="font-bold text-2xl text-[#2c3e50] dark:text-white">2</div>
+                    <div class="text-gray-500 dark:text-gray-300 text-base">Max Pooling (2×2)</div>
+                </div>
+                <div class="bg-white dark:bg-gray-800 p-6 rounded shadow w-44">
+                    <div class="font-bold text-2xl text-[#2c3e50] dark:text-white">2</div>
+                    <div class="text-gray-500 dark:text-gray-300 text-base">Capas Densas</div>
+                </div>
+                <div class="bg-white dark:bg-gray-800 p-6 rounded shadow w-44">
+                    <div class="font-bold text-2xl text-[#2c3e50] dark:text-white">9</div>
+                    <div class="text-gray-500 dark:text-gray-300 text-base">Clases de Salida</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

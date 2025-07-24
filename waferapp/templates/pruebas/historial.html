@@ -1,0 +1,52 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="mx-auto pt-2 p-5"></div>
+
+<!-- Encabezado -->
+<div class="p-6 mx-24 bg-white dark:bg-gray-800 rounded-xl text-gray-900 dark:text-white shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden border border-gray-200 dark:border-gray-700">
+    <h1 class="text-3xl font-bold mb-2 text-center">📂 Historial de Clasificaciones</h1>
+    <h2 class="text-md font-normal mb-4 text-center text-gray-600 dark:text-gray-300">
+        Aquí se muestran las últimas imágenes clasificadas por los modelos CNN.
+    </h2>
+</div>
+
+<!-- Lista de Clasificaciones -->
+<div class="mx-24 my-6">
+    <div class="overflow-hidden shadow-lg rounded-xl border border-gray-200 dark:border-gray-700">
+        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-600">
+            <thead class="bg-blue-100 dark:bg-gray-700 text-gray-900 dark:text-white">
+                <tr>
+                    <th class="px-6 py-3 text-left text-sm font-semibold uppercase tracking-wider">Imagen</th>
+                    <th class="px-6 py-3 text-left text-sm font-semibold uppercase tracking-wider">Clase</th>
+                    <th class="px-6 py-3 text-left text-sm font-semibold uppercase tracking-wider">Probabilidad</th>
+                    <th class="px-6 py-3 text-left text-sm font-semibold uppercase tracking-wider">Modelo</th>
+                    <th class="px-6 py-3 text-left text-sm font-semibold uppercase tracking-wider">Fecha</th>
+                </tr>
+            </thead>
+            <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-600">
+                {% for c in historial %}
+                <tr class="hover:bg-blue-50 dark:hover:bg-gray-700 transition duration-200">
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <img src="{{ c.imagen.url }}" alt="img" class="w-16 h-16 object-cover rounded-md border border-gray-300 dark:border-gray-600">
+                    </td>
+                    <td class="px-6 py-4 text-blue-600 dark:text-blue-300 font-semibold text-lg">{{ c.resultado }}</td>
+                    <td class="px-6 py-4 text-gray-800 dark:text-gray-100">{{ c.probabilidad|floatformat:2 }}%</td>
+                    <td class="px-6 py-4 text-gray-800 dark:text-gray-100">CNN Personalizado</td>
+                    <td class="px-6 py-4 text-gray-600 dark:text-gray-300">{{ c.fecha|date:"d/m/Y H:i" }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center py-6 text-gray-500 dark:text-gray-400">
+                        No hay registros aún. Sube una imagen en la sección de pruebas.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}
+

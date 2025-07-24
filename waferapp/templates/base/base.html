@@ -110,7 +110,7 @@
                 <!-- Enlace a la página principal de modelos -->
                 <a href="{% url 'modelos:home' %}" class="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-blue-50 dark:hover:bg-gray-700 transition-all duration-200 text-primary dark:text-blue-400 font-semibold">
                     <img src="{% static 'iconos/modelos.png' %}" alt="icono" class="w-10 h-10">
-                    <span>Modelos</span>
+                    <span>Inicio</span>
                 </a>
                 <!-- Enlace a la sección de dataset -->
                 <a href="{% url 'modelos:proceso_entrenamiento' %}" class="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-blue-50 dark:hover:bg-gray-700 transition-all duration-200 text-primary dark:text-blue-400 font-semibold">
@@ -139,19 +139,23 @@
                 </a>
                 <!-- Enlace a la galería -->
                 <a href="{% url 'modelos:galeria' %}" class="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-blue-50 dark:hover:bg-gray-700 transition-all duration-200 text-primary dark:text-blue-400 font-semibold">
-                    <img src="{% static 'iconos/principal.png' %}" alt="icono galería" class="w-10 h-10 object-contain" />
+                    <img src="{% static 'iconos/galeria.png' %}" alt="icono galería" class="w-10 h-10 object-contain" />
                     <span>Galería</span>
                 </a>
-                <!-- Opción deshabilitada para LLM -->
-                <a href="#" class="flex items-center gap-2 px-3 py-2 opacity-50 cursor-not-allowed pointer-events-none text-gray-500">
-                    <img src="{% static 'iconos/LLM.png' %}" alt="icono LLM" class="w-10 h-10 object-contain" />
-                    <span>LLM (no disponible)</span>
+
+                <a href="{% url 'modelos:historial' %}" class="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-blue-50 dark:hover:bg-gray-700 transition-all duration-200 text-primary dark:text-blue-400 font-semibold">
+                    <img src="{% static 'iconos/historial.png' %}" alt="icono historial" class="w-10 h-10 object-contain" />
+                    <span>Historial</span>
                 </a>
+                <!-- Opción deshabilitada para LLM -->
+<a href="{% url 'modelos:llm' %}" class="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-blue-50 dark:hover:bg-gray-700 transition-all duration-200 text-primary dark:text-blue-400 font-semibold">
+    <img src="{% static 'iconos/LLM.png' %}" alt="icono LLM" class="w-10 h-10 object-contain" />
+    <span>LLM</span>
+</a>
             </div>
             <!-- Botones de usuario (login, logout, registro, nuevo modelo) -->
             <div class="flex items-center gap-2 ml-auto">
                 {% if user.is_authenticated %}
-                    <a href="{% url 'modelos:add_modelo' %}" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md transition-colors duration-200">Nuevo Modelo</a>
                     <form method="post" action="{% url 'modelos:logout' %}" class="inline">
                         {% csrf_token %}
                         <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-md transition-colors duration-200">Cerrar sesión</button>
