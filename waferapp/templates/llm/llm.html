@@ -1,0 +1,118 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% block title %}CNN Model Explorer - Asistente AI{% endblock %}
+
+{% block content %}
+<style>
+    /* Animaciones personalizadas que Tailwind no tiene por defecto */
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes loadingDots {
+        0%, 80%, 100% { transform: scale(0); opacity: 0.5; }
+        40% { transform: scale(1); opacity: 1; }
+    }
+    
+    .fade-in-up { animation: fadeInUp 0.3s ease-out; }
+    
+    .loading-dots span {
+        animation: loadingDots 1.4s infinite ease-in-out;
+    }
+    .loading-dots span:nth-child(1) { animation-delay: -0.32s; }
+    .loading-dots span:nth-child(2) { animation-delay: -0.16s; }
+    
+    /* Scrollbar personalizado - no disponible en Tailwind */
+    .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 3px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    
+    .dark .custom-scrollbar::-webkit-scrollbar-track { background: #374151; }
+    .dark .custom-scrollbar::-webkit-scrollbar-thumb { background: #6b7280; }
+    .dark .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
+    
+    .input-scrollbar::-webkit-scrollbar { width: 4px; }
+    .input-scrollbar::-webkit-scrollbar-track { background: transparent; }
+    .input-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 2px; }
+    .dark .input-scrollbar::-webkit-scrollbar-thumb { background: #6b7280; }
+</style>
+<main class="min-h-screen bg-gray-100 dark:bg-gray-900 transition-colors duration-300 py-8 font-inter">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-gray-50 dark:bg-gray-900 min-h-screen flex items-center justify-center p-4">
+    
+    <div class="w-full max-w-4xl h-[750px] max-h-[95vh] bg-transparent rounded-2xl flex flex-col overflow-hidden">
+        
+        <!-- Área de mensajes -->
+        <div id="messagesArea" class="flex-1 p-5 bg-transparent flex flex-col gap-4 overflow-y-auto custom-scrollbar">
+            
+            <!-- Pantalla de bienvenida -->
+            <div id="welcomeScreen" class="flex flex-col items-center justify-center text-center h-full w-full py-10 px-5 text-blue-900 dark:text-blue-300">
+                <div class="w-20 h-20 bg-gradient-to-br from-blue-700 to-blue-900 dark:from-blue-500 dark:to-blue-700 rounded-full flex items-center justify-center mb-6 shadow-lg">
+                    <i class="fas fa-comments text-2xl text-white"></i>
+                </div>
+                <h2 class="text-3xl font-bold text-blue-900 dark:text-blue-300 mb-3 tracking-tight">¡Hola! Soy tu asistente AI</h2>
+                <p class="text-lg text-gray-600 dark:text-gray-400 max-w-md leading-relaxed">Pregúntame cualquier cosa y te ayudaré con la mejor respuesta posible. O sube una imagen de una oblea para analizarla.</p>
+            </div>
+            
+        </div>
+        
+        <!-- Sección de entrada -->
+        <div class="h-[12%] p-5 bg-transparent flex items-center">
+            <form id="llmForm" autocomplete="off" class="w-full h-full flex items-center">
+                {% csrf_token %}
+                
+                <div class="relative w-full h-full flex items-center">
+                    <div class="bg-white dark:bg-gray-800 border-2 border-blue-100 dark:border-gray-600 rounded-xl p-2 transition-all duration-200 shadow-sm hover:shadow-md focus-within:border-blue-600 dark:focus-within:border-blue-400 focus-within:shadow-lg focus-within:ring-2 focus-within:ring-blue-100 dark:focus-within:ring-blue-400 w-full flex items-center min-h-[50px]">
+                        
+                        <textarea 
+                            name="question" 
+                            id="messageInput"
+                            class="border-none outline-none p-3 text-base text-blue-900 dark:text-gray-100 bg-transparent resize-none min-h-[24px] max-h-[100px] leading-snug flex-1 input-scrollbar placeholder-gray-500 dark:placeholder-gray-400"
+                            placeholder="Escribe tu pregunta..."
+                            rows="1"
+                        ></textarea>
+                        
+                        <button 
+                            class="bg-gradient-to-br from-blue-600 to-blue-800 dark:from-blue-500 dark:to-blue-700 hover:from-orange-500 hover:to-orange-700 text-white border-none rounded-lg w-10 h-10 flex items-center justify-center cursor-pointer transition-all duration-200 text-sm shadow-md hover:-translate-y-px focus:outline-none focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-400 ml-2 flex-shrink-0"
+                            id="sendButton" 
+                            type="submit"
+                        >
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                        
+                        <button 
+                            type="button" 
+                            class="bg-gradient-to-br from-blue-600 to-blue-800 dark:from-blue-500 dark:to-blue-700 hover:from-orange-500 hover:to-orange-700 text-white border-none rounded-lg w-10 h-10 flex items-center justify-center cursor-pointer transition-all duration-200 text-sm shadow-md hover:-translate-y-px focus:outline-none focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-400 ml-2 flex-shrink-0"
+                            id="micButton" 
+                            title="Hablar"
+                        >
+                            <i class="fas fa-microphone"></i>
+                        </button>
+                        
+                        <input type="file" id="imageInput" accept="image/*" class="hidden">
+                        <button  
+                            class="bg-gradient-to-br from-blue-600 to-blue-800 dark:from-blue-500 dark:to-blue-700 hover:from-orange-500 hover:to-orange-700 text-white border-none rounded-lg w-10 h-10 flex items-center justify-center cursor-pointer transition-all duration-200 text-sm shadow-md hover:-translate-y-px focus:outline-none focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-400 ml-2 flex-shrink-0"
+                            type="button" 
+                            id="imageButton" 
+                            title="Subir imagen"
+                        >
+                            <i class="fas fa-image"></i>
+                        </button>
+                        
+                    </div>
+                    
+                    <span id="recordingStatus" class="ml-2 text-red-500 dark:text-red-400 hidden">Grabando...</span>
+                </div>
+            </form>
+        </div>
+        
+        </div>
+        
+    </div>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+<script src="{% static 'js/llm.js' %}"></script>
+{% endblock %}

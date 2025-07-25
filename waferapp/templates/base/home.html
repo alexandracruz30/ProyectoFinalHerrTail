@@ -1,0 +1,80 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block title %}CNN Model Explorer - Selección de Modelos{% endblock %}
+{% block content %}
+    <div class="max-w-6xl mx-auto px-4 py-8">
+        <div class="text-center mb-12">
+            <h3 class="text-4xl font-bold text-gray-800 dark:text-white mb-4"> DETECCIÓN DE DEFECTOS EN IMÁGENES DE OBLEAS SEMICONDUCTORAS</h3>
+            <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                Sistema de detección automatizada de defectos mediante análisis de imágenes de obleas semiconductoras
+                utilizando redes neuronales convolucionales. Explora nuestra implementación de CNN para identificar y
+                clasificar anomalías visuales en procesos de fabricación con alta precisión.
+            </p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Tarjeta Paper -->
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden border border-gray-200 dark:border-gray-700">
+                <div class="bg-primary dark:bg-gray-700 text-white p-6">
+                    <div class="flex items-center gap-3 mb-2">
+                        <img src="{% static 'homepng/paper1.png' %}" alt="Paper" class="w-6 h-6">
+                        <h3 class="text-xl font-bold">Paper Académico</h3>
+                    </div>
+                    <span class="inline-block bg-success dark:bg-green-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                        Investigación
+                    </span>
+                </div>
+                <div class="p-6">
+                    <p class="text-gray-600 dark:text-gray-300 mb-6 line-clamp-3">
+                        Documentación científica completa del proyecto de detección de defectos en obleas semiconductoras. 
+                    </p>
+                    <a href="https://utpac-my.sharepoint.com/:b:/g/personal/carlos_ortiz5_utp_ac_pa/ESbPFmGR18tOrhNWLFnBdaUBDScZAp4XHmJeTyi9AGpd0g?e=ehxG6U" target="_blank" class="w-full inline-block text-center bg-white dark:bg-gray-700 text-primary dark:text-blue-400 font-semibold py-2 px-4 rounded-md border-2 border-primary dark:border-blue-400 hover:bg-primary hover:text-white dark:hover:bg-blue-400 dark:hover:text-white dark:hover:border-blue-400 transition-colors duration-200">
+                        Ver Paper
+                    </a>
+                </div>
+            </div>
+
+            <!-- Tarjeta Google Colab -->
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden border border-gray-200 dark:border-gray-700">
+                <div class="bg-primary dark:bg-gray-700 text-white p-6">
+                    <div class="flex items-center gap-3 mb-2">
+                        <img src="{% static 'homepng/colab.png' %}" alt="Google Colab" class="w-6 h-6">
+                        <h3 class="text-xl font-bold">Código</h3>
+                    </div>
+                    <span class="inline-block bg-success dark:bg-green-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                        Código CNN
+                    </span>
+                </div>
+                <div class="p-6">
+                    <p class="text-gray-600 dark:text-gray-300 mb-6 line-clamp-3">
+                        Notebook interactivo con la implementación completa de la CNN. Arquitectura, entrenamiento, evaluación.
+                    </p>
+                    <a href="https://github.com/Carlos09Or/Wafer/tree/main" target="_blank" class="w-full inline-block text-center bg-white dark:bg-gray-700 text-primary dark:text-blue-400 font-semibold py-2 px-4 rounded-md border-2 border-primary dark:border-blue-400 hover:bg-primary hover:text-white dark:hover:bg-blue-400 dark:hover:text-white dark:hover:border-blue-400 transition-colors duration-200">
+                        Abrir Código
+                    </a>
+                </div>
+            </div>
+
+            <!-- Tarjeta Poster -->
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden border border-gray-200 dark:border-gray-700">
+                <div class="bg-primary dark:bg-gray-700 text-white p-6">
+                    <div class="flex items-center gap-3 mb-2">
+                        <img src="{% static 'homepng/poster.png' %}" alt="Poster" class="w-6 h-6">
+                        <h3 class="text-xl font-bold">Poster Científico</h3>
+                    </div>
+                    <span class="inline-block bg-success dark:bg-green-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                    Presentación
+                    </span>
+                </div>
+                <div class="p-6">
+                    <p class="text-gray-600 dark:text-gray-300 mb-6 line-clamp-3">
+                        Poster académico con resumen visual del proyecto. Presenta de manera gráfica la arquitectura CNN.
+                    </p>
+                    <a href="https://utpac-my.sharepoint.com/:b:/g/personal/carlos_ortiz5_utp_ac_pa/EbTdYJtXahZNgegXvqQ1zAYBGIk57Bni1UN06jE9PYuM2g?e=8HyLtq" target="_blank" class="w-full inline-block text-center bg-white dark:bg-gray-700 text-primary dark:text-blue-400 font-semibold py-2 px-4 rounded-md border-2 border-primary dark:border-blue-400 hover:bg-primary hover:text-white dark:hover:bg-blue-400 dark:hover:text-white dark:hover:border-blue-400 transition-colors duration-200">
+                        Ver Poster
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

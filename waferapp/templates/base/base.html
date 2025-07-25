@@ -1,108 +1,237 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
+    <!-- Configuración básica del documento -->
     <meta charset="UTF-8">
-    <title>{% block title %}CNN Model Explorer{% endblock %}</title>
-    <link href="{% static 'src/output.css' %}" rel="stylesheet">  <!-- ✅ Cambiado -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}CNN Model Explorer{% endblock %}</title>
+    
+    <!-- Carga de archivos estáticos (como CSS de Tailwind) -->
+    {% load static %}
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#183b6b',
+                        secondary: '#1b325f',
+                        accent: '#e97228',
+                        pink: '#ba3259',
+                        success: '#00c37e',
+                        gray: {
+                            100: '#f4f6f9',
+                            200: '#e9eefa',
+                            300: '#d1e1ff',
+                            400: '#bfc8d3',
+                            500: '#7b8497',
+                            600: '#25396e',
+                        }
+                    },
+                    animation: {
+                        'fadeInUp': 'fadeInUp 0.6s ease-out',
+                        'shake': 'shake 0.5s ease-in-out',
+                        'spin': 'spin 1s linear infinite'
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': {
+                                opacity: '0',
+                                transform: 'translateY(30px)'
+                            },
+                            '100%': {
+                                opacity: '1',
+                                transform: 'translateY(0)'
+                            }
+                        },
+                        shake: {
+                            '0%, 100%': { transform: 'translateX(0)' },
+                            '25%': { transform: 'translateX(-5px)' },
+                            '75%': { transform: 'translateX(5px)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Particles.js container styles */
+        #particles-js {
+            position: fixed;
+            z-index: 0;
+            top: 0; 
+            left: 0; 
+            right: 0; 
+            bottom: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            overflow: hidden;
+            background: transparent;
+        }
+
+        body, html {
+            position: relative;
+            z-index: 1;
+        }
+    </style>
+
 </head>
-<body class="bg-gray-100 min-h-screen flex flex-col">
-    <div class="fixed inset-0 -z-10">
-        <script src="{% static 'js/particle.js' %}"></script>
-        <div class="particles-bg"></div>
-    </div>
-    <header class="bg-blue-900 text-white shadow-md">
-        <div class="flex justify-between items-center max-w-6xl mx-auto px-8 py-8">
+
+<body class="font-sans min-h-screen flex flex-col bg-gray-100 dark:bg-gray-900 transition-colors duration-300">
+    <!-- Particles.js container -->
+    <div id="particles-js"></div>
+    
+    <!-- HEADER: Encabezado principal con título y logo -->
+    <header class="bg-primary text-white shadow-lg">
+        <div class="flex justify-between items-center max-w-screen-2xl mx-auto px-8 pt-8 pb-5">
+            <!-- Título y subtítulo -->
             <div>
-                <h1 class="text-4xl font-bold mb-1 tracking-tight">CNN Model Explorer</h1>
-                <p class="text-blue-100 text-lg m-0">Prueba modelos de CNN preentrenados con tus propias imágenes</p>
+                <h1 class="text-5xl font-bold mb-1 tracking-tight">CNN Model Explorer</h1>
+                <p class="text-gray-300 text-lg">Prueba modelos de CNN preentrenados con tus propias imágenes</p>
             </div>
-            <div class="flex items-center gap-2">
-                <span class="text-blue-100 font-medium text-lg whitespace-nowrap">AI Neural Network</span>
-                <img src="{% static 'iconos/principal.png' %}" alt="Logo AI" class="h-20">
+            <!-- Logo y nombre de la app -->
+            <div class="flex items-center gap-3 ml-auto">
+                <span class="text-lg text-gray-300 font-medium whitespace-nowrap">AI Neural Network</span>
+                <img src="{% static 'iconos/principal.png' %}" alt="Logo AI" class="w-20 h-20 object-contain" />
             </div>
         </div>
     </header>
 
-    <nav class="flex justify-center items-center bg-white border-b-2 border-gray-200 gap-4 pt-2">
-        <div class="flex gap-2">
-            <a href="{% url 'waferapp:home' %}" class="flex items-center gap-2 px-6 py-3 text-blue-900 font-semibold text-base border-b-2 border-transparent hover:text-orange-500 hover:border-orange-500 transition">
-                <img src="{% static 'iconos/modelos.png' %}" alt="icono" class="w-10 h-10" /> Modelos
-            </a>
-            <a href="{% url 'waferapp:proceso_entrenamiento' %}" class="flex items-center gap-2 px-6 py-3 text-blue-900 font-semibold text-base border-b-2 border-transparent hover:text-orange-500 hover:border-orange-500 transition">
-                <img src="{% static 'iconos/dataset.png' %}" alt="icono" class="w-10 h-10" /> Dataset
-            </a>
-            <a href="{% url 'waferapp:modeloView' %}" class="flex items-center gap-2 px-6 py-3 text-blue-900 font-semibold text-base border-b-2 border-transparent hover:text-orange-500 hover:border-orange-500 transition">
-                <img src="{% static 'iconos/arquitectura.png' %}" alt="icono" class="w-10 h-10" /> Arquitectura
-            </a>
-            <a href="{% url 'waferapp:detalles_uso' %}" class="flex items-center gap-2 px-6 py-3 text-blue-900 font-semibold text-base border-b-2 border-transparent hover:text-orange-500 hover:border-orange-500 transition">
-                <img src="{% static 'iconos/guiauso.png' %}" alt="icono" class="w-10 h-10" /> Guía de uso
-            </a>
-            <a href="{% url 'waferapp:zona_pruebas' %}" class="flex items-center gap-2 px-6 py-3 text-blue-900 font-semibold text-base border-b-2 border-transparent hover:text-orange-500 hover:border-orange-500 transition">
-                <img src="{% static 'iconos/test.png' %}" alt="icono" class="w-10 h-10" /> Pruebas
-            </a>
-            <a href="{% url 'waferapp:dash' %}" class="flex items-center gap-2 px-6 py-3 text-blue-900 font-semibold text-base border-b-2 border-transparent hover:text-orange-500 hover:border-orange-500 transition">
-                <img src="{% static 'iconos/data.png' %}" alt="icono" class="w-10 h-10" /> Dashboard
-            </a>
-        </div>
-        <div class="flex gap-2 ml-auto">
-            {% if user.is_authenticated %}
-                <!-- <a href="{% url 'waferapp:add_modelo' %}" class="bg-pink-700 text-white font-bold px-4 py-2 rounded hover:bg-pink-900 transition">Nuevo Modelo</a> -->
-                <form method="post" action="{% url 'waferapp:logout' %}" class="inline">
-                    {% csrf_token %}
-                    <button type="submit" class="bg-gray-200 text-blue-900 font-semibold px-4 py-2 rounded hover:bg-red-600 hover:text-white transition">Cerrar sesión</button>
-                </form>
-            {% else %}
-                <a href="{% url 'waferapp:login' %}" class="bg-pink-700 text-white font-bold px-4 py-2 rounded hover:bg-pink-900 transition">Iniciar sesión</a>
-                <a href="{% url 'waferapp:signup' %}" class="bg-pink-700 text-white font-bold px-4 py-2 rounded hover:bg-pink-900 transition">Registrarse</a>
-            {% endif %}
+    <!-- NAV: Barra de navegación principal -->
+    <nav class="bg-white dark:bg-gray-800 text-gray-900 dark:text-white shadow-md px-4 py-2 flex justify-between items-center w-full border-b-2 border-gray-200 dark:border-gray-700">
+        <div class="flex items-center space-x-4 max-w-screen-2xl mx-auto">
+            <!-- Menú de navegación con iconos -->
+            <div class="flex space-x-6 px-2">
+                <!-- Enlace a la página principal de modelos -->
+                <a href="{% url 'modelos:home' %}" class="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-blue-50 dark:hover:bg-gray-700 transition-all duration-200 text-primary dark:text-blue-400 font-semibold">
+                    <img src="{% static 'iconos/modelos.png' %}" alt="icono" class="w-10 h-10">
+                    <span>Inicio</span>
+                </a>
+                <!-- Enlace a la sección de dataset -->
+                <a href="{% url 'modelos:proceso_entrenamiento' %}" class="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-blue-50 dark:hover:bg-gray-700 transition-all duration-200 text-primary dark:text-blue-400 font-semibold">
+                    <img src="{% static 'iconos/dataset.png' %}" alt="icono" class="w-10 h-10">
+                    <span>Dataset</span>
+                </a>
+                <!-- Enlace a la arquitectura del modelo -->
+                <a href="{% url 'modelos:modeloView' %}" class="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-blue-50 dark:hover:bg-gray-700 transition-all duration-200 text-primary dark:text-blue-400 font-semibold">
+                    <img src="{% static 'iconos/arquitectura.png' %}" alt="icono arquitectura" class="w-10 h-10 object-contain" />
+                    <span>Arquitectura</span>
+                </a>
+                <!-- Enlace a la guía de uso -->
+                <a href="{% url 'modelos:detalles_uso' %}" class="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-blue-50 dark:hover:bg-gray-700 transition-all duration-200 text-primary dark:text-blue-400 font-semibold">
+                    <img src="{% static 'iconos/guiauso.png' %}" alt="icono guía de uso" class="w-10 h-10 object-contain" />
+                    <span>Guía de uso</span>
+                </a>
+                <!-- Enlace a la zona de pruebas -->
+                <a href="{% url 'modelos:zona_pruebas' %}" class="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-blue-50 dark:hover:bg-gray-700 transition-all duration-200 text-primary dark:text-blue-400 font-semibold">
+                    <img src="{% static 'iconos/test.png' %}" alt="icono pruebas" class="w-10 h-10 object-contain" />
+                    <span>Pruebas</span>
+                </a>
+                <!-- Enlace al dashboard -->
+                <a href="{% url 'modelos:dash' %}" class="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-blue-50 dark:hover:bg-gray-700 transition-all duration-200 text-primary dark:text-blue-400 font-semibold">
+                    <img src="{% static 'iconos/data.png' %}" alt="icono dashboard" class="w-10 h-10 object-contain" />
+                    <span>Dashboard</span>
+                </a>
+                <!-- Enlace a la galería -->
+                <a href="{% url 'modelos:galeria' %}" class="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-blue-50 dark:hover:bg-gray-700 transition-all duration-200 text-primary dark:text-blue-400 font-semibold">
+                    <img src="{% static 'iconos/galeria.png' %}" alt="icono galería" class="w-10 h-10 object-contain" />
+                    <span>Galería</span>
+                </a>
+
+                <a href="{% url 'modelos:historial' %}" class="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-blue-50 dark:hover:bg-gray-700 transition-all duration-200 text-primary dark:text-blue-400 font-semibold">
+                    <img src="{% static 'iconos/historial.png' %}" alt="icono historial" class="w-10 h-10 object-contain" />
+                    <span>Historial</span>
+                </a>
+                <!-- Opción deshabilitada para LLM -->
+<a href="{% url 'modelos:llm' %}" class="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-blue-50 dark:hover:bg-gray-700 transition-all duration-200 text-primary dark:text-blue-400 font-semibold">
+    <img src="{% static 'iconos/LLM.png' %}" alt="icono LLM" class="w-10 h-10 object-contain" />
+    <span>LLM</span>
+</a>
+            </div>
+            <!-- Botones de usuario (login, logout, registro, nuevo modelo) -->
+            <div class="flex items-center gap-2 ml-auto">
+                {% if user.is_authenticated %}
+                    <form method="post" action="{% url 'modelos:logout' %}" class="inline">
+                        {% csrf_token %}
+                        <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-md transition-colors duration-200">Cerrar sesión</button>
+                    </form>
+                {% else %}
+                    <a href="{% url 'modelos:login' %}" 
+                    class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-8 rounded-md transition-colors duration-200 whitespace-nowrap">Iniciar sesión</a>
+                    <a href="{% url 'modelos:signup' %}" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-8 rounded-md transition-colors duration-200">Registrarse</a>
+                {% endif %}
+            </div>
         </div>
     </nav>
 
+    <!-- MENSAJES: Muestra mensajes de éxito, error o información -->
     {% if messages %}
-        <div class="max-w-5xl mx-auto mt-6">
-            {% for message in messages %}
-                <div class="p-4 mb-4 rounded text-white
-                    {% if message.tags == 'error' %}bg-red-600
-                    {% elif message.tags == 'success' %}bg-green-600
-                    {% else %}bg-blue-600{% endif %}">
-                    {{ message }}
-                </div>
-            {% endfor %}
-        </div>
+    <div class="max-w-5xl mx-auto mt-6 px-4">
+        {% for message in messages %}
+            <div class="p-4 mb-4 rounded-lg text-white font-medium text-lg tracking-tight
+                {% if message.tags == 'error' %} bg-red-600 border-l-4 border-red-800
+                {% elif message.tags == 'success' %} bg-green-600 border-l-4 border-green-800
+                {% else %} bg-blue-600 border-l-4 border-blue-800
+                {% endif %}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
     {% endif %}
 
-    <main class="flex-1 max-w-5xl mx-auto py-9 px-5">
+    <!-- MAIN: Contenido principal de la página -->
+    <main class="flex-1">
         {% block content %}{% endblock %}
     </main>
     
-    <footer class="bg-blue-950 text-white py-8 mt-10">
-        <div class="max-w-6xl mx-auto flex flex-wrap justify-between items-start">
-            <div>
-                <h2 class="text-xl font-bold mb-2">CNN Model Explorer</h2>
-                <p class="text-base">Una herramienta para probar y comparar modelos de redes neuronales convolucionales.</p>
-            </div>
-            <div class="flex items-center text-base">
-                <span>&copy; 2025 CNN Model Explorer. Todos los derechos reservados.</span>
+    <!-- FOOTER: Pie de página con información y derechos -->
+    <footer class="bg-gray-800 dark:bg-gray-900 text-white py-8 mt-10">
+        <div class="max-w-screen-xl mx-auto px-4">
+            <div class="flex flex-wrap justify-between items-start">
+                <div class="mb-4 md:mb-0">
+                    <h2 class="text-2xl font-bold mb-2">CNN Model Explorer</h2>
+                    <p class="text-gray-300 max-w-md">Una herramienta para probar y comparar modelos de redes neuronales convolucionales.</p>
+                </div>
+                <div class="flex items-center">
+                    <span class="text-gray-300">&copy; 2025 CNN Model Explorer. Todos los derechos reservados.</span>
+                </div>
             </div>
         </div>
     </footer>
-    <button class="fixed bottom-6 right-6 bg-gray-800 text-white rounded-full p-3 shadow-lg hover:bg-gray-600 transition" onclick="toggleDarkMode()" title="Alternar modo oscuro">🌙</button>
-    <script src="{% static 'js/particles-bg.js' %}"></script>
+    
+    <!-- Botón para alternar modo oscuro -->
+    <button class="fixed right-7 bottom-6 z-50 bg-white dark:bg-primary text-primary dark:text-white rounded-full border-none shadow-lg w-12 h-12 text-xl cursor-pointer transition-all duration-300 hover:bg-primary hover:text-white dark:hover:bg-white dark:hover:text-primary" onclick="toggleDarkMode()" title="Alternar modo oscuro">
+        🌙
+    </button>
+    
+    <!-- Particles.js library -->
+    <script src="{% static 'js/particles.min.js' %}"></script>
+    <!-- Particles configuration -->
+    <script src="{% static 'js/particles-config.js' %}"></script>
+    
     <script>
         function toggleDarkMode() {
-            document.body.classList.toggle('dark');
-            if (document.body.classList.contains('dark')) {
+            document.documentElement.classList.toggle('dark');
+            if (document.documentElement.classList.contains('dark')) {
                 localStorage.setItem('theme', 'dark');
             } else {
                 localStorage.setItem('theme', 'light');
             }
+            // Reinitialize particles with new theme
+            if (window.reinitializeParticlesOnThemeChange) {
+                window.reinitializeParticlesOnThemeChange();
+            }
         }
+        
         window.addEventListener('DOMContentLoaded', () => {
             const savedTheme = localStorage.getItem('theme');
             if (savedTheme === 'dark') {
-                document.body.classList.add('dark');
+                document.documentElement.classList.add('dark');
             }
         });
     </script>
